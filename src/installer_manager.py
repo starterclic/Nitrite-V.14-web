@@ -61,7 +61,7 @@ def get_windows_folder_path(csidl):
     """
     Obtient le chemin d'un dossier Windows spécial via SHGetFolderPath.
     CSIDL_DESKTOP = 0 (Bureau)
-    CSIDL_PROGRAMS = 2 (Menu Démarrer\Programmes)
+    CSIDL_PROGRAMS = 2 (Menu Démarrer\\Programmes)
     """
     try:
         buf = ctypes.create_unicode_buffer(wintypes.MAX_PATH)

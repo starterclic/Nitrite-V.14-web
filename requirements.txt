@@ -10,6 +10,10 @@ certifi>=2023.0.0
 Pillow>=10.0.0
 # Note: tkinter est inclus avec Python sur Windows, pas besoin de l'installer
 
+# Web Backend (pour version HTML)
+flask>=3.0.0
+flask-cors>=4.0.0
+
 # Utilitaires
 packaging>=23.0
 tqdm>=4.66.0
