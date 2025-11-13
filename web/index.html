@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NiTriTe V.13 - Gestionnaire d'Applications</title>
+    <link rel="stylesheet" href="css/loading.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="../assets/icon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- LOADING SCREEN -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-container">
+            <div class="loading-logo">
+                <div class="logo-circle">
+                    <svg width="80" height="80" viewBox="0 0 80 80">
+                        <circle cx="40" cy="40" r="35" stroke="#FF6B35" stroke-width="3" fill="none" opacity="0.3"/>
+                        <path d="M 40 5 A 35 35 0 0 1 75 40" stroke="#FF6B35" stroke-width="3" fill="none" stroke-linecap="round">
+                            <animateTransform attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="2s" repeatCount="indefinite"/>
+                        </path>
+                    </svg>
+                    <div class="logo-text">N</div>
+                </div>
+            </div>
+            <h1 class="loading-title">NiTriTe V.13 Beta</h1>
+            <p class="loading-subtitle">Gestionnaire d'Applications et Outils Système</p>
+
+            <div class="loading-progress">
+                <div class="progress-bar-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+                <p id="loadingText" class="loading-text">Initialisation...</p>
+                <p id="loadingPercent" class="loading-percent">0%</p>
+            </div>
+
+            <div class="loading-status">
+                <span id="statusText" class="status-text">Chargement des ressources...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APPLICATION -->
+    <div id="mainApp" class="main-app" style="display: none;">
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="app-logo">
+                    <div class="logo-icon">N</div>
+                    <div class="logo-info">
+                        <h2>NiTriTe</h2>
+                        <span>Version 13.0 Beta</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-menu">
+                <button class="nav-item active" data-page="applications">
+                    <span class="nav-icon">📦</span>
+                    <span class="nav-text">Applications</span>
+                    <span class="nav-badge" id="appsBadge">715</span>
+                </button>
+                <button class="nav-item" data-page="tools">
+                    <span class="nav-icon">🔧</span>
+                    <span class="nav-text">Outils Système</span>
+                    <span class="nav-badge" id="toolsBadge">553+</span>
+                </button>
+                <button class="nav-item" data-page="profiles">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Profils</span>
+                    <span class="nav-badge" id="profilesBadge">10</span>
+                </button>
+                <button class="nav-item" data-page="master">
+                    <span class="nav-icon">⚡</span>
+                    <span class="nav-text">Installation Master</span>
+                </button>
+                <button class="nav-item" data-page="favorites">
+                    <span class="nav-icon">⭐</span>
+                    <span class="nav-text">Favoris</span>
+                    <span class="nav-badge" id="favoritesBadge">0</span>
+                </button>
+                <button class="nav-item" data-page="diagnostic">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Diagnostic</span>
+                </button>
+                <button class="nav-item" data-page="optimization">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Optimisations</span>
+                </button>
+                <button class="nav-item" data-page="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Paramètres</span>
+                </button>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="theme-toggle">
+                    <button id="themeToggle" class="theme-btn">
+                        <span id="themeIcon">🌙</span>
+                        <span>Thème</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Applications Page -->
+            <div id="applicationsPage" class="page active">
+                <div class="page-header">
+                    <h1>Applications Disponibles</h1>
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="totalApps">715</span>
+                            <span class="stat-label">Applications</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="totalCategories">25</span>
+                            <span class="stat-label">Catégories</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="selectedApps">0</span>
+                            <span class="stat-label">Sélectionnées</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="🔍 Rechercher une application..." autocomplete="off">
+                    <div class="search-filters">
+                        <select id="categoryFilter">
+                            <option value="all">Toutes les catégories</option>
+                        </select>
+                        <select id="sourceFilter">
+                            <option value="all">Toutes les sources</option>
+                            <option value="winget">WinGet</option>
+                            <option value="portable">Portable</option>
+                            <option value="download">Téléchargement</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <button id="installSelected" class="btn btn-primary" disabled>
+                        <span>📥</span> Installer la sélection
+                    </button>
+                    <button id="selectAll" class="btn btn-secondary">
+                        <span>☑️</span> Tout sélectionner
+                    </button>
+                    <button id="deselectAll" class="btn btn-secondary">
+                        <span>⬜</span> Tout désélectionner
+                    </button>
+                    <button id="exportSelection" class="btn btn-secondary">
+                        <span>💾</span> Exporter la sélection
+                    </button>
+                </div>
+
+                <div id="applicationsGrid" class="apps-grid">
+                    <!-- Applications cards will be dynamically loaded here -->
+                </div>
+            </div>
+
+            <!-- Tools Page -->
+            <div id="toolsPage" class="page">
+                <div class="page-header">
+                    <h1>Outils Système</h1>
+                    <p class="page-description">Accédez rapidement aux outils Windows et utilitaires système</p>
+                </div>
+
+                <div id="toolsContainer" class="tools-container">
+                    <!-- Tools will be dynamically loaded here -->
+                </div>
+            </div>
+
+            <!-- Profiles Page -->
+            <div id="profilesPage" class="page">
+                <div class="page-header">
+                    <h1>Profils d'Installation</h1>
+                    <p class="page-description">Choisissez un profil pré-configuré ou créez le vôtre</p>
+                </div>
+
+                <div id="profilesGrid" class="profiles-grid">
+                    <!-- Profiles will be dynamically loaded here -->
+                </div>
+            </div>
+
+            <!-- Master Installation Page -->
+            <div id="masterPage" class="page">
+                <div class="page-header">
+                    <h1>Installation Master</h1>
+                    <p class="page-description">Installation en masse avec assistant</p>
+                </div>
+
+                <div class="master-wizard">
+                    <div class="wizard-steps">
+                        <div class="step active">1. Sélection</div>
+                        <div class="step">2. Configuration</div>
+                        <div class="step">3. Installation</div>
+                        <div class="step">4. Terminé</div>
+                    </div>
+                    <div id="masterContent" class="master-content">
+                        <!-- Master installation wizard content -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorites Page -->
+            <div id="favoritesPage" class="page">
+                <div class="page-header">
+                    <h1>Applications Favorites</h1>
+                    <p class="page-description">Vos applications marquées comme favorites</p>
+                </div>
+
+                <div id="favoritesGrid" class="apps-grid">
+                    <!-- Favorite apps will be shown here -->
+                </div>
+            </div>
+
+            <!-- Diagnostic Page -->
+            <div id="diagnosticPage" class="page">
+                <div class="page-header">
+                    <h1>Diagnostic Système</h1>
+                    <p class="page-description">Informations et diagnostics de votre système</p>
+                </div>
+
+                <div id="diagnosticContent" class="diagnostic-content">
+                    <!-- System diagnostic info will be shown here -->
+                </div>
+            </div>
+
+            <!-- Optimization Page -->
+            <div id="optimizationPage" class="page">
+                <div class="page-header">
+                    <h1>Optimisations Windows</h1>
+                    <p class="page-description">Optimisez les performances de votre système</p>
+                </div>
+
+                <div id="optimizationContent" class="optimization-content">
+                    <!-- Optimization options will be shown here -->
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settingsPage" class="page">
+                <div class="page-header">
+                    <h1>Paramètres</h1>
+                    <p class="page-description">Configuration de l'application</p>
+                </div>
+
+                <div id="settingsContent" class="settings-content">
+                    <!-- Settings will be shown here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Installation Modal -->
+    <div id="installModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Installation en cours</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="installProgress" class="install-progress">
+                    <!-- Installation progress will be shown here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/loading.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
