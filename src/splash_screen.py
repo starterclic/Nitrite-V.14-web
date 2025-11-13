@@ -32,12 +32,12 @@ class SplashScreen:
         self.splash.overrideredirect(True)  # Remove window decorations
         self.splash.configure(bg='#1a1a1a')
 
-        # Create UI
-        self.create_ui()
-
-        # Progress tracking
+        # Progress tracking (MUST be initialized BEFORE create_ui)
         self.progress_var = tk.DoubleVar()
         self.progress_var.set(0)
+
+        # Create UI
+        self.create_ui()
 
         self.loading_steps = [
             (10, "Initialisation...", "Démarrage de NiTriTe V.13..."),

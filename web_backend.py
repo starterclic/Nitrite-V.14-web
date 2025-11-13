@@ -17,7 +17,7 @@ import logging
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from installer_manager import InstallerManager
-from winget_manager import WinGetManager
+from winget_manager import WingetManager
 
 # Initialize Flask app
 app = Flask(__name__, static_folder='web', static_url_path='')
@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 # Initialize managers
 installer_manager = InstallerManager()
-winget_manager = WinGetManager()
+winget_manager = WingetManager()
 
 
 @app.route('/')
