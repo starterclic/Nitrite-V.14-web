@@ -12,7 +12,7 @@ echo Demarrage du serveur web...
 echo.
 
 :: Install Flask dependencies if needed
-pip install flask flask-cors psutil >nul 2>&1
+pip install flask flask-cors flask-socketio psutil >nul 2>&1
 
 :: Start the web server
 echo Serveur web demarre sur http://localhost:5000
