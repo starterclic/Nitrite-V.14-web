@@ -1,0 +1,7 @@
+Name,Category,Type,Url,SilentArgs,Silent
+Firefox,Navigateurs,EXE,https://download.mozilla.org/?product=firefox-latest&os=win64&lang=fr,/S,true
+Chrome,Navigateurs,MSI,https://dl.google.com/chrome/install/latest/chrome_installer.exe,/silent /install,true
+7-Zip,Compression,MSI,https://www.7-zip.org/a/7z2405-x64.msi,/qn,true
+VLC,Multimedia,EXE,https://get.videolan.org/vlc/3.0.20/win64/vlc-3.0.20-win64.exe,/S,true
+VSCode,Développement,EXE,https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user,/VERYSILENT /NORESTART /MERGETASKS=!runcode,true
+Notepad++,Développement,EXE,https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.5.8/npp.8.5.8.Installer.x64.exe,/S,true

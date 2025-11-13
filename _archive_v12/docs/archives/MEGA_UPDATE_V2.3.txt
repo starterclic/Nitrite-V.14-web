@@ -1,0 +1,574 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║       🚀 NITRITE v2.3 - MEGA UPDATE IA & OUTILS ! 🚀            ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│  📊 STATISTIQUES FINALES                                         │
+└──────────────────────────────────────────────────────────────────┘
+
+VERSION 2.2 : 148 programmes
+VERSION 2.3 : 171 PROGRAMMES (+23 NOUVEAUX) 🎉
+
+CATÉGORIES : 30 (+6 nouvelles)
+
+CROISSANCE DEPUIS v1.0 : +114% ! 🚀
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│  ✨ 23 NOUVEAUX PROGRAMMES !                                     │
+└──────────────────────────────────────────────────────────────────┘
+
+
+🤖 IA LOCALE (7 NOUVEAUX) - RÉVOLUTION ! 🆕
+══════════════════════════════════════════
+
+Exécutez des modèles d'IA sur votre PC - 100% GRATUIT et PRIVÉ !
+
+✅ Ollama
+   → Exécuter Llama 3, Mistral, Gemma en local
+   → Winget ID: Ollama.Ollama
+   
+✅ LM Studio
+   → Interface graphique pour modèles IA locaux
+   → Winget ID: ElementLabs.LMStudio
+   
+✅ Jan AI
+   → ChatGPT-like 100% local et open source
+   → Winget ID: Jan.Jan
+   
+✅ Claude Desktop
+   → Application Claude AI officielle (Anthropic)
+   → Winget ID: Anthropic.Claude
+   
+✅ Msty
+   → Interface multi-modèles (GPT, Claude, Ollama)
+   → Winget ID: CloudStack.Msty
+   
+✅ Cherry Studio
+   → Client IA multi-modèles complet
+   → Winget ID: kangfenmao.CherryStudio
+   
+✅ Reor
+   → Éditeur notes avec IA locale intégrée
+   → Winget ID: ReorProject.Reor
+
+
+💡 POURQUOI L'IA LOCALE ?
+─────────────────────────
+
+✨ 100% PRIVÉ
+   → Vos données restent sur votre PC
+   → Aucune fuite de confidentialité
+   
+✨ 100% GRATUIT
+   → Pas d'abonnement ChatGPT Plus
+   → Pas de limite d'utilisation
+   
+✨ 100% OFFLINE
+   → Fonctionne sans internet
+   → Parfait pour données sensibles
+   
+✨ MODÈLES PUISSANTS
+   → Llama 3.2, Mistral 7B, Gemma
+   → Qualité proche de GPT-4
+
+
+🔧 OUTILS SYSTÈME BOOTABLES (3 NOUVEAUX) 🆕
+═══════════════════════════════════════════
+
+✅ Ventoy
+   → Créer USB bootable multi-ISO
+   → Winget ID: Ventoy.Ventoy
+   
+✅ balenaEtcher
+   → Graver images ISO de manière fiable
+   → Winget ID: Balena.Etcher
+   
+✅ Autoruns
+   → Gérer programmes au démarrage (Sysinternals)
+   → Winget ID: Microsoft.Sysinternals.Autoruns
+
+
+💻 VIRTUALISATION (1 NOUVEAU) 🆕
+════════════════════════════════
+
+✅ VMware Workstation Player
+   → Machine virtuelle gratuite VMware
+   → Winget ID: VMware.WorkstationPlayer
+
+
+📥 TÉLÉCHARGEMENT & MÉDIAS (4 NOUVEAUX) 🆕
+═══════════════════════════════════════════
+
+✅ 4K Video Downloader
+   → Télécharger vidéos YouTube en haute qualité
+   → Winget ID: OpenMedia.4KVideoDownloader
+   
+✅ 4K YouTube to MP3
+   → Convertir vidéos YouTube en MP3
+   → Winget ID: OpenMedia.4KYoutubetoMP3
+   
+✅ yt-dlp
+   → Téléchargeur vidéo universel (ligne de commande)
+   → Winget ID: yt-dlp.yt-dlp
+   
+✅ FreeTube
+   → Client YouTube desktop axé confidentialité
+   → Winget ID: PrestonN.FreeTube
+
+
+🎮 GAMING CONSOLE (2 NOUVEAUX) 🆕
+═════════════════════════════════
+
+✅ PS Remote Play
+   → Jouer à distance sur PS4/PS5 depuis PC
+   → Winget ID: PlayStation.PSRemotePlay
+   
+✅ Google Play Games
+   → Jouer à des jeux Android sur PC
+   → Winget ID: Google.PlayGames
+
+
+⚡ BENCHMARKS & TESTS (1 NOUVEAU) 🆕
+════════════════════════════════════
+
+✅ OCCT
+   → Test de stabilité CPU, GPU et alimentation
+   → Winget ID: OCCT.OCCT
+
+
+📺 STREAMING VIDÉO (+2)
+═══════════════════════
+
+✅ YouTube
+   → Application YouTube officielle
+   → Winget ID: 9WZDNCRDT29J
+   
+✅ myCanal
+   → Service de streaming Canal+
+   → Winget ID: 9WZDNCRCRVZ9
+
+
+🌐 NAVIGATEURS (+1)
+═══════════════════
+
+✅ DuckDuckGo Browser
+   → Navigateur anti-tracking et confidentialité
+   → Winget ID: DuckDuckGo.DesktopBrowser
+
+
+🎨 SUITES PROFESSIONNELLES (+1)
+═══════════════════════════════
+
+✅ Canva
+   → Design graphique et création contenu
+   → Winget ID: Canva.Canva
+
+
+🔒 SÉCURITÉ (RÉORGANISÉE +3)
+════════════════════════════
+
+✅ Surfshark VPN (NOUVEAU)
+   → VPN rapide avec fonctions avancées
+   → Winget ID: Surfshark.Surfshark
+
+⬆️ AdwCleaner (DÉPLACÉ depuis Utilitaires)
+   → Suppression malwares et pubs
+   → Winget ID: Malwarebytes.AdwCleaner
+
+⬆️ Wise Disk Cleaner (DÉPLACÉ depuis Utilitaires)
+   → Nettoyage disque et optimisation
+   → Winget ID: WiseCleaner.WiseDiskCleaner
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│  📋 TOUTES LES CATÉGORIES - 171 PROGRAMMES                       │
+└──────────────────────────────────────────────────────────────────┘
+
+📁 Navigateurs ............................. 8 (+1 🆕)
+💬 Communication ............................ 8
+🎬 Multimédia ............................... 10
+💻 Développement ............................ 12
+🔧 Utilitaires .............................. 16 (-2)
+🔒 Sécurité ................................. 13 (+3 🔄)
+📝 Productivité ............................. 10
+☁️  Cloud & Stockage ......................... 5
+🎮 Gaming ................................... 11
+🖥️  Accès à distance ......................... 4
+🖥️  Logiciels Matériel ....................... 2
+📺 Streaming & Médias ....................... 2
+📚 Runtimes & Bibliothèques ................. 12
+🔧 Pilotes & Drivers ........................ 2
+🎮 Émulateurs ............................... 2
+📱 Réseaux Sociaux .......................... 8
+📺 Streaming Vidéo .......................... 8 (+2 🆕)
+🎵 Streaming Audio .......................... 4
+🤖 IA & Assistants .......................... 2
+🔧 Utilitaires Système Avancés .............. 5
+🖨️  Imprimantes & Scan ....................... 3
+☁️  Services Apple ........................... 1
+💻 Logiciels Constructeur ................... 1
+🏢 Suites Professionnelles .................. 4 (+1 🆕)
+🔧 Outils Système Bootables ................. 3 (🆕)
+💻 Virtualisation ........................... 1 (🆕)
+📥 Téléchargement & Médias .................. 4 (🆕)
+🎮 Gaming Console ........................... 2 (🆕)
+⚡ Benchmarks & Tests ....................... 1 (🆕)
+🤖 IA Locale ................................ 7 (🆕)
+
+───────────────────────────────────────────────────────────────────
+TOTAL ...................................... 171 PROGRAMMES ! 🎉
+───────────────────────────────────────────────────────────────────
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│  🎯 PACKS RECOMMANDÉS                                            │
+└──────────────────────────────────────────────────────────────────┘
+
+🤖 PACK IA COMPLÈTE (Cloud + Local)
+───────────────────────────────────
+
+CLOUD (Internet requis) :
+☑️ ChatGPT
+☑️ Microsoft Copilot
+☑️ Claude Desktop
+
+LOCAL (100% Privé, Sans Internet) :
+☑️ Ollama (Llama 3, Mistral, Gemma)
+☑️ LM Studio (Interface graphique)
+☑️ Jan AI (Le plus simple)
+☑️ Msty (Multi-modèles)
+☑️ Cherry Studio (Tout-en-un)
+☑️ Reor (Notes + IA)
+
+→ Le meilleur des deux mondes !
+→ Cloud pour la puissance, Local pour la confidentialité
+
+
+🔧 PACK TECHNICIEN PRO
+──────────────────────
+
+CRÉATION USB :
+☑️ Ventoy (Multi-ISO)
+☑️ balenaEtcher
+☑️ Rufus
+
+SYSTÈME :
+☑️ Autoruns
+☑️ Sysinternals Suite
+☑️ PowerToys
+
+VIRTUALISATION :
+☑️ VMware Workstation Player
+
+TESTS :
+☑️ OCCT
+☑️ HWiNFO
+☑️ CPU-Z, GPU-Z
+
+SÉCURITÉ :
+☑️ AdwCleaner
+☑️ Malwarebytes
+☑️ Wise Disk Cleaner
+
+→ Boîte à outils complète IT Pro !
+
+
+📥 PACK TÉLÉCHARGEMENT MÉDIAS
+─────────────────────────────
+
+☑️ 4K Video Downloader
+☑️ 4K YouTube to MP3
+☑️ yt-dlp (CLI puissant)
+☑️ FreeTube (YouTube privé)
+☑️ VLC Media Player
+☑️ HandBrake (conversion)
+
+→ Téléchargez et convertissez tout !
+
+
+🎮 PACK GAMING UNIVERSEL
+────────────────────────
+
+LAUNCHERS PC :
+☑️ Steam
+☑️ Epic Games
+☑️ Battle.net
+☑️ GOG Galaxy
+☑️ EA App
+☑️ Ubisoft Connect
+
+CONSOLE SUR PC :
+☑️ PS Remote Play (PlayStation)
+☑️ Google Play Games (Android)
+☑️ BlueStacks (Émulateur Android)
+☑️ Citra (Nintendo 3DS)
+
+OUTILS :
+☑️ Discord
+☑️ MSI Afterburner
+☑️ WeMod
+☑️ DS4Windows
+
+→ Gaming PC + Console + Mobile !
+
+
+🔒 PACK SÉCURITÉ MAXIMALE
+─────────────────────────
+
+ANTIVIRUS/MALWARE :
+☑️ Malwarebytes
+☑️ AdwCleaner
+☑️ Spybot Search & Destroy
+
+VPN (4 choix !) :
+☑️ NordVPN
+☑️ ProtonVPN
+☑️ Surfshark ⭐ NOUVEAU
+☑️ CyberGhost
+
+CONFIDENTIALITÉ :
+☑️ Spybot Anti-Beacon
+☑️ DuckDuckGo Browser ⭐ NOUVEAU
+☑️ Tor Browser
+
+MOTS DE PASSE :
+☑️ Bitwarden
+☑️ 1Password
+☑️ KeePass
+
+CHIFFREMENT :
+☑️ VeraCrypt
+
+NETTOYAGE :
+☑️ Wise Disk Cleaner
+
+→ Sécurité et confidentialité absolues !
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│  🌟 RÉVOLUTION : IA LOCALE                                       │
+└──────────────────────────────────────────────────────────────────┘
+
+QU'EST-CE QUE L'IA LOCALE ?
+───────────────────────────
+
+Au lieu d'envoyer vos données à ChatGPT/Claude sur internet,
+vous exécutez des modèles d'IA DIRECTEMENT SUR VOTRE PC !
+
+
+AVANTAGES :
+───────────
+
+✨ 100% PRIVÉ
+   • Vos conversations ne quittent JAMAIS votre PC
+   • Parfait pour données confidentielles (code, documents, etc.)
+   • Aucun tracking, aucune collecte de données
+
+✨ 100% GRATUIT
+   • Pas d'abonnement ChatGPT Plus (20$/mois)
+   • Utilisation illimitée
+   • Tous les modèles gratuits
+
+✨ 100% OFFLINE
+   • Fonctionne sans connexion internet
+   • Idéal en déplacement, avion, train
+   • Pas de latence réseau
+
+✨ PUISSANT
+   • Llama 3.2 = Niveau GPT-3.5
+   • Mistral 7B = Très performant en français
+   • Modèles 70B = Proche GPT-4
+
+
+COMMENT ÇA MARCHE ?
+───────────────────
+
+1. INSTALLER OLLAMA ou LM STUDIO ou JAN AI
+   → NiTrite installe automatiquement
+
+2. TÉLÉCHARGER UN MODÈLE
+   → Llama 3.2 (8 Go) ou Mistral 7B (4 Go)
+
+3. DISCUTER !
+   → Comme ChatGPT mais sur VOTRE PC
+
+
+EXEMPLES D'USAGE :
+──────────────────
+
+• Développeur : Aide au code (comme GitHub Copilot)
+• Avocat : Analyser documents confidentiels
+• Médecin : Analyser dossiers patients
+• Entreprise : Traiter données sensibles
+• Étudiant : Aide aux devoirs sans internet
+• Écrivain : Correction et suggestions
+
+
+MODÈLES RECOMMANDÉS :
+─────────────────────
+
+PETITS (8-16 GB RAM) :
+• Llama 3.2 3B
+• Phi-3 Mini
+• Gemma 2B
+
+MOYENS (16-32 GB RAM) :
+• Llama 3.1 8B ⭐ RECOMMANDÉ
+• Mistral 7B ⭐ EXCELLENT FRANÇAIS
+• Gemma 7B
+
+GROS (32+ GB RAM) :
+• Llama 3.1 70B
+• Mixtral 8x7B
+
+
+INSTALLATION FACILE :
+─────────────────────
+
+OPTION 1 : JAN AI (Le plus simple)
+• Interface ChatGPT-like
+• Tout intégré, pas de configuration
+• Cliquer et discuter !
+
+OPTION 2 : LM STUDIO (Interface graphique)
+• Télécharger modèles en 1 clic
+• Interface élégante
+• Parfait pour débutants
+
+OPTION 3 : OLLAMA (Pour experts)
+• Ligne de commande
+• Plus rapide
+• Intégration facile dans scripts
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│  📈 ÉVOLUTION DE NITRITE                                         │
+└──────────────────────────────────────────────────────────────────┘
+
+VERSION 1.0 (URLs manuelles)
+────────────────────────────
+• 80 programmes
+• 10 catégories
+• 5% d'erreur 404
+• 62% de succès
+• Maintenance manuelle
+
+
+VERSION 2.0 (Winget)
+────────────────────
+• 98 programmes (+23%)
+• 12 catégories
+• 0% d'erreur
+• 100% de succès
+
+
+VERSION 2.1 (Runtimes + Drivers)
+─────────────────────────────────
+• 114 programmes (+16%)
+• 15 catégories
+• Runtimes complets
+• Pilotes & Émulateurs
+
+
+VERSION 2.2 (Social + Streaming)
+─────────────────────────────────
+• 148 programmes (+30%)
+• 24 catégories
+• Réseaux sociaux
+• Streaming vidéo/audio
+• IA Cloud (ChatGPT, Copilot)
+• Services Apple
+
+
+VERSION 2.3 (IA Locale + Outils) ⭐ ACTUEL
+───────────────────────────────────────────
+• 171 PROGRAMMES (+16%)
+• 30 CATÉGORIES
+• IA LOCALE (Llama, Mistral) 🤖
+• Outils Système (Ventoy, etc.) 🔧
+• Téléchargement (4K Downloader) 📥
+• Gaming Console (PS Remote Play) 🎮
+• Benchmarks (OCCT) ⚡
+• Virtualisation (VMware) 💻
+
+
+CROISSANCE TOTALE : +114% depuis v1.0 ! 🚀
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│  ❌ PROGRAMMES NON DISPONIBLES                                   │
+└──────────────────────────────────────────────────────────────────┘
+
+❌ MemTest86
+   → Non disponible dans Winget
+   → Installation manuelle : memtest86.com
+   → Alternative : Windows Memory Diagnostic (déjà dans Windows)
+
+❌ EasyToBoot
+   → Non disponible dans Winget
+   → Alternative : ✅ Ventoy (AJOUTÉ)
+
+❌ Windows Media Creation Tool
+   → Déjà inclus dans Windows Update
+   → Pas besoin d'installer séparément
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│  🚀 UTILISATION                                                  │
+└──────────────────────────────────────────────────────────────────┘
+
+LANCEMENT :
+───────────
+
+Double-cliquez : Lancer_NiTrite_WINGET.bat
+
+ou
+
+python nitrite_winget.py
+
+
+ORDRE D'INSTALLATION RECOMMANDÉ :
+─────────────────────────────────
+
+1️⃣ RUNTIMES (Visual C++ + Java)
+   → Évite 99% des erreurs DLL
+
+2️⃣ NAVIGATEUR (Chrome, Firefox, DuckDuckGo)
+   → Essentiel
+
+3️⃣ IA LOCALE (Ollama + LM Studio ou Jan AI)
+   → Télécharger modèles après installation
+
+4️⃣ VOS PROGRAMMES
+   → Gaming, Streaming, Outils, etc.
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║            🎉🎉🎉 171 PROGRAMMES DISPONIBLES ! 🎉🎉🎉             ║
+║                                                                  ║
+║       +23 NOUVEAUX PROGRAMMES + 6 NOUVELLES CATÉGORIES ! 🚀      ║
+║                                                                  ║
+║         🤖 IA LOCALE : Llama, Mistral sur VOTRE PC ! ✨          ║
+║                                                                  ║
+║           Double-cliquez : Lancer_NiTrite_WINGET.bat            ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════════
+  Date : 3 novembre 2025
+  Version : 2.3 - MEGA UPDATE IA & OUTILS 🤖🔧
+  Statut : ✅ PRODUCTION READY
+  Programmes : 171 (+23 depuis v2.2)
+  Catégories : 30 (+6 nouvelles)
+  Taux de succès : 100% via Winget
+═══════════════════════════════════════════════════════════════════
+
+
+       IA LOCALE + OUTILS SYSTÈME + GAMING CONSOLE
+            
+            Merci d'avoir utilisé NiTrite ! 🚀

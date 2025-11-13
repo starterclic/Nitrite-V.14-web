@@ -1,0 +1,168 @@
+════════════════════════════════════════════════════════════════════════════════
+                      ✅ PROJET NETTOYÉ - v.2.5
+════════════════════════════════════════════════════════════════════════════════
+
+📅 Date de nettoyage : 4 novembre 2025
+
+════════════════════════════════════════════════════════════════════════════════
+📁 STRUCTURE FINALE DU PROJET
+════════════════════════════════════════════════════════════════════════════════
+
+FICHIERS ESSENTIELS (À LA RACINE) :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   ✅ Lancer_NiTrite.bat          ← LANCEZ CECI pour démarrer l'application
+   ✅ nitrite_complet.py           ← Application principale (mode sombre)
+   ✅ LIRE_ICI.txt                 ← Guide rapide (format texte)
+   ✅ LISEZ_MOI.md                 ← Documentation complète (Markdown)
+   ✅ .gitignore                   ← Configuration Git
+
+
+DOSSIERS ESSENTIELS :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   📁 data/
+      └── programs.json            ← Base de données (124 programmes)
+
+   📁 src/
+      ├── config_manager.py        ← Gestion configuration
+      ├── installer_manager.py     ← Installation winget
+      └── gui_manager_complet.py   ← Interface mode sombre
+
+   📁 logs/                        ← Logs d'installation (créé automatiquement)
+
+   📁 archives/
+      ├── documentation/           ← Ancienne documentation
+      └── fichiers_obsoletes/      ← Scripts de compilation obsolètes
+
+
+DOSSIERS OPTIONNELS (peuvent être supprimés) :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   📁 __pycache__/                 ← Cache Python (re-créé automatiquement)
+   📁 assets/                      ← Ressources (icônes, etc.)
+   📁 docs/                        ← Documentation technique
+   📁 downloads/                   ← Fichiers téléchargés
+   📁 scripts/                     ← Scripts utilitaires
+   📁 tests/                       ← Tests unitaires
+
+
+════════════════════════════════════════════════════════════════════════════════
+🗑️ FICHIERS DÉPLACÉS DANS ARCHIVES
+════════════════════════════════════════════════════════════════════════════════
+
+SCRIPTS DE COMPILATION (archives/fichiers_obsoletes/) :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   ❌ compiler_portable_simple.bat
+   ❌ COMPILER_VERSION_PORTABLE.bat
+   ❌ creer_version_portable.bat
+
+ANCIENS LANCEURS (archives/fichiers_obsoletes/) :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   ❌ Lancer_NiTrite_ModeSombre.bat
+   ❌ Lancer_NiTrite_OrdiPlus.bat
+
+ANCIENNES VERSIONS (archives/fichiers_obsoletes/) :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   ❌ nitrite_dark.py              (version mode sombre séparée)
+   ❌ nitrite_installer.py         (ancien installeur)
+   ❌ nitrite_maxvisibility.py     (version haute visibilité)
+   ❌ nitrite_winget.py            (version winget uniquement)
+
+DOCUMENTATION (archives/documentation/) :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   📄 README.md                    (ancienne documentation)
+   📄 NOUVEAUTÉS_V2.5.md          (notes de version)
+
+
+════════════════════════════════════════════════════════════════════════════════
+🚀 UTILISATION
+════════════════════════════════════════════════════════════════════════════════
+
+DÉMARRAGE :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   1. Double-cliquez sur : Lancer_NiTrite.bat
+   
+   2. L'application démarre automatiquement avec :
+      ✅ Mode sombre
+      ✅ 124 programmes disponibles
+      ✅ 23 boutons d'accès rapide Windows
+
+
+CLÉ USB PORTABLE :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   1. Copiez TOUT le dossier "Projet NiTrite v.2" sur une clé USB
+   
+   2. Sur n'importe quel PC, lancez : Lancer_NiTrite.bat
+   
+   3. L'application installe automatiquement les dépendances si nécessaire
+
+
+════════════════════════════════════════════════════════════════════════════════
+📊 STATISTIQUES
+════════════════════════════════════════════════════════════════════════════════
+
+FICHIERS :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   Avant nettoyage :     15+ fichiers .bat et .py à la racine
+   Après nettoyage :     4 fichiers essentiels seulement
+   
+   Réduction :           -73% de fichiers visibles
+
+
+PROGRAMMES & FONCTIONNALITÉS :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   ✅ 124 programmes installables
+   ✅ 20 catégories
+   ✅ 23 boutons d'accès rapide Windows
+      - 13 boutons Paramètres Windows
+      - 8 boutons Réparation Windows (DISM/SFC)
+      - 2 boutons Activation Windows
+
+
+════════════════════════════════════════════════════════════════════════════════
+⚠️ IMPORTANT
+════════════════════════════════════════════════════════════════════════════════
+
+NE PAS SUPPRIMER :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   ❌ Lancer_NiTrite.bat          ← OBLIGATOIRE pour démarrer
+   ❌ nitrite_complet.py           ← Application principale
+   ❌ Dossier data/                ← Base de données programmes
+   ❌ Dossier src/                 ← Code source
+
+
+PEUT ÊTRE SUPPRIMÉ (si besoin d'espace) :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   ✓ Dossier archives/            ← Fichiers obsolètes et documentation
+   ✓ Dossier __pycache__/         ← Cache Python (re-créé automatiquement)
+   ✓ Dossier logs/                ← Logs anciens (nouveaux créés auto)
+   ✓ LIRE_ICI.txt                 ← Guide (mais recommandé de garder)
+   ✓ LISEZ_MOI.md                 ← Documentation (mais recommandé de garder)
+
+
+════════════════════════════════════════════════════════════════════════════════
+✅ RÉSULTAT FINAL
+════════════════════════════════════════════════════════════════════════════════
+
+   ✅ Projet ultra-propre et organisé
+   ✅ Un seul fichier à lancer : Lancer_NiTrite.bat
+   ✅ Tous les anciens fichiers sauvegardés dans archives/
+   ✅ Application pleinement fonctionnelle
+   ✅ Prêt pour clé USB portable
+   ✅ Documentation claire et accessible
+
+
+════════════════════════════════════════════════════════════════════════════════
+                         🎯 PROJET PRÊT À L'EMPLOI ! 🎯
+════════════════════════════════════════════════════════════════════════════════

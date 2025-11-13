@@ -1,0 +1,25 @@
+# NiTriTe V13.0 - Dépendances requises
+
+# ===== DÉPENDANCES D'EXÉCUTION =====
+# Networking
+requests>=2.31.0
+urllib3>=2.0.0
+certifi>=2023.0.0
+
+# Interface graphique
+Pillow>=10.0.0
+# Note: tkinter est inclus avec Python sur Windows, pas besoin de l'installer
+
+# Utilitaires
+packaging>=23.0
+tqdm>=4.66.0
+colorama>=0.4.6
+psutil>=5.9.0
+
+# Windows API (OBLIGATOIRE sur Windows)
+pywin32>=306; sys_platform == "win32"
+wmi>=1.5.1; sys_platform == "win32"  # Pour diagnostic système avancé
+
+# ===== DÉPENDANCES DE BUILD =====
+# Pour créer l'exécutable portable
+pyinstaller>=6.0.0

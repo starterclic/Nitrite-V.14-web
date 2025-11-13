@@ -1,0 +1,163 @@
+════════════════════════════════════════════════════════════════════════════════
+                   🚀 NiTrite v.2.5 - OrdiPlus Edition 🚀
+════════════════════════════════════════════════════════════════════════════════
+
+📌 DÉMARRAGE RAPIDE
+════════════════════════════════════════════════════════════════════════════════
+
+   Double-cliquez sur : Lancer_NiTrite.bat
+
+   C'est tout ! L'application démarre automatiquement.
+
+
+📊 CONTENU
+════════════════════════════════════════════════════════════════════════════════
+
+   ✅ 124 programmes disponibles
+   ✅ 20 catégories
+   ✅ 23 boutons d'accès rapide Windows
+   ✅ Mode sombre intégré
+
+
+🎯 FONCTIONNALITÉS
+════════════════════════════════════════════════════════════════════════════════
+
+   🌙 Interface mode sombre (style VS Code)
+   
+   📦 Installation de programmes :
+      - Navigateurs (Chrome, Firefox, Edge, Brave, etc.)
+      - Développement (VSCode, Git, Python, Node.js, etc.)
+      - Jeux (Steam, Epic Games, GOG, etc.)
+      - Sécurité (Avast, Bitdefender, Malwarebytes, etc.)
+      - Multimédia (VLC, OBS, Audacity, GIMP, etc.)
+      - Et bien plus encore...
+
+   ⚙️ PARAMÈTRES WINDOWS (13 boutons d'accès rapide) :
+      - Paramètres généraux
+      - Réseau, Bluetooth, Imprimantes
+      - Son, Clavier, Activation
+      - Windows Update, Périphériques
+      - Panneau de config, Programmes
+      - Services, Registre (admin)
+
+   🔧 RÉPARATION WINDOWS (8 boutons d'accès rapide) :
+      - DISM Check / Scan / Repair
+      - DISM Clean / Clean+
+      - SFC Scan
+      - Clean Store
+      - Réparation COMPLÈTE (DISM + SFC)
+
+   🛠️ Outils OrdiPlus :
+      - AnyDesk Portable
+      - RustDesk Portable
+      - Office 2007
+      - Et plus encore...
+
+   🔐 Activation Windows :
+      - Bouton MAS (Microsoft Activation Scripts)
+      - Bouton Activation automatique
+
+
+⚡ UTILISATION
+════════════════════════════════════════════════════════════════════════════════
+
+   1. Lancer l'application : Lancer_NiTrite.bat
+   
+   2. Sélectionner les programmes à installer (cochez les cases)
+   
+   3. Cliquer sur "🚀 INSTALLER"
+   
+   4. OU utiliser les boutons d'accès rapide :
+      - Cliquez directement sur un bouton Paramètres ou Réparation
+      - La commande s'exécute immédiatement
+
+
+📁 STRUCTURE DU PROJET
+════════════════════════════════════════════════════════════════════════════════
+
+   Lancer_NiTrite.bat     ← LANCEZ CECI
+   nitrite_complet.py     ← Application principale
+   LISEZ_MOI.md           ← Documentation complète
+   
+   data/
+      programs.json       ← Base de données (124 programmes)
+   
+   src/
+      config_manager.py   ← Gestion configuration
+      installer_manager.py ← Installation winget
+      gui_manager_complet.py ← Interface mode sombre
+   
+   logs/                  ← Logs d'installation
+   
+   archives/              ← Anciens fichiers et documentation
+
+
+🔧 PRÉREQUIS
+════════════════════════════════════════════════════════════════════════════════
+
+   ✅ Windows 10/11
+   ✅ Python 3.10+ (installé automatiquement si absent)
+   ✅ Dépendances installées automatiquement au premier lancement
+
+
+💡 ASTUCES TECHNICIEN
+════════════════════════════════════════════════════════════════════════════════
+
+   📌 Installation rapide post-formatage :
+      1. Lancer NiTrite
+      2. Sélectionner pack "Essentiels"
+      3. Installer en une fois
+
+   📌 Maintenance Windows :
+      1. Clic "🔧 DISM Check" → Vérifier santé système
+      2. Si problème → Clic "⚡ Réparation COMPLÈTE"
+
+   📌 Configuration client :
+      1. Clic "🌐 Réseau" → Configurer Wi-Fi
+      2. Clic "🖨️ Imprimantes" → Ajouter imprimante
+      3. Clic "🔊 Son" → Tester audio
+      4. Clic "🔑 Activation" → Vérifier licence
+
+   📌 Clé USB portable :
+      - Copiez tout le dossier sur une clé USB
+      - Lancez depuis n'importe quel PC
+      - Aucune installation nécessaire
+
+
+🆘 DÉPANNAGE
+════════════════════════════════════════════════════════════════════════════════
+
+   ❌ "Python n'est pas installé"
+      → Le script vous guide pour installer Python
+      → Relancez après installation
+
+   ❌ Erreur d'installation d'un programme
+      → Consultez les logs dans le dossier logs/
+      → Certains programmes nécessitent winget configuré
+
+   ❌ Commande DISM ne fonctionne pas
+      → Clic droit sur Lancer_NiTrite.bat
+      → "Exécuter en tant qu'administrateur"
+
+
+📝 VERSIONS
+════════════════════════════════════════════════════════════════════════════════
+
+   v.2.5 - OrdiPlus Edition (Actuelle)
+      ✅ Mode sombre complet
+      ✅ 124 programmes
+      ✅ 23 boutons d'accès rapide
+      ✅ Interface optimisée techniciens
+
+
+📧 NOTES
+════════════════════════════════════════════════════════════════════════════════
+
+   ⚠️ Certaines commandes nécessitent les droits administrateur
+   ⚠️ L'installation de programmes nécessite une connexion Internet
+   ⚠️ Commandes DISM peuvent prendre 10-60 minutes
+
+
+════════════════════════════════════════════════════════════════════════════════
+                         🎯 Profitez de NiTrite v.2.5 ! 🎯
+════════════════════════════════════════════════════════════════════════════════

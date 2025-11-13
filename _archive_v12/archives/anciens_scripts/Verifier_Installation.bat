@@ -1,0 +1,3 @@
+@echo off
+echo Lancement de la verification...
+powershell -ExecutionPolicy Bypass -File "verifier_installation.ps1"
