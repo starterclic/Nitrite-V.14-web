@@ -27,9 +27,29 @@ CORS(app)  # Enable CORS for web interface
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Initialize managers
-installer_manager = InstallerManager()
-winget_manager = WingetManager()
+# Initialize managers with proper error handling
+try:
+    config_path = os.path.join(os.path.dirname(__file__), 'data', 'programs.json')
+    installer_manager = InstallerManager(
+        config_path=config_path,
+        log_callback=lambda msg, level="info": logger.log(
+            getattr(logging, level.upper(), logging.INFO), msg
+        ),
+        app_dir=os.path.dirname(__file__)
+    )
+    logger.info(f"✅ InstallerManager initialized with config: {config_path}")
+except Exception as e:
+    logger.error(f"❌ Error initializing InstallerManager: {e}")
+    logger.exception(e)
+    installer_manager = None
+
+try:
+    winget_manager = WingetManager()
+    logger.info("✅ WingetManager initialized")
+except Exception as e:
+    logger.error(f"❌ Error initializing WingetManager: {e}")
+    logger.exception(e)
+    winget_manager = None
 
 
 @app.route('/')
