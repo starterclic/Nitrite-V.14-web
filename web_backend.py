@@ -9,6 +9,8 @@ import sys
 import json
 import subprocess
 import platform
+import shutil
+from pathlib import Path
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 import logging
@@ -404,6 +406,184 @@ def handle_favorites():
     """Handle favorites operations"""
     # Favorites are handled client-side via localStorage
     return jsonify({'status': 'Client-side only'})
+
+
+@app.route('/api/optimization/telemetry', methods=['POST'])
+def apply_telemetry_tweaks():
+    """Apply Windows telemetry optimization tweaks"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        # PowerShell script for telemetry tweaks
+        ps_script = """
+# Désactiver télémétrie
+Set-ItemProperty -Path "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+
+# Désactiver rapport d'erreurs Windows
+Set-ItemProperty -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows\\Windows Error Reporting" -Name "Disabled" -Type DWord -Value 1 -Force -ErrorAction SilentlyContinue
+
+# Désactiver suggestions dans Démarrer
+Set-ItemProperty -Path "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+
+# Désactiver historique d'activité
+Set-ItemProperty -Path "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" -Name "PublishUserActivities" -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" -Name "UploadUserActivities" -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+
+Write-Host "Tweaks télémétrie appliqués avec succès!"
+"""
+
+        import tempfile
+        script_path = os.path.join(tempfile.gettempdir(), "nitrite_telemetry_tweaks.ps1")
+        with open(script_path, 'w', encoding='utf-8') as f:
+            f.write(ps_script)
+
+        # Execute PowerShell as admin
+        result = subprocess.run(
+            ["powershell", "-ExecutionPolicy", "Bypass", "-File", script_path],
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+
+        # Cleanup
+        if os.path.exists(script_path):
+            os.remove(script_path)
+
+        if result.returncode == 0:
+            return jsonify({
+                'status': 'success',
+                'message': 'Tweaks télémétrie appliqués avec succès. Redémarrage recommandé.'
+            })
+        else:
+            return jsonify({
+                'status': 'warning',
+                'message': 'Certains changements nécessitent des droits administrateur.'
+            })
+
+    except Exception as e:
+        logger.error(f"Error applying telemetry tweaks: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/optimization/services', methods=['POST'])
+def optimize_services():
+    """Optimize Windows services"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        data = request.json
+        services_to_disable = data.get('services', [])
+
+        if not services_to_disable:
+            return jsonify({'error': 'No services specified'}), 400
+
+        results = []
+        for service in services_to_disable:
+            try:
+                # Disable service
+                result = subprocess.run(
+                    ['sc', 'config', service, 'start=disabled'],
+                    capture_output=True,
+                    text=True,
+                    timeout=10
+                )
+
+                if result.returncode == 0:
+                    results.append({'service': service, 'status': 'success'})
+                else:
+                    results.append({'service': service, 'status': 'failed', 'error': result.stderr})
+            except Exception as e:
+                results.append({'service': service, 'status': 'error', 'error': str(e)})
+
+        return jsonify({
+            'status': 'completed',
+            'results': results
+        })
+
+    except Exception as e:
+        logger.error(f"Error optimizing services: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/optimization/cleanup', methods=['POST'])
+def system_cleanup():
+    """Perform system cleanup"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        cleaned_size = 0
+        results = []
+
+        # Clean temp folders
+        temp_dirs = [
+            os.environ.get('TEMP', ''),
+            'C:\\Windows\\Temp',
+            os.path.expandvars('%LOCALAPPDATA%\\Temp')
+        ]
+
+        for temp_dir in temp_dirs:
+            if not temp_dir or not os.path.exists(temp_dir):
+                continue
+
+            try:
+                size_before = sum(f.stat().st_size for f in Path(temp_dir).rglob('*') if f.is_file())
+
+                # Clean files older than 7 days
+                import time
+                current_time = time.time()
+                for item in Path(temp_dir).iterdir():
+                    try:
+                        if item.is_file() and (current_time - item.stat().st_mtime) > (7 * 86400):
+                            item.unlink()
+                        elif item.is_dir() and (current_time - item.stat().st_mtime) > (7 * 86400):
+                            shutil.rmtree(item, ignore_errors=True)
+                    except:
+                        pass
+
+                size_after = sum(f.stat().st_size for f in Path(temp_dir).rglob('*') if f.is_file())
+                freed = (size_before - size_after) / (1024 * 1024)  # MB
+                cleaned_size += freed
+
+                results.append({
+                    'location': temp_dir,
+                    'freed_mb': round(freed, 2)
+                })
+            except Exception as e:
+                logger.warning(f"Error cleaning {temp_dir}: {e}")
+
+        return jsonify({
+            'status': 'success',
+            'cleaned_size_mb': round(cleaned_size, 2),
+            'details': results
+        })
+
+    except Exception as e:
+        logger.error(f"Error during cleanup: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/master/apps', methods=['GET'])
+def get_master_apps():
+    """Get list of essential apps for master installation"""
+    master_apps = [
+        {'id': 'Adobe Acrobat Reader', 'name': 'Adobe Acrobat Reader', 'icon': '📄', 'category': 'Bureautique'},
+        {'id': 'VLC', 'name': 'VLC Media Player', 'icon': '🎬', 'category': 'Multimedia'},
+        {'id': 'Firefox', 'name': 'Mozilla Firefox', 'icon': '🦊', 'category': 'Navigation'},
+        {'id': '7-Zip', 'name': '7-Zip', 'icon': '📦', 'category': 'Utilitaires'},
+        {'id': 'Spybot', 'name': 'Spybot Search & Destroy', 'icon': '🛡️', 'category': 'Securite'},
+        {'id': 'AdwCleaner', 'name': 'AdwCleaner', 'icon': '🧹', 'category': 'Securite'},
+        {'id': 'AnyDesk', 'name': 'AnyDesk', 'icon': '🖥️', 'category': 'Remote'},
+        {'id': 'RustDesk', 'name': 'RustDesk', 'icon': '🔒', 'category': 'Remote'},
+        {'id': 'Wise Disk Cleaner', 'name': 'Wise Disk Cleaner', 'icon': '💿', 'category': 'Maintenance'},
+        {'id': 'Malwarebytes', 'name': 'Malwarebytes', 'icon': '🔒', 'category': 'Securite'},
+        {'id': 'Google Chrome', 'name': 'Google Chrome', 'icon': '🌐', 'category': 'Navigation'},
+        {'id': 'Microsoft Office', 'name': 'Microsoft Office', 'icon': '📊', 'category': 'Bureautique'}
+    ]
+
+    return jsonify(master_apps)
 
 
 def main():

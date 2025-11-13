@@ -171,11 +171,17 @@ class NiTriTeApp {
             case 'profiles':
                 this.renderProfilesPage();
                 break;
+            case 'master':
+                this.renderMasterPage();
+                break;
             case 'favorites':
                 this.renderFavoritesPage();
                 break;
             case 'diagnostic':
                 this.renderDiagnosticPage();
+                break;
+            case 'optimization':
+                this.renderOptimizationPage();
                 break;
             case 'settings':
                 this.renderSettingsPage();
