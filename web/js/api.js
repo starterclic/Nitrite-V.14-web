@@ -122,6 +122,15 @@ class NiTriTeAPI {
     }
 
     /**
+     * Execute a command directly with UAC bypass
+     */
+    async executeCommand(command) {
+        return await this.request('/execute-command', 'POST', {
+            command: command
+        });
+    }
+
+    /**
      * Get system diagnostics
      */
     async getDiagnostics() {

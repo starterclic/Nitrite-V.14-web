@@ -20,6 +20,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from installer_manager import InstallerManager
 from winget_manager import WingetManager
+from elevation_helper import run_as_admin_silent
 
 # Initialize Flask app
 app = Flask(__name__, static_folder='web', static_url_path='')
@@ -399,6 +400,73 @@ def execute_tool():
     except Exception as e:
         logger.error(f"Error executing tool: {e}")
         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/execute-command', methods=['POST'])
+def execute_command():
+    """Execute a command with UAC bypass using elevation helper"""
+    try:
+        data = request.json
+        command = data.get('command')
+
+        if not command:
+            return jsonify({'error': 'No command provided'}), 400
+
+        logger.info(f"Executing command with UAC bypass: {command}")
+
+        # Check if it's a Windows platform
+        if platform.system() != 'Windows':
+            return jsonify({
+                'status': 'error',
+                'message': 'Cette fonctionnalité est disponible uniquement sur Windows'
+            }), 400
+
+        # Determine if command should be executed via PowerShell or CMD
+        if command.startswith('powershell') or command.startswith('Start-Process'):
+            # Direct PowerShell command
+            success, returncode, stdout, stderr = run_as_admin_silent(
+                ['powershell.exe', '-NoProfile', '-Command', command]
+            )
+        else:
+            # Use PowerShell to execute the command with elevation
+            # This ensures UAC bypass for all commands
+            ps_script = f'Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile", "-Command", "{command}" -Verb RunAs -WindowStyle Hidden'
+
+            # For direct executables or system commands, run them directly
+            if any(cmd in command.lower() for cmd in ['dism', 'sfc', 'chkdsk', 'cleanmgr', 'msconfig', 'regedit', '.msc', '.cpl']):
+                # These are system commands that should be run with elevation
+                success, returncode, stdout, stderr = run_as_admin_silent(
+                    ['cmd.exe', '/c', command]
+                )
+            else:
+                # For other commands, use PowerShell wrapper
+                success, returncode, stdout, stderr = run_as_admin_silent(
+                    ['powershell.exe', '-NoProfile', '-Command', command]
+                )
+
+        if success:
+            return jsonify({
+                'status': 'success',
+                'message': 'Commande exécutée avec succès',
+                'output': stdout
+            })
+        else:
+            # Even if returncode is not 0, some commands might have executed successfully
+            # Return a warning instead of error
+            return jsonify({
+                'status': 'warning',
+                'message': 'Commande exécutée (vérifier les résultats)',
+                'output': stdout,
+                'error': stderr,
+                'returncode': returncode
+            })
+
+    except Exception as e:
+        logger.error(f"Error executing command: {e}")
+        return jsonify({
+            'status': 'error',
+            'message': f'Erreur lors de l\'exécution: {str(e)}'
+        }), 500
 
 
 @app.route('/api/favorites', methods=['GET', 'POST', 'DELETE'])
