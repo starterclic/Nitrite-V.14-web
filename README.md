@@ -79,20 +79,32 @@ python nitrite_v13_modern.py
 
 ---
 
-#### 📦 Version Portable
+#### 📦 Versions Portables (.exe)
 
+**Version Web Portable (Recommandée)**
 ```bash
-# Compiler en exécutable portable
+# Compiler la version web en .exe
+BUILD_WEB.bat
+
+# Résultat : dist/NiTriTe_Web_V13.exe
+# Lance serveur Flask + ouvre navigateur automatiquement
+```
+
+**Version Bureau Portable**
+```bash
+# Compiler la version bureau en .exe
 BUILD.bat
 
-# Résultat dans : dist/
+# Résultat : dist/NiTriTe_V13_Modern.exe
+# Interface Tkinter standalone
 ```
 
 **Avantages portable :**
-- Aucune installation Python requise
-- Exécutable standalone (.exe)
-- Transportable sur clé USB
-- Prêt à l'emploi
+- ✅ Aucune installation Python requise
+- ✅ Exécutable standalone (.exe)
+- ✅ Transportable sur clé USB
+- ✅ Prêt à l'emploi sur n'importe quel PC Windows
+- ✅ Version web : Navigateur s'ouvre automatiquement
 
 ---
 
@@ -368,10 +380,17 @@ python web_backend.py
 python nitrite_v13_modern.py
 ```
 
-### Version Portable
+### Version Web Portable (.exe)
+```bash
+BUILD_WEB.bat
+# Double-cliquer sur dist/NiTriTe_Web_V13.exe
+# Le navigateur s'ouvre automatiquement !
+```
+
+### Version Bureau Portable (.exe)
 ```bash
 BUILD.bat
-# Puis lancer l'exe dans dist/
+# Double-cliquer sur dist/NiTriTe_V13_Modern.exe
 ```
 
 **Bon succès avec NiTriTe V13 ! 🚀**
