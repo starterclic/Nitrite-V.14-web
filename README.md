@@ -1,77 +1,243 @@
-# 🚀 NiTriTe V13.0 - Outil de Maintenance Informatique Moderne
+# 🚀 NiTriTe V13 - Outil de Maintenance Informatique Moderne
 
 ![Version](https://img.shields.io/badge/version-13.0-orange)
 ![Python](https://img.shields.io/badge/python-3.8+-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey)
-![License](https://img.shields.io/badge/license-Proprietary-red)
 
 **Application professionnelle pour techniciens de maintenance informatique**
 
-Interface moderne avec 715 applications et 553+ outils système organisés.
+Interface moderne avec 715 applications et 547 outils système.
 
 ---
 
-## ✨ Nouveautés V13
+## ✨ Fonctionnalités
 
-- 🎨 **Interface entièrement redesignée** - Design moderne noir & orange
-- 📦 **Navigation à 2 pages** - Applications + Outils Système
+- 🎨 **Interface moderne** - Design noir & orange premium
+- 📦 **715 applications** organisées en 25 catégories
+- 🛠️ **547 outils système** répartis en 12 sections
 - 🎯 **10 profils prédéfinis** - Gaming, Bureau, Développeur, etc.
 - ⭐ **Système de favoris** - Personnalisation avancée
-- 📊 **Historique intelligent** - Statistiques d'utilisation
-- 🔍 **Scanner de système** - Détection automatique des apps
+- 🌐 **Version web** - Interface HTML/CSS/JavaScript
+- 💻 **Version bureau** - Application Tkinter
+- 📦 **Mode portable** - Aucune installation requise
 
 ---
 
 ## 🚀 Démarrage Rapide
 
-### Installation et Lancement
+### 1️⃣ Installation des Dépendances
 
 ```bash
-# 1. Installer les dépendances
+# Installer toutes les dépendances Python
 pip install -r requirements.txt
 
-# 2. Lancer l'application
+# OU utiliser le script batch (Windows)
+INSTALL_DEPS_PORTABLE.bat
+```
+
+### 2️⃣ Lancer l'Application
+
+#### 🌐 Version Web (Recommandée)
+
+```bash
+# Lancer le serveur web Flask
+python web_backend.py
+
+# Puis ouvrir dans le navigateur
+http://localhost:5000
+```
+
+**OU** double-cliquez sur `LANCER_WEB.bat`
+
+**Fonctionnalités web :**
+- Interface responsive HTML/CSS/JavaScript
+- 715 applications installables
+- 547 outils système avec bypass UAC
+- Master Installation avec actions rapides
+- Export de scripts PowerShell
+- Génération de commandes One-Liner
+- Thèmes multiples (6 disponibles)
+- Paramètres import/export
+
+---
+
+#### 💻 Version Bureau (Tkinter)
+
+```bash
+# Lancer l'application de bureau
 python nitrite_v13_modern.py
 ```
 
 **OU** double-cliquez sur `LANCER_V13.bat`
 
-### Compiler en Version Portable
-
-⚠️ **Le build doit être effectué sur Windows**
-
-```bash
-# Sur Windows uniquement
-python build_v13.py
-
-# Résultat dans dist/
-# ├── NiTriTe_V13_Modern.exe
-# └── NiTriTe_V13_Portable_YYYYMMDD.zip
-```
-
-📚 **Voir [GUIDE_BUILD_WINDOWS.md](GUIDE_BUILD_WINDOWS.md) pour instructions complètes**
+**Fonctionnalités bureau :**
+- Interface Tkinter moderne
+- Installation locale d'applications
+- Gestion des profils
+- Historique intelligent
+- Scanner de système
 
 ---
 
-## 📦 Fonctionnalités
+#### 📦 Version Portable
 
-### Page Applications (715 apps)
+```bash
+# Compiler en exécutable portable
+BUILD.bat
 
-- **Cartes modernes** avec design Material
-- **Recherche instantanée** par nom ou description
-- **Statistiques temps réel** (total, catégories, sélections)
-- **Boutons web** 🌐 pour accès direct aux sites
-- **Installation en un clic** avec barre de progression
-- **Badges visuels** : Portable, WinGet, Catégorie
+# Résultat dans : NiTriTe V13.1 Portable/
+```
 
-### Page Outils Système (553+ boutons)
+**Avantages portable :**
+- Aucune installation Python requise
+- Exécutable standalone (.exe)
+- Transportable sur clé USB
+- Prêt à l'emploi
 
-- **10+ sections organisées** par thématique
-- **Exécution directe** des commandes système
-- **Liens web** vers outils externes
-- **Recherche rapide** d'outils
+---
 
-### Profils Prédéfinis
+## 📁 Structure du Projet
+
+```
+Nitrite-V.13-Beta-Portable-web-/
+│
+├── 🌐 VERSION WEB
+│   ├── web_backend.py              # Backend Flask API
+│   └── web/                        # Interface web
+│       ├── index.html              # Page principale
+│       ├── css/                    # Styles
+│       │   ├── styles.css          # Styles principaux
+│       │   └── advanced.css        # Styles pages avancées
+│       ├── js/                     # JavaScript
+│       │   ├── app.js              # Application principale
+│       │   ├── api.js              # Communication API
+│       │   └── advanced.js         # Pages avancées
+│       └── data/
+│           └── tools.json          # 547 outils système
+│
+├── 💻 VERSION BUREAU
+│   ├── nitrite_v13_modern.py       # Point d'entrée bureau
+│   └── src/                        # Code source
+│       ├── gui_modern_v13.py       # Interface Tkinter
+│       ├── advanced_pages.py       # Pages avancées
+│       ├── profiles_manager.py     # Gestionnaire profils
+│       ├── installer_manager.py    # Gestion installations
+│       ├── winget_manager.py       # Intégration WinGet
+│       ├── elevation_helper.py     # Bypass UAC
+│       ├── config_manager.py       # Configuration
+│       ├── portable_database.py    # DB portable
+│       ├── tools_data_complete.py  # 547 outils
+│       └── [autres modules...]
+│
+├── 📦 DONNÉES
+│   ├── data/
+│   │   └── programs.json           # Base 715 applications
+│   └── assets/
+│       └── icon.ico                # Icône application
+│
+├── 🔧 SCRIPTS
+│   ├── LANCER_WEB.bat              # Lanceur version web
+│   ├── LANCER_V13.bat              # Lanceur version bureau
+│   ├── BUILD.bat                   # Build version portable
+│   └── INSTALL_DEPS_PORTABLE.bat   # Installation dépendances
+│
+├── 📦 VERSION PORTABLE
+│   └── NiTriTe V13.1 Portable/     # Version compilée
+│
+├── 📄 FICHIERS CONFIG
+│   ├── requirements.txt            # Dépendances Python
+│   ├── NiTriTe_V13.spec            # Config PyInstaller
+│   └── .gitignore
+│
+└── README.md                       # Ce fichier
+```
+
+---
+
+## 🌐 Version Web - Détails
+
+### Pages Disponibles
+
+1. **📱 Applications** (715 apps)
+   - Recherche en temps réel
+   - Filtrage par catégorie
+   - Installation WinGet
+   - Liens vers sites officiels
+
+2. **🛠️ Outils Système** (547 outils en 12 sections)
+   - 🔨 Réparation Système (30 outils)
+   - 🔧 Activation & Téléchargements (30 outils)
+   - 🧹 Maintenance & Nettoyage (16 outils)
+   - 📊 Diagnostics & Infos (57 outils)
+   - 🌐 Réseau & Internet (23 outils)
+   - ⚡ WinGet Package Manager (12 outils)
+   - ⚙️ Paramètres Windows (20 outils)
+   - 🏭 Support Fabricants (18 outils)
+   - 🛒 Fournisseurs & Achats (96 outils)
+   - 📊 Benchmark & Tests (227 outils)
+   - 🔧 Drivers (11 outils)
+   - 📚 Documentation (7 outils)
+
+3. **📦 Master Installation**
+   - Sélection d'apps essentielles
+   - Actions rapides (12 boutons)
+   - Export script PowerShell
+   - Génération commande One-Liner
+   - WinGet Manager
+
+4. **🔍 Diagnostic**
+   - Informations système
+   - État du matériel
+   - Vérifications automatiques
+
+5. **⚡ Optimisation**
+   - Tweaks performance
+   - Désactivation télémétrie
+   - Nettoyage système
+   - Optimisation services
+
+6. **💾 Sauvegarde**
+   - Point de restauration
+   - Backup drivers
+   - Export liste apps
+
+7. **⚙️ Paramètres**
+   - Choix de langue (FR/EN)
+   - 6 thèmes disponibles
+   - Export/Import settings
+
+### Bypass UAC
+
+Toutes les commandes système s'exécutent **sans prompts UAC** grâce à :
+- Endpoint `/api/execute-command` avec élévation automatique
+- Utilisation de `elevation_helper.py`
+- Exécution silencieuse des commandes PowerShell et CMD
+
+---
+
+## 💻 Version Bureau - Détails
+
+### Avantages
+
+- Interface native Windows (Tkinter)
+- Pas besoin de navigateur
+- Intégration système complète
+- Base de données SQLite locale
+- Historique persistant
+
+### Pages Principales
+
+1. **Applications** - Installation d'apps via WinGet
+2. **Outils Système** - 547 outils organisés
+3. **Profils** - 10 profils prédéfinis
+4. **Favoris** - Apps favorites
+5. **Historique** - Statistiques d'utilisation
+
+---
+
+## 📦 Profils Prédéfinis
+
+Les 10 profils disponibles dans les deux versions :
 
 1. 🎮 **Gaming Station** - Setup PC gaming complet
 2. 💼 **Bureau Professionnel** - Suite bureautique
@@ -86,168 +252,50 @@ python build_v13.py
 
 ---
 
-## 📁 Structure du Projet
-
-```
-Nitrite-V.13-Beta-Portable-/
-├── nitrite_v13_modern.py      # 🚀 Point d'entrée
-├── build_v13.py               # 🔨 Script de build
-├── LANCER_V13.bat             # 🪟 Lanceur Windows
-├── requirements.txt           # 📦 Dépendances
-│
-├── data/
-│   └── programs.json          # Base 715 applications
-│
-├── src/                       # Code source
-│   ├── gui_modern_v13.py      # Interface moderne
-│   ├── profiles_manager.py    # Gestionnaire profils
-│   ├── installer_manager.py   # Gestion installations
-│   ├── config_manager.py      # Configuration
-│   ├── elevation_helper.py    # Droits admin
-│   ├── cleanup_manager.py     # Nettoyage
-│   ├── portable_database.py   # DB portable
-│   ├── winget_manager.py      # Intégration WinGet
-│   └── [autres modules...]
-│
-├── assets/                    # Ressources visuelles
-│   └── icon.ico
-│
-├── README_V13.md              # 📚 Documentation complète
-├── DEMARRAGE_RAPIDE.md        # ⚡ Guide rapide
-│
-└── _archive_v12/              # 📦 Anciens fichiers V12
-```
-
----
-
 ## 🎨 Thème Visuel
 
 **Palette Noir & Orange Premium**
 
-- Noir profond (#0a0a0a)
+- Noir profond (#0a0a0a, #1e1e2e)
 - Orange principal (#ff6b00)
-- Vert succès (#00e676)
-- Bleu info (#00b0ff)
+- Vert succès (#00e676, #00c853)
+- Bleu info (#00b0ff, #2196f3)
 - Animations fluides
 - Design Material moderne
-
----
-
-## 💡 Utilisation
-
-### Navigation
-
-1. **Barre latérale** : Basculer entre pages
-   - 📦 Applications
-   - 🛠️ Outils Système
-
-2. **Recherche** : Taper pour filtrer instantanément
-
-3. **Installation** :
-   - Sélectionner les apps (checkbox)
-   - Cliquer "🚀 INSTALLER"
-   - Suivre la progression
-
-4. **Accès web** : Cliquer 🌐 pour site officiel
-
-### Profils
-
-- Sélectionner un profil prédéfini
-- Toutes les apps sont auto-sélectionnées
-- Cliquer "INSTALLER"
-
-### Outils Système
-
-- Parcourir les sections
-- Cliquer sur un outil pour l'exécuter
-- Les commandes s'exécutent automatiquement
 
 ---
 
 ## 🔧 Configuration Requise
 
 - **OS** : Windows 10/11
-- **Python** : 3.8+ (pour version script)
+- **Python** : 3.8+ (pour versions script)
 - **RAM** : 4 GB minimum (8 GB recommandé)
-- **Résolution** : 1400x900 minimum
-- **Internet** : Connexion requise pour téléchargements
-
----
-
-## 📚 Documentation
-
-- **README_V13.md** - Documentation complète (500+ lignes)
-- **DEMARRAGE_RAPIDE.md** - Guide de démarrage rapide
-- Code source commenté dans `src/`
-
----
-
-## 🎯 Cas d'Usage
-
-### Pour Techniciens
-```
-1. Setup rapide client
-2. Profil adapté au besoin
-3. Installation automatique
-4. Outils de réparation intégrés
-```
-
-### Pour Particuliers
-```
-1. Choisir profil (Gaming, Bureau, etc.)
-2. Installer applications
-3. Personnaliser avec favoris
-4. Utiliser outils système
-```
-
----
-
-## 🔄 Compilation Portable
-
-Le script `build_v13.py` crée automatiquement :
-
-1. **Exécutable standalone** (60-80 MB)
-2. **Package complet** avec documentation
-3. **Archive ZIP** prête à distribuer
-
-**Aucune installation requise sur le PC client !**
-
----
-
-## 🆚 Comparaison V12 vs V13
-
-| Fonctionnalité | V12 | V13 |
-|---|:---:|:---:|
-| Interface | Simple | Moderne ✨ |
-| Pages | 1 | 2 |
-| Profils | ❌ | ✅ 10 |
-| Favoris | ❌ | ✅ |
-| Historique | ❌ | ✅ |
-| Scanner | ❌ | ✅ |
-| Animations | ❌ | ✅ |
-| Thème | Basique | Premium |
+- **Résolution** : 1280x720 minimum (1920x1080 recommandé)
+- **Internet** : Connexion requise pour installations
+- **WinGet** : Installé automatiquement si manquant
 
 ---
 
 ## 🛠️ Développement
 
-### Prérequis
+### Structure du Code
 
-```bash
-pip install -r requirements.txt
-```
+#### Backend Flask (`web_backend.py`)
+- Routes API pour applications, outils, profils
+- Endpoint d'exécution avec UAC bypass
+- Gestion des installations
+- Diagnostics système
+- Optimisations Windows
 
-### Lancer en mode dev
+#### Frontend Web (`web/`)
+- **HTML** : Interface responsive
+- **CSS** : Styles modernes avec animations
+- **JavaScript** : Communication API, gestion UI
 
-```bash
-python nitrite_v13_modern.py
-```
-
-### Compiler
-
-```bash
-python build_v13.py
-```
+#### Code Tkinter (`src/`)
+- Interface graphique native
+- Gestionnaires de fonctionnalités
+- Modules réutilisables
 
 ---
 
@@ -255,66 +303,78 @@ python build_v13.py
 
 - **715 applications** disponibles
 - **25 catégories** organisées
-- **553+ outils système**
+- **547 outils système** en 12 sections
 - **10 profils** prédéfinis
-- **3,000+ lignes** de code V13
-- **100% portable** (rien installé sur PC)
+- **2 versions** (Web + Bureau)
+- **1 version portable** (compilée)
+- **100% offline capable** (après installations)
+
+---
+
+## 🎯 Cas d'Usage
+
+### Pour Techniciens
+1. Setup rapide client
+2. Profil adapté au besoin
+3. Installation automatique
+4. Outils de réparation intégrés
+5. Export de scripts pour réutilisation
+
+### Pour Particuliers
+1. Choisir version (Web ou Bureau)
+2. Sélectionner profil
+3. Installer applications
+4. Utiliser outils système
+5. Personnaliser avec favoris
+
+---
+
+## 🆕 Nouveautés V13
+
+✨ **Interface moderne redesignée**
+🌐 **Version web HTML/CSS/JavaScript**
+📦 **Master Installation avec export PowerShell**
+🔧 **547 outils système (vs 553 avant)**
+⚡ **Bypass UAC pour toutes commandes**
+🎨 **6 thèmes visuels**
+🌍 **Support multilingue (FR/EN)**
+📊 **Actions rapides (12 boutons)**
 
 ---
 
 ## 🤝 Support
 
-- **Documentation** : Voir `README_V13.md` et `DEMARRAGE_RAPIDE.md`
+- **Documentation** : Ce README.md
 - **Code source** : Commenté et documenté
-- **Issues** : GitHub Issues
+- **Issues** : Utiliser GitHub Issues
 
 ---
 
-## 📝 Changelog
+## 📝 Licence
 
-### Version 13.0 (Actuelle)
-- ✨ Interface moderne redesignée
-- 📦 Navigation à 2 pages
-- 🎯 10 profils prédéfinis
-- ⭐ Système de favoris
-- 📊 Historique intelligent
-- 🔍 Scanner de système
-- 🎨 Thème noir & orange premium
-- 💫 Animations fluides
+**NiTriTe V13** - Outil professionnel pour maintenance informatique
 
-### Version 12.0
-- Interface basique fonctionnelle
-- 715 applications
-- Outils système de base
-
----
-
-## 🏆 Points Forts
-
-✅ **Interface moderne** et professionnelle
-✅ **715 applications** organisées
-✅ **553+ outils système**
-✅ **10 profils** pour gain de temps
-✅ **Mode portable** sans installation
-✅ **Personnalisation** avec favoris
-✅ **Statistiques** en temps réel
-✅ **Scanner intelligent** du système
-
----
-
-## 📄 Licence
-
-**NiTriTe V13.0** - Outil professionnel pour maintenance informatique
-
-© 2024 OrdiPlus Tools - Tous droits réservés
+© 2024 - Tous droits réservés
 
 ---
 
 ## 🎉 Prêt à Utiliser !
 
+### Version Web (Recommandée)
 ```bash
-# Lancer maintenant
+python web_backend.py
+# Ouvrir http://localhost:5000
+```
+
+### Version Bureau
+```bash
 python nitrite_v13_modern.py
+```
+
+### Version Portable
+```bash
+BUILD.bat
+# Puis lancer l'exe dans NiTriTe V13.1 Portable/
 ```
 
 **Bon succès avec NiTriTe V13 ! 🚀**
