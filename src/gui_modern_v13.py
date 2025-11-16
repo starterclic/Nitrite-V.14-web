@@ -295,7 +295,7 @@ class ModernNavigationBar(tk.Frame):
     """Barre de navigation latérale moderne"""
 
     def __init__(self, parent, on_page_change):
-        super().__init__(parent, bg=ModernColors.BG_MEDIUM, width=200)
+        super().__init__(parent, bg=ModernColors.BG_MEDIUM, width=280)  # Web version uses 280px
         self.on_page_change = on_page_change
         self.current_page = "applications"
         self.nav_buttons = {}
@@ -303,40 +303,60 @@ class ModernNavigationBar(tk.Frame):
 
     def _create_widgets(self):
         """Créer les widgets de navigation"""
-        # Logo et titre
+        # Logo et titre - styled like web version with gradient box
         header = tk.Frame(self, bg=ModernColors.BG_MEDIUM)
-        header.pack(fill=tk.X, pady=20)
+        header.pack(fill=tk.X, padx=20, pady=(25, 20))
+
+        # Container for logo + info (horizontal layout like web)
+        logo_container = tk.Frame(header, bg=ModernColors.BG_MEDIUM)
+        logo_container.pack(fill=tk.X)
+
+        # Logo icon with gradient background (matching web .logo-icon)
+        logo_frame = tk.Frame(
+            logo_container,
+            bg=ModernColors.ORANGE_PRIMARY,
+            width=50,
+            height=50
+        )
+        logo_frame.pack(side=tk.LEFT, padx=(0, 15))
+        logo_frame.pack_propagate(False)
 
         logo_label = tk.Label(
-            header,
-            text="⚡",
-            font=("Segoe UI", 32),
-            bg=ModernColors.BG_MEDIUM,
-            fg=ModernColors.ORANGE_PRIMARY
+            logo_frame,
+            text="N",
+            font=("Segoe UI", 28, "bold"),
+            bg=ModernColors.ORANGE_PRIMARY,
+            fg="white"
         )
-        logo_label.pack()
+        logo_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+        # Logo info (title + version)
+        info_frame = tk.Frame(logo_container, bg=ModernColors.BG_MEDIUM)
+        info_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         title_label = tk.Label(
-            header,
+            info_frame,
             text="NiTriTe",
-            font=("Segoe UI", 16, "bold"),
+            font=("Segoe UI", 24, "bold"),
             bg=ModernColors.BG_MEDIUM,
-            fg=ModernColors.TEXT_PRIMARY
+            fg=ModernColors.TEXT_PRIMARY,
+            anchor='w'
         )
-        title_label.pack()
+        title_label.pack(fill=tk.X)
 
         version_label = tk.Label(
-            header,
-            text="V13.0",
+            info_frame,
+            text="Version 13.0 Beta",
             font=("Segoe UI", 10),
             bg=ModernColors.BG_MEDIUM,
-            fg=ModernColors.TEXT_SECONDARY
+            fg=ModernColors.TEXT_SECONDARY,
+            anchor='w'
         )
-        version_label.pack()
+        version_label.pack(fill=tk.X)
 
-        # Séparateur
-        separator = tk.Frame(self, bg=ModernColors.ORANGE_PRIMARY, height=2)
-        separator.pack(fill=tk.X, padx=20, pady=10)
+        # Séparateur (border-bottom like web)
+        separator = tk.Frame(self, bg=ModernColors.BORDER_COLOR, height=1)
+        separator.pack(fill=tk.X, pady=(0, 20))
 
         # Boutons de navigation
         nav_items = [
@@ -376,58 +396,53 @@ class ModernNavigationBar(tk.Frame):
         footer_text.pack(pady=15)
 
     def _create_nav_button(self, page_id, icon, title, subtitle):
-        """Créer un bouton de navigation"""
+        """Créer un bouton de navigation - styled like web version"""
         container = tk.Frame(self, bg=ModernColors.BG_MEDIUM)
-        container.pack(fill=tk.X, padx=10, pady=5)
+        container.pack(fill=tk.X, padx=10, pady=3)  # Reduced padding between buttons
 
-        btn = tk.Frame(container, bg=ModernColors.BG_LIGHT, cursor="hand2")
-        btn.pack(fill=tk.X, pady=2)
-
-        # Indicateur actif (barre orange à gauche)
-        indicator = tk.Frame(btn, bg=ModernColors.BG_LIGHT, width=4)
-        indicator.pack(side=tk.LEFT, fill=tk.Y)
-
-        # Contenu du bouton
-        content = tk.Frame(btn, bg=ModernColors.BG_LIGHT)
-        content.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=15, pady=12)
-
-        # Ligne supérieure : icône + titre
-        top_line = tk.Frame(content, bg=ModernColors.BG_LIGHT)
-        top_line.pack(fill=tk.X)
-
-        icon_label = tk.Label(
-            top_line,
-            text=icon,
-            font=("Segoe UI", 16),
-            bg=ModernColors.BG_LIGHT,
-            fg=ModernColors.TEXT_PRIMARY
+        # Main button frame with rounded appearance
+        btn = tk.Frame(
+            container,
+            bg=ModernColors.BG_MEDIUM,
+            cursor="hand2",
+            highlightthickness=0
         )
-        icon_label.pack(side=tk.LEFT, padx=(0, 10))
+        btn.pack(fill=tk.X)
+
+        # Content frame with proper padding (matching web: 14px 16px)
+        content = tk.Frame(btn, bg=ModernColors.BG_MEDIUM)
+        content.pack(fill=tk.BOTH, expand=True, padx=16, pady=14)
+
+        # Horizontal layout: icon + text content
+        icon_label = tk.Label(
+            content,
+            text=icon,
+            font=("Segoe UI", 20),  # Slightly larger like web
+            bg=ModernColors.BG_MEDIUM,
+            fg=ModernColors.TEXT_SECONDARY
+        )
+        icon_label.pack(side=tk.LEFT, padx=(0, 12))
+
+        # Text container
+        text_frame = tk.Frame(content, bg=ModernColors.BG_MEDIUM)
+        text_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         title_label = tk.Label(
-            top_line,
+            text_frame,
             text=title,
-            font=("Segoe UI", 11, "bold"),
-            bg=ModernColors.BG_LIGHT,
-            fg=ModernColors.TEXT_PRIMARY,
-            anchor='w'
-        )
-        title_label.pack(side=tk.LEFT, fill=tk.X)
-
-        # Ligne inférieure : sous-titre
-        subtitle_label = tk.Label(
-            content,
-            text=subtitle,
-            font=("Segoe UI", 8),
-            bg=ModernColors.BG_LIGHT,
+            font=("Segoe UI", 15, "normal"),  # Matching web font-weight: 500
+            bg=ModernColors.BG_MEDIUM,
             fg=ModernColors.TEXT_SECONDARY,
             anchor='w'
         )
-        subtitle_label.pack(fill=tk.X, padx=(26, 0))
+        title_label.pack(fill=tk.X)
 
-        # Stocker les références
-        btn.indicator = indicator
-        btn.widgets = [btn, content, top_line, icon_label, title_label, subtitle_label, indicator]
+        # Store references for easy access
+        btn.content = content
+        btn.icon_label = icon_label
+        btn.title_label = title_label
+        btn.text_frame = text_frame
+        btn.widgets = [btn, content, icon_label, title_label, text_frame]
 
         # Bind events
         for widget in btn.widgets:
@@ -444,35 +459,59 @@ class ModernNavigationBar(tk.Frame):
         self.on_page_change(page_id)
 
     def _on_nav_hover(self, btn, is_enter):
-        """Gérer le survol d'un bouton"""
-        if btn.indicator.cget('bg') != ModernColors.ORANGE_PRIMARY:  # Si pas actif
-            color = ModernColors.BG_HOVER if is_enter else ModernColors.BG_LIGHT
-            for widget in btn.widgets:
-                widget.config(bg=color)
+        """Gérer le survol d'un bouton - matching web hover effect"""
+        # Check if this button is active
+        is_active = btn.cget('bg') == ModernColors.ORANGE_PRIMARY
+
+        if not is_active:
+            if is_enter:
+                # Hover state: bg-hover color, text-primary
+                for widget in btn.widgets:
+                    widget.config(bg=ModernColors.BG_HOVER)
+                btn.icon_label.config(fg=ModernColors.TEXT_PRIMARY)
+                btn.title_label.config(fg=ModernColors.TEXT_PRIMARY)
+            else:
+                # Normal state: transparent, text-secondary
+                for widget in btn.widgets:
+                    widget.config(bg=ModernColors.BG_MEDIUM)
+                btn.icon_label.config(fg=ModernColors.TEXT_SECONDARY)
+                btn.title_label.config(fg=ModernColors.TEXT_SECONDARY)
 
     def _select_page(self, page_id):
-        """Sélectionner une page"""
-        # Désélectionner tous
+        """Sélectionner une page - matching web active state with gradient"""
+        # Deselect all buttons (reset to normal state)
         for pid, btn in self.nav_buttons.items():
             if pid != page_id:
-                btn.indicator.config(bg=ModernColors.BG_LIGHT)
+                # Reset to normal state
                 for widget in btn.widgets:
-                    widget.config(bg=ModernColors.BG_LIGHT)
+                    widget.config(bg=ModernColors.BG_MEDIUM)
+                btn.icon_label.config(fg=ModernColors.TEXT_SECONDARY)
+                btn.title_label.config(fg=ModernColors.TEXT_SECONDARY)
 
-        # Sélectionner le nouveau
+        # Select the new button (gradient background + white text)
         if page_id in self.nav_buttons:
             btn = self.nav_buttons[page_id]
-            btn.indicator.config(bg=ModernColors.ORANGE_PRIMARY)
+            # Active state: gradient orange background with white text
             for widget in btn.widgets:
-                widget.config(bg=ModernColors.BG_CARD)
+                widget.config(bg=ModernColors.ORANGE_PRIMARY)
+            btn.icon_label.config(fg="white")
+            btn.title_label.config(fg="white")
             self.current_page = page_id
 
 
 class ModernAppCard(tk.Frame):
-    """Carte moderne pour une application"""
+    """Carte moderne pour une application - styled like web version"""
 
     def __init__(self, parent, app_name, app_data, on_select, on_web_redirect):
-        super().__init__(parent, bg=ModernColors.BG_CARD, relief=tk.FLAT, bd=0)
+        super().__init__(
+            parent,
+            bg=ModernColors.BG_CARD,
+            relief=tk.FLAT,
+            bd=1,
+            highlightthickness=1,
+            highlightbackground=ModernColors.BORDER_COLOR,
+            highlightcolor=ModernColors.BORDER_COLOR
+        )
         self.app_name = app_name
         self.app_data = app_data
         self.on_select = on_select
@@ -483,9 +522,9 @@ class ModernAppCard(tk.Frame):
 
     def _create_widgets(self):
         """Créer les widgets de la carte"""
-        # Container avec padding
+        # Container avec padding (web uses 20px, increased from 12px)
         container = tk.Frame(self, bg=ModernColors.BG_CARD)
-        container.pack(fill=tk.BOTH, expand=True, padx=12, pady=12)
+        container.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
         # Header : checkbox + nom
         header = tk.Frame(container, bg=ModernColors.BG_CARD)
@@ -593,25 +632,66 @@ class ModernAppCard(tk.Frame):
             winget_badge.pack(side=tk.LEFT)
 
     def _add_hover_effect(self):
-        """Ajouter effet hover"""
+        """Ajouter effet hover - matching web version"""
         def on_enter(e):
-            self.config(highlightthickness=2, highlightbackground=ModernColors.ORANGE_PRIMARY)
+            if not self.is_selected:
+                # Hover effect: orange border
+                self.config(
+                    highlightthickness=1,
+                    highlightbackground=ModernColors.ORANGE_PRIMARY,
+                    highlightcolor=ModernColors.ORANGE_PRIMARY
+                )
 
         def on_leave(e):
             if not self.is_selected:
-                self.config(highlightthickness=0)
+                # Reset to normal border
+                self.config(
+                    highlightthickness=1,
+                    highlightbackground=ModernColors.BORDER_COLOR,
+                    highlightcolor=ModernColors.BORDER_COLOR
+                )
 
         self.bind('<Enter>', on_enter)
         self.bind('<Leave>', on_leave)
 
     def _on_checkbox_change(self):
-        """Gérer le changement de checkbox"""
+        """Gérer le changement de checkbox - matching web selected state"""
         self.is_selected = self.checkbox_var.get()
         if self.is_selected:
-            self.config(highlightthickness=2, highlightbackground=ModernColors.ORANGE_PRIMARY)
+            # Selected state: orange border + light orange background tint
+            self.config(
+                highlightthickness=1,
+                highlightbackground=ModernColors.ORANGE_PRIMARY,
+                highlightcolor=ModernColors.ORANGE_PRIMARY,
+                bg="#2a1f1a"  # Approximation of rgba(255, 107, 53, 0.1) over dark bg
+            )
+            # Update container background
+            for child in self.winfo_children():
+                if isinstance(child, tk.Frame):
+                    child.config(bg="#2a1f1a")
+                    self._update_children_bg(child, "#2a1f1a")
         else:
-            self.config(highlightthickness=0)
+            # Normal state: regular border + normal background
+            self.config(
+                highlightthickness=1,
+                highlightbackground=ModernColors.BORDER_COLOR,
+                highlightcolor=ModernColors.BORDER_COLOR,
+                bg=ModernColors.BG_CARD
+            )
+            # Reset container background
+            for child in self.winfo_children():
+                if isinstance(child, tk.Frame):
+                    child.config(bg=ModernColors.BG_CARD)
+                    self._update_children_bg(child, ModernColors.BG_CARD)
         self.on_select(self.app_name, self.is_selected)
+
+    def _update_children_bg(self, widget, bg_color):
+        """Recursively update background color of all children"""
+        for child in widget.winfo_children():
+            if isinstance(child, (tk.Frame, tk.Label)):
+                child.config(bg=bg_color)
+            if isinstance(child, tk.Frame):
+                self._update_children_bg(child, bg_color)
 
     def set_selected(self, selected):
         """Définir la sélection"""

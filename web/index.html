@@ -263,19 +263,38 @@
                     <p class="page-description">Gérez les mises à jour système</p>
                 </div>
 
-                <div id="updatesContent" class="updates-content">
-                    <div class="updates-intro">
-                        <button class="btn btn-primary" onclick="window.NiTriTeApp.checkUpdates()">
-                            🔍 Vérifier les mises à jour
-                        </button>
+                <div class="updates-sections">
+                    <!-- Windows Updates Section -->
+                    <div class="updates-section">
+                        <div class="section-header">
+                            <h3>🔄 Mises à Jour Windows</h3>
+                            <p class="section-description">Vérifiez et installez les dernières mises à jour système</p>
+                        </div>
+                        <div class="section-content">
+                            <div class="updates-intro">
+                                <button class="btn btn-primary" onclick="window.NiTriTeApp.checkUpdates()">
+                                    🔍 Vérifier les mises à jour
+                                </button>
+                            </div>
+                            <div id="updatesContent" class="updates-content">
+                                <!-- Update results will be shown here -->
+                            </div>
+                        </div>
                     </div>
-                    <div id="benchmarkContainer" style="margin-top: 30px;">
-                        <h3>🏁 Benchmark Système</h3>
-                        <button class="btn btn-secondary" onclick="window.NiTriTeApp.runBenchmark()">
-                            Lancer le Benchmark
-                        </button>
-                        <div id="benchmarkResults" style="margin-top: 20px;">
-                            <!-- Benchmark results will be shown here -->
+
+                    <!-- Benchmark Section -->
+                    <div class="updates-section">
+                        <div class="section-header">
+                            <h3>🏁 Benchmark Système</h3>
+                            <p class="section-description">Évaluez les performances de votre système</p>
+                        </div>
+                        <div class="section-content">
+                            <button class="btn btn-secondary" onclick="window.NiTriTeApp.runBenchmark()">
+                                ▶️ Lancer le Benchmark
+                            </button>
+                            <div id="benchmarkResults" style="margin-top: 20px;">
+                                <!-- Benchmark results will be shown here -->
+                            </div>
                         </div>
                     </div>
                 </div>
