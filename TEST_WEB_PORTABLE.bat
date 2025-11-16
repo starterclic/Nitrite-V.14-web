@@ -4,48 +4,48 @@ title NiTriTe V.13 - Test Version Web Portable (Sans Build)
 color 0E
 
 echo.
-echo ═══════════════════════════════════════════════════════════
-echo    🧪 Test Version Web Portable (SANS COMPILATION)
-echo ═══════════════════════════════════════════════════════════
+echo ===============================================================
+echo    Test Version Web Portable (SANS COMPILATION)
+echo ===============================================================
 echo.
 echo Ce script teste le lanceur SANS compiler en .exe
-echo Utile pour vérifier que tout fonctionne avant le build
+echo Utile pour verifier que tout fonctionne avant le build
 echo.
-echo ═══════════════════════════════════════════════════════════
+echo ===============================================================
 echo.
 
-REM Vérifier Python
+REM Verifier Python
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ❌ Python non installé
+    echo [ERREUR] Python non installe
     pause
     exit /b 1
 )
 
-echo ✅ Python installé
+echo [OK] Python installe
 echo.
 
-REM Installer dépendances
-echo 📦 Vérification des dépendances...
+REM Installer dependances
+echo [INFO] Verification des dependances...
 pip install -r requirements.txt --quiet
 if %errorlevel% neq 0 (
-    echo ⚠️  Erreur installation dépendances
+    echo [ATTENTION] Erreur installation dependances
 )
-echo ✅ Dépendances OK
+echo [OK] Dependances OK
 echo.
 
 REM Lancer directement le script Python
 echo.
-echo ═══════════════════════════════════════════════════════════
-echo    🚀 LANCEMENT DU TEST
-echo ═══════════════════════════════════════════════════════════
+echo ===============================================================
+echo    LANCEMENT DU TEST
+echo ===============================================================
 echo.
-echo Le serveur va démarrer...
+echo Le serveur va demarrer...
 echo Le navigateur s'ouvrira automatiquement
 echo.
-echo Pour arrêter: Ctrl+C ou fermez cette fenêtre
+echo Pour arreter: Ctrl+C ou fermez cette fenetre
 echo.
-echo ═══════════════════════════════════════════════════════════
+echo ===============================================================
 echo.
 
 python nitrite_web_portable.py
