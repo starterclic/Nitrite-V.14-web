@@ -85,7 +85,7 @@ python nitrite_v13_modern.py
 # Compiler en exécutable portable
 BUILD.bat
 
-# Résultat dans : NiTriTe V13.1 Portable/
+# Résultat dans : dist/
 ```
 
 **Avantages portable :**
@@ -140,9 +140,6 @@ Nitrite-V.13-Beta-Portable-web-/
 │   ├── LANCER_V13.bat              # Lanceur version bureau
 │   ├── BUILD.bat                   # Build version portable
 │   └── INSTALL_DEPS_PORTABLE.bat   # Installation dépendances
-│
-├── 📦 VERSION PORTABLE
-│   └── NiTriTe V13.1 Portable/     # Version compilée
 │
 ├── 📄 FICHIERS CONFIG
 │   ├── requirements.txt            # Dépendances Python
@@ -374,7 +371,7 @@ python nitrite_v13_modern.py
 ### Version Portable
 ```bash
 BUILD.bat
-# Puis lancer l'exe dans NiTriTe V13.1 Portable/
+# Puis lancer l'exe dans dist/
 ```
 
 **Bon succès avec NiTriTe V13 ! 🚀**
