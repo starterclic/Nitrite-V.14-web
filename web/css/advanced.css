@@ -475,9 +475,26 @@
 }
 
 /* Updates Page Styles */
+.updates-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.updates-section {
+    background: var(--bg-secondary, #1e1e2e);
+    border-radius: 16px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .updates-intro {
     padding: 20px;
     text-align: center;
+}
+
+.updates-content {
+    margin-top: 20px;
 }
 
 .updates-list {
