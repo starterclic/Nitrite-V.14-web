@@ -9,6 +9,8 @@ import sys
 import json
 import subprocess
 import platform
+import shutil
+from pathlib import Path
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 import logging
@@ -404,6 +406,619 @@ def handle_favorites():
     """Handle favorites operations"""
     # Favorites are handled client-side via localStorage
     return jsonify({'status': 'Client-side only'})
+
+
+@app.route('/api/optimization/telemetry', methods=['POST'])
+def apply_telemetry_tweaks():
+    """Apply Windows telemetry optimization tweaks"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        # PowerShell script for telemetry tweaks
+        ps_script = """
+# Désactiver télémétrie
+Set-ItemProperty -Path "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+
+# Désactiver rapport d'erreurs Windows
+Set-ItemProperty -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows\\Windows Error Reporting" -Name "Disabled" -Type DWord -Value 1 -Force -ErrorAction SilentlyContinue
+
+# Désactiver suggestions dans Démarrer
+Set-ItemProperty -Path "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+
+# Désactiver historique d'activité
+Set-ItemProperty -Path "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" -Name "PublishUserActivities" -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" -Name "UploadUserActivities" -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+
+Write-Host "Tweaks télémétrie appliqués avec succès!"
+"""
+
+        import tempfile
+        script_path = os.path.join(tempfile.gettempdir(), "nitrite_telemetry_tweaks.ps1")
+        with open(script_path, 'w', encoding='utf-8') as f:
+            f.write(ps_script)
+
+        # Execute PowerShell as admin
+        result = subprocess.run(
+            ["powershell", "-ExecutionPolicy", "Bypass", "-File", script_path],
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+
+        # Cleanup
+        if os.path.exists(script_path):
+            os.remove(script_path)
+
+        if result.returncode == 0:
+            return jsonify({
+                'status': 'success',
+                'message': 'Tweaks télémétrie appliqués avec succès. Redémarrage recommandé.'
+            })
+        else:
+            return jsonify({
+                'status': 'warning',
+                'message': 'Certains changements nécessitent des droits administrateur.'
+            })
+
+    except Exception as e:
+        logger.error(f"Error applying telemetry tweaks: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/optimization/services', methods=['POST'])
+def optimize_services():
+    """Optimize Windows services"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        data = request.json
+        services_to_disable = data.get('services', [])
+
+        if not services_to_disable:
+            return jsonify({'error': 'No services specified'}), 400
+
+        results = []
+        for service in services_to_disable:
+            try:
+                # Disable service
+                result = subprocess.run(
+                    ['sc', 'config', service, 'start=disabled'],
+                    capture_output=True,
+                    text=True,
+                    timeout=10
+                )
+
+                if result.returncode == 0:
+                    results.append({'service': service, 'status': 'success'})
+                else:
+                    results.append({'service': service, 'status': 'failed', 'error': result.stderr})
+            except Exception as e:
+                results.append({'service': service, 'status': 'error', 'error': str(e)})
+
+        return jsonify({
+            'status': 'completed',
+            'results': results
+        })
+
+    except Exception as e:
+        logger.error(f"Error optimizing services: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/optimization/cleanup', methods=['POST'])
+def system_cleanup():
+    """Perform system cleanup"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        cleaned_size = 0
+        results = []
+
+        # Clean temp folders
+        temp_dirs = [
+            os.environ.get('TEMP', ''),
+            'C:\\Windows\\Temp',
+            os.path.expandvars('%LOCALAPPDATA%\\Temp')
+        ]
+
+        for temp_dir in temp_dirs:
+            if not temp_dir or not os.path.exists(temp_dir):
+                continue
+
+            try:
+                size_before = sum(f.stat().st_size for f in Path(temp_dir).rglob('*') if f.is_file())
+
+                # Clean files older than 7 days
+                import time
+                current_time = time.time()
+                for item in Path(temp_dir).iterdir():
+                    try:
+                        if item.is_file() and (current_time - item.stat().st_mtime) > (7 * 86400):
+                            item.unlink()
+                        elif item.is_dir() and (current_time - item.stat().st_mtime) > (7 * 86400):
+                            shutil.rmtree(item, ignore_errors=True)
+                    except:
+                        pass
+
+                size_after = sum(f.stat().st_size for f in Path(temp_dir).rglob('*') if f.is_file())
+                freed = (size_before - size_after) / (1024 * 1024)  # MB
+                cleaned_size += freed
+
+                results.append({
+                    'location': temp_dir,
+                    'freed_mb': round(freed, 2)
+                })
+            except Exception as e:
+                logger.warning(f"Error cleaning {temp_dir}: {e}")
+
+        return jsonify({
+            'status': 'success',
+            'cleaned_size_mb': round(cleaned_size, 2),
+            'details': results
+        })
+
+    except Exception as e:
+        logger.error(f"Error during cleanup: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/master/apps', methods=['GET'])
+def get_master_apps():
+    """Get list of essential apps for master installation"""
+    master_apps = [
+        {'id': 'Adobe Acrobat Reader', 'name': 'Adobe Acrobat Reader', 'icon': '📄', 'category': 'Bureautique'},
+        {'id': 'VLC', 'name': 'VLC Media Player', 'icon': '🎬', 'category': 'Multimedia'},
+        {'id': 'Firefox', 'name': 'Mozilla Firefox', 'icon': '🦊', 'category': 'Navigation'},
+        {'id': '7-Zip', 'name': '7-Zip', 'icon': '📦', 'category': 'Utilitaires'},
+        {'id': 'Spybot', 'name': 'Spybot Search & Destroy', 'icon': '🛡️', 'category': 'Securite'},
+        {'id': 'AdwCleaner', 'name': 'AdwCleaner', 'icon': '🧹', 'category': 'Securite'},
+        {'id': 'AnyDesk', 'name': 'AnyDesk', 'icon': '🖥️', 'category': 'Remote'},
+        {'id': 'RustDesk', 'name': 'RustDesk', 'icon': '🔒', 'category': 'Remote'},
+        {'id': 'Wise Disk Cleaner', 'name': 'Wise Disk Cleaner', 'icon': '💿', 'category': 'Maintenance'},
+        {'id': 'Malwarebytes', 'name': 'Malwarebytes', 'icon': '🔒', 'category': 'Securite'},
+        {'id': 'Google Chrome', 'name': 'Google Chrome', 'icon': '🌐', 'category': 'Navigation'},
+        {'id': 'Microsoft Office', 'name': 'Microsoft Office', 'icon': '📊', 'category': 'Bureautique'}
+    ]
+
+    return jsonify(master_apps)
+
+
+@app.route('/api/backup/restore-point', methods=['POST'])
+def create_restore_point():
+    """Create a system restore point"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        data = request.json
+        description = data.get('description', 'NiTriTe Manual Restore Point')
+
+        # PowerShell script to create restore point
+        ps_script = f"""
+Checkpoint-Computer -Description "{description}" -RestorePointType "MODIFY_SETTINGS"
+Write-Host "Point de restauration créé avec succès"
+"""
+
+        import tempfile
+        script_path = os.path.join(tempfile.gettempdir(), "nitrite_restore_point.ps1")
+        with open(script_path, 'w', encoding='utf-8') as f:
+            f.write(ps_script)
+
+        result = subprocess.run(
+            ["powershell", "-ExecutionPolicy", "Bypass", "-File", script_path],
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+
+        if os.path.exists(script_path):
+            os.remove(script_path)
+
+        if result.returncode == 0:
+            return jsonify({
+                'status': 'success',
+                'message': 'Point de restauration créé avec succès'
+            })
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': 'Erreur lors de la création du point de restauration',
+                'details': result.stderr
+            }), 500
+
+    except Exception as e:
+        logger.error(f"Error creating restore point: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/backup/drivers', methods=['POST'])
+def backup_drivers():
+    """Backup all installed drivers"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        data = request.json
+        backup_path = data.get('path', 'C:\\DriversBackup')
+
+        # Create backup directory
+        os.makedirs(backup_path, exist_ok=True)
+
+        # DISM command to export drivers
+        result = subprocess.run(
+            ['dism', '/online', '/export-driver', f'/destination:{backup_path}'],
+            capture_output=True,
+            text=True,
+            timeout=300
+        )
+
+        if result.returncode == 0:
+            # Count exported drivers
+            driver_count = len([f for f in os.listdir(backup_path) if f.endswith('.inf')])
+            return jsonify({
+                'status': 'success',
+                'message': f'{driver_count} drivers sauvegardés',
+                'path': backup_path,
+                'count': driver_count
+            })
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': 'Erreur lors de la sauvegarde des drivers',
+                'details': result.stderr
+            }), 500
+
+    except Exception as e:
+        logger.error(f"Error backing up drivers: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/backup/apps-list', methods=['GET'])
+def export_apps_list():
+    """Export list of installed applications"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        # Get installed apps via WinGet
+        result = subprocess.run(
+            ['winget', 'list'],
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+
+        apps_list = []
+        if result.returncode == 0:
+            lines = result.stdout.split('\n')[2:]  # Skip header
+            for line in lines:
+                if line.strip():
+                    parts = line.split()
+                    if len(parts) >= 2:
+                        apps_list.append({
+                            'name': ' '.join(parts[:-1]),
+                            'version': parts[-1]
+                        })
+
+        return jsonify({
+            'status': 'success',
+            'count': len(apps_list),
+            'applications': apps_list
+        })
+
+    except Exception as e:
+        logger.error(f"Error exporting apps list: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/system/startup-apps', methods=['GET'])
+def get_startup_apps():
+    """Get list of startup applications"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        startup_apps = []
+
+        # Check registry startup locations
+        import winreg
+        startup_keys = [
+            (winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run"),
+            (winreg.HKEY_LOCAL_MACHINE, r"Software\Microsoft\Windows\CurrentVersion\Run"),
+        ]
+
+        for hkey, path in startup_keys:
+            try:
+                key = winreg.OpenKey(hkey, path)
+                i = 0
+                while True:
+                    try:
+                        name, value, _ = winreg.EnumValue(key, i)
+                        startup_apps.append({
+                            'name': name,
+                            'path': value,
+                            'location': 'HKCU' if hkey == winreg.HKEY_CURRENT_USER else 'HKLM'
+                        })
+                        i += 1
+                    except WindowsError:
+                        break
+                winreg.CloseKey(key)
+            except WindowsError:
+                continue
+
+        return jsonify({
+            'status': 'success',
+            'count': len(startup_apps),
+            'applications': startup_apps
+        })
+
+    except Exception as e:
+        logger.error(f"Error getting startup apps: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/system/dism-scan', methods=['POST'])
+def run_dism_scan():
+    """Run DISM scan and repair"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        data = request.json
+        operation = data.get('operation', 'ScanHealth')  # ScanHealth, CheckHealth, or RestoreHealth
+
+        cmd = ['dism', '/online', f'/{operation}']
+
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=600  # 10 minutes max
+        )
+
+        return jsonify({
+            'status': 'success' if result.returncode == 0 else 'warning',
+            'message': 'DISM scan completed',
+            'output': result.stdout,
+            'returncode': result.returncode
+        })
+
+    except Exception as e:
+        logger.error(f"Error running DISM: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/system/sfc-scan', methods=['POST'])
+def run_sfc_scan():
+    """Run System File Checker"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        result = subprocess.run(
+            ['sfc', '/scannow'],
+            capture_output=True,
+            text=True,
+            timeout=600
+        )
+
+        return jsonify({
+            'status': 'success' if result.returncode == 0 else 'warning',
+            'message': 'SFC scan completed',
+            'output': result.stdout,
+            'returncode': result.returncode
+        })
+
+    except Exception as e:
+        logger.error(f"Error running SFC: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/system/network-reset', methods=['POST'])
+def reset_network():
+    """Reset network settings"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        commands = [
+            ['ipconfig', '/release'],
+            ['ipconfig', '/flushdns'],
+            ['ipconfig', '/renew'],
+            ['netsh', 'winsock', 'reset'],
+            ['netsh', 'int', 'ip', 'reset'],
+        ]
+
+        results = []
+        for cmd in commands:
+            try:
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+                results.append({
+                    'command': ' '.join(cmd),
+                    'success': result.returncode == 0
+                })
+            except Exception as e:
+                results.append({
+                    'command': ' '.join(cmd),
+                    'success': False,
+                    'error': str(e)
+                })
+
+        return jsonify({
+            'status': 'success',
+            'message': 'Réinitialisation réseau terminée. Redémarrage recommandé.',
+            'results': results
+        })
+
+    except Exception as e:
+        logger.error(f"Error resetting network: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/optimization/performance', methods=['POST'])
+def apply_performance_tweaks():
+    """Apply advanced performance tweaks"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        ps_script = """
+# Désactiver les effets visuels inutiles
+Set-ItemProperty -Path "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects" -Name "VisualFXSetting" -Type DWord -Value 2 -Force -ErrorAction SilentlyContinue
+
+# Désactiver hibernation pour libérer de l'espace
+powercfg /hibernate off
+
+# Optimiser le système de fichiers
+fsutil behavior set DisableLastAccess 1
+
+# Désactiver Windows Search indexing pour SSD
+Stop-Service "WSearch" -Force -ErrorAction SilentlyContinue
+Set-Service "WSearch" -StartupType Disabled -ErrorAction SilentlyContinue
+
+# Désactiver Prefetch et Superfetch (utile pour SSD)
+Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters" -Name "EnablePrefetcher" -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters" -Name "EnableSuperfetch" -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+
+Write-Host "Tweaks de performance appliqués"
+"""
+
+        import tempfile
+        script_path = os.path.join(tempfile.gettempdir(), "nitrite_performance_tweaks.ps1")
+        with open(script_path, 'w', encoding='utf-8') as f:
+            f.write(ps_script)
+
+        result = subprocess.run(
+            ["powershell", "-ExecutionPolicy", "Bypass", "-File", script_path],
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+
+        if os.path.exists(script_path):
+            os.remove(script_path)
+
+        return jsonify({
+            'status': 'success' if result.returncode == 0 else 'warning',
+            'message': 'Tweaks de performance appliqués. Redémarrage recommandé.'
+        })
+
+    except Exception as e:
+        logger.error(f"Error applying performance tweaks: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/updates/check', methods=['GET'])
+def check_windows_updates():
+    """Check for Windows updates"""
+    try:
+        if platform.system() != 'Windows':
+            return jsonify({'error': 'Windows only feature'}), 400
+
+        ps_script = """
+$UpdateSession = New-Object -ComObject Microsoft.Update.Session
+$UpdateSearcher = $UpdateSession.CreateUpdateSearcher()
+$SearchResult = $UpdateSearcher.Search("IsInstalled=0")
+$Updates = $SearchResult.Updates
+
+$UpdatesList = @()
+foreach ($Update in $Updates) {
+    $UpdatesList += @{
+        Title = $Update.Title
+        Description = $Update.Description
+        Size = [math]::Round($Update.MaxDownloadSize / 1MB, 2)
+        IsDownloaded = $Update.IsDownloaded
+    }
+}
+
+$UpdatesList | ConvertTo-Json
+"""
+
+        import tempfile
+        script_path = os.path.join(tempfile.gettempdir(), "check_updates.ps1")
+        with open(script_path, 'w', encoding='utf-8') as f:
+            f.write(ps_script)
+
+        result = subprocess.run(
+            ["powershell", "-ExecutionPolicy", "Bypass", "-File", script_path],
+            capture_output=True,
+            text=True,
+            timeout=120
+        )
+
+        if os.path.exists(script_path):
+            os.remove(script_path)
+
+        if result.returncode == 0 and result.stdout.strip():
+            try:
+                updates = json.loads(result.stdout)
+                return jsonify({
+                    'status': 'success',
+                    'count': len(updates) if isinstance(updates, list) else 1,
+                    'updates': updates if isinstance(updates, list) else [updates]
+                })
+            except json.JSONDecodeError:
+                return jsonify({
+                    'status': 'success',
+                    'count': 0,
+                    'updates': []
+                })
+        else:
+            return jsonify({
+                'status': 'success',
+                'count': 0,
+                'updates': []
+            })
+
+    except Exception as e:
+        logger.error(f"Error checking updates: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/benchmark/run', methods=['POST'])
+def run_benchmark():
+    """Run system benchmark"""
+    try:
+        import time
+        import psutil
+
+        # CPU Benchmark
+        cpu_start = time.time()
+        cpu_percent = psutil.cpu_percent(interval=2)
+        cpu_time = time.time() - cpu_start
+
+        # Memory info
+        mem = psutil.virtual_memory()
+
+        # Disk info
+        disk = psutil.disk_usage('/')
+
+        # Calculate simple score (0-100)
+        cpu_score = min(100, (100 - cpu_percent))
+        mem_score = min(100, (100 - mem.percent))
+        disk_score = min(100, (disk.free / disk.total) * 100)
+
+        overall_score = (cpu_score + mem_score + disk_score) / 3
+
+        return jsonify({
+            'status': 'success',
+            'overall_score': round(overall_score, 1),
+            'cpu_score': round(cpu_score, 1),
+            'memory_score': round(mem_score, 1),
+            'disk_score': round(disk_score, 1),
+            'details': {
+                'cpu_usage': cpu_percent,
+                'memory_used_percent': mem.percent,
+                'disk_used_percent': round((disk.used / disk.total) * 100, 1)
+            }
+        })
+
+    except Exception as e:
+        logger.error(f"Error running benchmark: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 def main():

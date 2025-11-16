@@ -171,11 +171,24 @@ class NiTriTeApp {
             case 'profiles':
                 this.renderProfilesPage();
                 break;
+            case 'master':
+                this.renderMasterPage();
+                break;
             case 'favorites':
                 this.renderFavoritesPage();
                 break;
             case 'diagnostic':
                 this.renderDiagnosticPage();
+                break;
+            case 'optimization':
+                this.renderOptimizationPage();
+                break;
+            case 'backup':
+                this.renderBackupPage();
+                break;
+            case 'updates':
+                // Updates page is already rendered in HTML with inline buttons
+                console.log('[App] Updates page loaded');
                 break;
             case 'settings':
                 this.renderSettingsPage();
