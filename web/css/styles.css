@@ -812,3 +812,153 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ===================================
+   TOOLS PAGE STYLES
+   =================================== */
+
+.tools-header {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.tools-header h2 {
+    margin: 0 0 8px 0;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+}
+
+.tools-subtitle {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.tool-section {
+    margin-bottom: 30px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.tool-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.tool-section-title {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.tool-section-count {
+    padding: 4px 12px;
+    background: var(--primary-color);
+    color: var(--text-primary);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+}
+
+.tool-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    text-align: left;
+    width: 100%;
+}
+
+.tool-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+}
+
+.tool-btn-command {
+    border-left: 3px solid var(--primary-color);
+}
+
+.tool-btn-url {
+    border-left: 3px solid #2196f3;
+}
+
+.tool-btn-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 10px;
+}
+
+.tool-btn-indicator {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    opacity: 0.7;
+}
+
+.tool-btn:hover .tool-btn-indicator {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* Responsive Tools Grid */
+@media (max-width: 1200px) {
+    .tool-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .tool-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 8px;
+    }
+
+    .tool-btn {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .tool-section {
+        padding: 15px;
+    }
+
+    .tools-header {
+        padding: 15px;
+    }
+
+    .tools-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tool-grid {
+        grid-template-columns: 1fr;
+    }
+}

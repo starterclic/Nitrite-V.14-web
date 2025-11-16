@@ -1,0 +1,2250 @@
+[
+  {
+    "title": "🔨 Réparation Système",
+    "tools": [
+      {
+        "name": "🔍 DISM Check",
+        "command": "DISM /Online /Cleanup-Image /CheckHealth"
+      },
+      {
+        "name": "🔎 DISM Scan",
+        "command": "DISM /Online /Cleanup-Image /ScanHealth"
+      },
+      {
+        "name": "🔧 DISM Restore",
+        "command": "DISM /Online /Cleanup-Image /RestoreHealth"
+      },
+      {
+        "name": "🛠️ SFC Scan",
+        "command": "sfc /scannow"
+      },
+      {
+        "name": "💽 CHKDSK C:",
+        "command": "chkdsk C: /f /r"
+      },
+      {
+        "name": "💾 CHKDSK D:",
+        "command": "chkdsk D: /f /r"
+      },
+      {
+        "name": "🔄 Reset WinSock",
+        "command": "netsh winsock reset"
+      },
+      {
+        "name": "🌐 Reset TCP/IP",
+        "command": "netsh int ip reset"
+      },
+      {
+        "name": "🔧 Reset Firewall",
+        "command": "netsh advfirewall reset"
+      },
+      {
+        "name": "📡 Reset Proxy",
+        "command": "netsh winhttp reset proxy"
+      },
+      {
+        "name": "🔄 Reset DNS",
+        "command": "ipconfig /flushdns"
+      },
+      {
+        "name": "🔌 Reset Network",
+        "command": "netsh int ip reset && netsh winsock reset"
+      },
+      {
+        "name": "🛠️ Repair BCD",
+        "command": "bcdedit /export C:\\BCD_Backup & attrib c:\\boot\\bcd -h -r -s & ren c:\\boot\\bcd bcd.old & bootrec /rebuildbcd"
+      },
+      {
+        "name": "💿 Repair Boot",
+        "command": "bootrec /fixmbr && bootrec /fixboot && bootrec /rebuildbcd"
+      },
+      {
+        "name": "🔧 System Reset",
+        "command": "systemreset"
+      },
+      {
+        "name": "🔄 Windows Update Reset",
+        "command": "net stop wuauserv && net stop cryptSvc && net stop bits && net stop msiserver && ren C:\\Windows\\SoftwareDistribution SoftwareDistribution.old && ren C:\\Windows\\System32\\catroot2 catroot2.old && net start wuauserv && net start cryptSvc && net start bits && net start msiserver"
+      },
+      {
+        "name": "📦 Repair Store",
+        "command": "wsreset"
+      },
+      {
+        "name": "🛡️ Windows Defender Repair",
+        "command": "cd %ProgramFiles%\\Windows Defender && MpCmdRun.exe -removedefinitions -dynamicsignatures && MpCmdRun.exe -SignatureUpdate"
+      },
+      {
+        "name": "🔧 DISM Mount Cleanup",
+        "command": "DISM /Cleanup-Mountpoints"
+      },
+      {
+        "name": "💾 Check Disk Bad Sectors",
+        "command": "chkdsk /r /f"
+      },
+      {
+        "name": "🔍 Verify System Files",
+        "command": "sfc /verifyonly"
+      },
+      {
+        "name": "📋 Export DISM Log",
+        "command": "DISM /Online /Cleanup-Image /RestoreHealth /LogPath:C:\\DISM_RestoreHealth.log"
+      },
+      {
+        "name": "🔧 Repair Windows Image",
+        "command": "DISM /Online /Cleanup-Image /RestoreHealth /Source:WIM:X:\\sources\\install.wim:1 /LimitAccess"
+      },
+      {
+        "name": "🛠️ System File Check Extended",
+        "command": "sfc /scannow /offbootdir=C:\\ /offwindir=C:\\Windows"
+      },
+      {
+        "name": "🔄 Reset Windows Activation",
+        "command": "slmgr /rearm"
+      },
+      {
+        "name": "📡 Reset Network Adapter",
+        "command": "netsh interface set interface \"Ethernet\" admin=disable && netsh interface set interface \"Ethernet\" admin=enable"
+      },
+      {
+        "name": "🔌 Reset Wi-Fi",
+        "command": "netsh interface set interface \"Wi-Fi\" admin=disable && netsh interface set interface \"Wi-Fi\" admin=enable"
+      },
+      {
+        "name": "🔧 Rebuild Icon Cache",
+        "command": "ie4uinit.exe -show && ie4uinit.exe -ClearIconCache"
+      },
+      {
+        "name": "🗂️ Rebuild Search Index",
+        "command": "net stop WSearch && del /f /s /q %ProgramData%\\Microsoft\\Search\\Data\\Applications\\Windows\\Windows.edb && net start WSearch"
+      },
+      {
+        "name": "📝 Repair Start Menu",
+        "command": "Get-AppXPackage -AllUsers | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register \"$($_.InstallLocation)\\AppXManifest.xml\"}"
+      },
+      {
+        "name": "🔄 Reset Windows Store",
+        "command": "wsreset && powershell -ExecutionPolicy Unrestricted Add-AppxPackage -DisableDevelopmentMode -Register $Env:SystemRoot\\WinStore\\AppxManifest.xml"
+      }
+    ]
+  },
+  {
+    "title": "🔧 Activation & Téléchargements",
+    "tools": [
+      {
+        "name": "⚡ PowerToys",
+        "command": "https://github.com/microsoft/PowerToys/releases/latest"
+      },
+      {
+        "name": "📦 Office FR",
+        "command": "https://gravesoft.dev/office_c2r_links#french-fr-france"
+      },
+      {
+        "name": "📋 Office EN",
+        "command": "https://gravesoft.dev/office_c2r_links"
+      },
+      {
+        "name": "🔑 MS Activation Scripts",
+        "command": "https://massgrave.dev/"
+      },
+      {
+        "name": "🎯 Activation Scripts",
+        "command": "https://get.activated.win"
+      },
+      {
+        "name": "💿 Windows ISO",
+        "command": "https://www.microsoft.com/software-download/windows10"
+      },
+      {
+        "name": "💾 Windows 11 ISO",
+        "command": "https://www.microsoft.com/software-download/windows11"
+      },
+      {
+        "name": "📀 Media Creation Tool",
+        "command": "https://www.microsoft.com/software-download/windows10"
+      },
+      {
+        "name": "🔥 Rufus",
+        "command": "https://rufus.ie/"
+      },
+      {
+        "name": "💽 Ventoy",
+        "command": "https://www.ventoy.net/"
+      },
+      {
+        "name": "🔧 WinToUSB",
+        "command": "https://www.easyuefi.com/wintousb/"
+      },
+      {
+        "name": "💿 Etcher",
+        "command": "https://www.balena.io/etcher/"
+      },
+      {
+        "name": "📦 Ninite",
+        "command": "https://ninite.com/"
+      },
+      {
+        "name": "🔄 Patch My PC",
+        "command": "https://patchmypc.com/home-updater"
+      },
+      {
+        "name": "🛠️ Windows Toolkit",
+        "command": "https://github.com/ChrisTitusTech/winutil"
+      },
+      {
+        "name": "🔑 KMS Tools",
+        "command": "https://www.ratiborus.com/"
+      },
+      {
+        "name": "⚡ AutoKMS",
+        "command": "https://github.com/massgravel/Microsoft-Activation-Scripts"
+      },
+      {
+        "name": "📋 Office Tool Plus",
+        "command": "https://otp.landian.vip/"
+      },
+      {
+        "name": "🔧 Windows Repair Toolbox",
+        "command": "https://windows-repair-toolbox.com/"
+      },
+      {
+        "name": "🛡️ Windows Update Blocker",
+        "command": "https://www.sordum.org/9470/"
+      },
+      {
+        "name": "🔄 Windows Update Reset Script",
+        "command": "https://wureset.com/"
+      },
+      {
+        "name": "💻 Sysinternals Suite",
+        "command": "https://docs.microsoft.com/sysinternals/downloads/sysinternals-suite"
+      },
+      {
+        "name": "🔧 Ultimate Windows Tweaker",
+        "command": "https://www.thewindowsclub.com/ultimate-windows-tweaker-4-windows-10"
+      },
+      {
+        "name": "⚙️ O&O ShutUp10++",
+        "command": "https://www.oo-software.com/en/shutup10"
+      },
+      {
+        "name": "🛠️ Winaero Tweaker",
+        "command": "https://winaerotweaker.com/"
+      },
+      {
+        "name": "🎨 Rainmeter",
+        "command": "https://www.rainmeter.net/"
+      },
+      {
+        "name": "🖥️ DisplayFusion",
+        "command": "https://www.displayfusion.com/"
+      },
+      {
+        "name": "📊 HWiNFO",
+        "command": "https://www.hwinfo.com/"
+      },
+      {
+        "name": "🔍 Speccy",
+        "command": "https://www.ccleaner.com/speccy"
+      }
+    ]
+  },
+  {
+    "title": "🧹 Maintenance & Nettoyage",
+    "tools": [
+      {
+        "name": "🧹 Disk Cleanup",
+        "command": "cleanmgr"
+      },
+      {
+        "name": "📦 Cleanup Full",
+        "command": "cleanmgr /sageset:1 & cleanmgr /sagerun:1"
+      },
+      {
+        "name": "🗂️ Clean WinSxS",
+        "command": "DISM /Online /Cleanup-Image /StartComponentCleanup"
+      },
+      {
+        "name": "🔧 WinSxS Analyze",
+        "command": "DISM /Online /Cleanup-Image /AnalyzeComponentStore"
+      },
+      {
+        "name": "💾 WinSxS Deep Clean",
+        "command": "DISM /Online /Cleanup-Image /StartComponentCleanup /ResetBase"
+      },
+      {
+        "name": "🗑️ Temp Cleanup",
+        "command": "del /q/f/s %TEMP%\\*"
+      },
+      {
+        "name": "📁 Delete Prefetch",
+        "command": "del /q/f/s C:\\Windows\\Prefetch\\*"
+      },
+      {
+        "name": "🔄 Empty Recycle Bin",
+        "command": "rd /s /q C:\\$Recycle.bin"
+      },
+      {
+        "name": "💿 Clean Update Cache",
+        "command": "dism /online /Cleanup-Image /StartComponentCleanup /ResetBase"
+      },
+      {
+        "name": "🧹 CCleaner",
+        "command": "https://www.ccleaner.com/ccleaner/download"
+      },
+      {
+        "name": "🗑️ BleachBit",
+        "command": "https://www.bleachbit.org/"
+      },
+      {
+        "name": "🔧 Wise Disk Cleaner",
+        "command": "https://www.wisecleaner.com/wise-disk-cleaner.html"
+      },
+      {
+        "name": "📦 Glary Utilities",
+        "command": "https://www.glarysoft.com/"
+      },
+      {
+        "name": "🧽 Privazer",
+        "command": "https://privazer.com/"
+      },
+      {
+        "name": "🔧 CleanMyPC",
+        "command": "https://macpaw.com/cleanmypc"
+      }
+    ]
+  },
+  {
+    "title": "📊 Diagnostics & Infos",
+    "tools": [
+      {
+        "name": "💻 System Info",
+        "command": "msinfo32"
+      },
+      {
+        "name": "🎮 DirectX Diag",
+        "command": "dxdiag"
+      },
+      {
+        "name": "📊 Event Viewer",
+        "command": "eventvwr.msc"
+      },
+      {
+        "name": "🔧 Device Manager",
+        "command": "devmgmt.msc"
+      },
+      {
+        "name": "⚙️ Task Manager",
+        "command": "taskmgr"
+      },
+      {
+        "name": "📈 Resource Monitor",
+        "command": "resmon"
+      },
+      {
+        "name": "💾 Disk Management",
+        "command": "diskmgmt.msc"
+      },
+      {
+        "name": "🖥️ Computer Management",
+        "command": "compmgmt.msc"
+      },
+      {
+        "name": "📋 Services",
+        "command": "services.msc"
+      },
+      {
+        "name": "⚡ Performance Monitor",
+        "command": "perfmon"
+      },
+      {
+        "name": "🔍 Reliability Monitor",
+        "command": "perfmon /rel"
+      },
+      {
+        "name": "💿 Disk Defrag",
+        "command": "dfrgui"
+      },
+      {
+        "name": "🔧 Registry Editor",
+        "command": "regedit"
+      },
+      {
+        "name": "📝 Group Policy",
+        "command": "gpidit.msc"
+      },
+      {
+        "name": "🔐 Local Security Policy",
+        "command": "secpol.msc"
+      },
+      {
+        "name": "👥 User Accounts",
+        "command": "netplwiz"
+      },
+      {
+        "name": "🖨️ Print Management",
+        "command": "printmanagement.msc"
+      },
+      {
+        "name": "🌐 Component Services",
+        "command": "dcomcnfg"
+      },
+      {
+        "name": "📦 Programs and Features",
+        "command": "appwiz.cpl"
+      },
+      {
+        "name": "🔧 Advanced System Properties",
+        "command": "systempropertiesadvanced"
+      },
+      {
+        "name": "🖥️ Display Settings",
+        "command": "desk.cpl"
+      },
+      {
+        "name": "🔊 Sound Settings",
+        "command": "mmsys.cpl"
+      },
+      {
+        "name": "🎮 Game Controllers",
+        "command": "joy.cpl"
+      },
+      {
+        "name": "🖱️ Mouse Settings",
+        "command": "main.cpl"
+      },
+      {
+        "name": "⌨️ Keyboard Settings",
+        "command": "control keyboard"
+      },
+      {
+        "name": "🌍 Region Settings",
+        "command": "intl.cpl"
+      },
+      {
+        "name": "⏰ Date and Time",
+        "command": "timedate.cpl"
+      },
+      {
+        "name": "🔋 Power Options",
+        "command": "powercfg.cpl"
+      },
+      {
+        "name": "🛡️ Windows Security",
+        "command": "windowsdefender:"
+      },
+      {
+        "name": "🔄 Windows Update",
+        "command": "ms-settings:windowsupdate"
+      },
+      {
+        "name": "📱 Phone Settings",
+        "command": "ms-settings:mobile-devices"
+      },
+      {
+        "name": "🔗 Connected Devices",
+        "command": "ms-settings:connecteddevices"
+      },
+      {
+        "name": "🎨 Personalization",
+        "command": "ms-settings:personalization"
+      },
+      {
+        "name": "🔊 Sound Panel",
+        "command": "ms-settings:sound"
+      },
+      {
+        "name": "🌐 Network Status",
+        "command": "ms-settings:network-status"
+      },
+      {
+        "name": "📶 Wi-Fi Settings",
+        "command": "ms-settings:network-wifi"
+      },
+      {
+        "name": "🔌 Ethernet",
+        "command": "ms-settings:network-ethernet"
+      },
+      {
+        "name": "📡 VPN",
+        "command": "ms-settings:network-vpn"
+      },
+      {
+        "name": "🌍 Proxy",
+        "command": "ms-settings:network-proxy"
+      },
+      {
+        "name": "💾 Storage",
+        "command": "ms-settings:storagesense"
+      },
+      {
+        "name": "🔋 Battery",
+        "command": "ms-settings:batterysaver"
+      },
+      {
+        "name": "⚡ Battery Usage",
+        "command": "ms-settings:batterysaver-usagedetails"
+      },
+      {
+        "name": "🖥️ Display",
+        "command": "ms-settings:display"
+      },
+      {
+        "name": "📺 Night Light",
+        "command": "ms-settings:nightlight"
+      },
+      {
+        "name": "🎮 Gaming",
+        "command": "ms-settings:gaming"
+      },
+      {
+        "name": "🎯 Game Mode",
+        "command": "ms-settings:gaming-gamemode"
+      },
+      {
+        "name": "📹 Game Bar",
+        "command": "ms-settings:gaming-gamebar"
+      },
+      {
+        "name": "🔇 Audio Mixer",
+        "command": "sndvol"
+      },
+      {
+        "name": "🔊 Volume Mixer",
+        "command": "sndvol"
+      },
+      {
+        "name": "🖥️ Screen Resolution",
+        "command": "ms-settings:display"
+      },
+      {
+        "name": "🎨 Background",
+        "command": "ms-settings:personalization-background"
+      },
+      {
+        "name": "🔒 Lock Screen",
+        "command": "ms-settings:lockscreen"
+      },
+      {
+        "name": "🎨 Colors",
+        "command": "ms-settings:colors"
+      },
+      {
+        "name": "🖱️ Mouse & Cursor",
+        "command": "ms-settings:mousetouchpad"
+      },
+      {
+        "name": "⌨️ Typing",
+        "command": "ms-settings:typing"
+      }
+    ]
+  },
+  {
+    "title": "🌐 Réseau & Internet",
+    "tools": [
+      {
+        "name": "🌐 Ping Google",
+        "command": "ping 8.8.8.8 -n 10"
+      },
+      {
+        "name": "🔍 NSLookup",
+        "command": "nslookup google.com"
+      },
+      {
+        "name": "📡 IPConfig",
+        "command": "ipconfig /all"
+      },
+      {
+        "name": "🔄 Release IP",
+        "command": "ipconfig /release"
+      },
+      {
+        "name": "🔌 Renew IP",
+        "command": "ipconfig /renew"
+      },
+      {
+        "name": "🗑️ Flush DNS",
+        "command": "ipconfig /flushdns"
+      },
+      {
+        "name": "📋 Display DNS",
+        "command": "ipconfig /displaydns"
+      },
+      {
+        "name": "🔧 Route Print",
+        "command": "route print"
+      },
+      {
+        "name": "🌍 Tracert Google",
+        "command": "tracert google.com"
+      },
+      {
+        "name": "📡 PathPing",
+        "command": "pathping google.com"
+      },
+      {
+        "name": "🔍 NetStat",
+        "command": "netstat -ano"
+      },
+      {
+        "name": "📊 NetStat Active",
+        "command": "netstat -a"
+      },
+      {
+        "name": "🔧 NetStat Routes",
+        "command": "netstat -r"
+      },
+      {
+        "name": "🌐 ARP Table",
+        "command": "arp -a"
+      },
+      {
+        "name": "🔌 Network Connections",
+        "command": "ncpa.cpl"
+      },
+      {
+        "name": "📡 Network Reset",
+        "command": "netsh winsock reset && netsh int ip reset"
+      },
+      {
+        "name": "🔧 Reset TCP/IP Stack",
+        "command": "netsh int ip reset"
+      },
+      {
+        "name": "🌍 Test Connection",
+        "command": "ping 1.1.1.1 -t"
+      },
+      {
+        "name": "📊 Bandwidth Test",
+        "command": "https://www.speedtest.net/"
+      },
+      {
+        "name": "🔍 IP Info",
+        "command": "https://www.whatismyip.com/"
+      },
+      {
+        "name": "🌐 DNS Benchmark",
+        "command": "https://www.grc.com/dns/benchmark.htm"
+      },
+      {
+        "name": "🔧 Port Checker",
+        "command": "https://www.yougetsignal.com/tools/open-ports/"
+      }
+    ]
+  },
+  {
+    "title": "⚡ WinGet Package Manager",
+    "tools": [
+      {
+        "name": "🔄 Upgrade All",
+        "command": "winget upgrade --all"
+      },
+      {
+        "name": "📋 List Upgrades",
+        "command": "winget upgrade"
+      },
+      {
+        "name": "🔍 Search",
+        "command": "winget search"
+      },
+      {
+        "name": "📦 List Installed",
+        "command": "winget list"
+      },
+      {
+        "name": "ℹ️ Show Info",
+        "command": "winget show"
+      },
+      {
+        "name": "🔧 Install App",
+        "command": "winget install"
+      },
+      {
+        "name": "🗑️ Uninstall App",
+        "command": "winget uninstall"
+      },
+      {
+        "name": "📋 Export List",
+        "command": "winget export -o C:\\winget-export.json"
+      },
+      {
+        "name": "📥 Import List",
+        "command": "winget import -i C:\\winget-export.json"
+      },
+      {
+        "name": "🔄 Update WinGet",
+        "command": "winget upgrade Microsoft.Winget.Source"
+      },
+      {
+        "name": "📚 WinGet Help",
+        "command": "winget --help"
+      },
+      {
+        "name": "⚙️ WinGet Settings",
+        "command": "winget settings"
+      }
+    ]
+  },
+  {
+    "title": "⚙️ Paramètres Windows",
+    "tools": [
+      {
+        "name": "⚙️ Settings",
+        "command": "start ms-settings:"
+      },
+      {
+        "name": "🖥️ Display",
+        "command": "start ms-settings:display"
+      },
+      {
+        "name": "🔊 Sound",
+        "command": "start ms-settings:sound"
+      },
+      {
+        "name": "🔔 Notifications",
+        "command": "start ms-settings:notifications"
+      },
+      {
+        "name": "⚡ Power & Sleep",
+        "command": "start ms-settings:powersleep"
+      },
+      {
+        "name": "💾 Storage",
+        "command": "start ms-settings:storagesense"
+      },
+      {
+        "name": "🌐 Network & Internet",
+        "command": "start ms-settings:network"
+      },
+      {
+        "name": "🎨 Personalization",
+        "command": "start ms-settings:personalization"
+      },
+      {
+        "name": "📱 Phone",
+        "command": "start ms-settings:mobile-devices"
+      },
+      {
+        "name": "👥 Accounts",
+        "command": "start ms-settings:yourinfo"
+      },
+      {
+        "name": "⏰ Time & Language",
+        "command": "start ms-settings:dateandtime"
+      },
+      {
+        "name": "🎮 Gaming",
+        "command": "start ms-settings:gaming"
+      },
+      {
+        "name": "🔐 Privacy",
+        "command": "start ms-settings:privacy"
+      },
+      {
+        "name": "🔄 Update & Security",
+        "command": "start ms-settings:windowsupdate"
+      },
+      {
+        "name": "♿ Ease of Access",
+        "command": "start ms-settings:easeofaccess"
+      },
+      {
+        "name": "🔍 Search",
+        "command": "start ms-settings:search"
+      },
+      {
+        "name": "🗣️ Cortana",
+        "command": "start ms-settings:cortana"
+      },
+      {
+        "name": "🔗 Apps & Features",
+        "command": "start ms-settings:appsfeatures"
+      },
+      {
+        "name": "🏢 For Developers",
+        "command": "start ms-settings:developers"
+      }
+    ]
+  },
+  {
+    "title": "🏭 Support Fabricants",
+    "tools": [
+      {
+        "name": "💻 Dell Support",
+        "command": "https://www.dell.com/support/"
+      },
+      {
+        "name": "🖥️ HP Support",
+        "command": "https://support.hp.com/"
+      },
+      {
+        "name": "💼 Lenovo Support",
+        "command": "https://support.lenovo.com/"
+      },
+      {
+        "name": "⚡ ASUS Support",
+        "command": "https://www.asus.com/support/"
+      },
+      {
+        "name": "🔷 Acer Support",
+        "command": "https://www.acer.com/support/"
+      },
+      {
+        "name": "📱 MSI Support",
+        "command": "https://www.msi.com/support"
+      },
+      {
+        "name": "🖥️ Samsung Support",
+        "command": "https://www.samsung.com/support/"
+      },
+      {
+        "name": "💻 Toshiba Support",
+        "command": "https://support.dynabook.com/"
+      },
+      {
+        "name": "🔧 Gigabyte Support",
+        "command": "https://www.gigabyte.com/Support"
+      },
+      {
+        "name": "⚡ ASRock Support",
+        "command": "https://www.asrock.com/support/"
+      },
+      {
+        "name": "🖥️ Intel Support",
+        "command": "https://www.intel.com/content/www/us/en/support.html"
+      },
+      {
+        "name": "🎮 AMD Support",
+        "command": "https://www.amd.com/en/support"
+      },
+      {
+        "name": "🎨 NVIDIA Support",
+        "command": "https://www.nvidia.com/support/"
+      },
+      {
+        "name": "💾 Western Digital Support",
+        "command": "https://support.wdc.com/"
+      },
+      {
+        "name": "💿 Seagate Support",
+        "command": "https://www.seagate.com/support/"
+      },
+      {
+        "name": "⚡ Corsair Support",
+        "command": "https://www.corsair.com/support"
+      },
+      {
+        "name": "🖱️ Logitech Support",
+        "command": "https://support.logi.com/"
+      },
+      {
+        "name": "⌨️ Razer Support",
+        "command": "https://support.razer.com/"
+      }
+    ]
+  },
+  {
+    "title": "🛒 Fournisseurs & Achats",
+    "tools": [
+      {
+        "name": "🔧 1fo Trade",
+        "command": "https://www.1fotrade.com/"
+      },
+      {
+        "name": "💻 Acadia Info",
+        "command": "https://www.acadia-info.com/"
+      },
+      {
+        "name": "📦 Flexit",
+        "command": "https://shop.flexitdistribution.com/"
+      },
+      {
+        "name": "💰 1fo Discount",
+        "command": "https://www.1fodiscount.com/"
+      },
+      {
+        "name": "📦 Noriak Distri",
+        "command": "https://www.noriak-distri.com/"
+      },
+      {
+        "name": "🛒 Amazon FR",
+        "command": "https://www.amazon.fr/"
+      },
+      {
+        "name": "🏪 Cdiscount",
+        "command": "https://www.cdiscount.com/"
+      },
+      {
+        "name": "🌐 eBay FR",
+        "command": "https://www.ebay.fr/"
+      },
+      {
+        "name": "📢 Leboncoin",
+        "command": "https://www.leboncoin.fr/"
+      },
+      {
+        "name": "📚 Fnac",
+        "command": "https://www.fnac.com/"
+      },
+      {
+        "name": "🔌 Darty",
+        "command": "https://www.darty.com/"
+      },
+      {
+        "name": "🏪 Boulanger",
+        "command": "https://www.boulanger.com/"
+      },
+      {
+        "name": "🛒 E.Leclerc",
+        "command": "https://www.e.leclerc/"
+      },
+      {
+        "name": "🏬 Rue Commerce",
+        "command": "https://www.rueducommerce.fr/"
+      },
+      {
+        "name": "🎌 Rakuten",
+        "command": "https://fr.shopping.rakuten.com/"
+      },
+      {
+        "name": "🔝 TopAchat",
+        "command": "https://www.topachat.com/"
+      },
+      {
+        "name": "💻 Grosbill",
+        "command": "https://www.grosbill.com/"
+      },
+      {
+        "name": "💼 Inmac Wstore",
+        "command": "https://www.inmac-wstore.com/"
+      },
+      {
+        "name": "🖥️ Visiodirect",
+        "command": "https://www.visiodirect.net/"
+      },
+      {
+        "name": "🔧 LDLC",
+        "command": "https://www.ldlc.com/"
+      },
+      {
+        "name": "💻 Materiel.net",
+        "command": "https://www.materiel.net/"
+      },
+      {
+        "name": "🎮 PC21",
+        "command": "https://www.pc21.fr/"
+      },
+      {
+        "name": "💼 Cybertek",
+        "command": "https://www.cybertek.fr/"
+      },
+      {
+        "name": "🎯 Config-Gamer",
+        "command": "https://www.config-gamer.fr/"
+      },
+      {
+        "name": "💡 Idealo",
+        "command": "https://www.idealo.fr/"
+      },
+      {
+        "name": "🔥 Dealabs",
+        "command": "https://www.dealabs.com/"
+      },
+      {
+        "name": "🔍 Le Dénicheur",
+        "command": "https://ledenicheur.fr/"
+      },
+      {
+        "name": "🍎 OKA Mac",
+        "command": "https://www.okamac.com/fr/"
+      },
+      {
+        "name": "🍎 MacWay",
+        "command": "https://www.macway.com/"
+      },
+      {
+        "name": "🇨🇭 Digitec CH",
+        "command": "https://www.digitec.ch/fr"
+      },
+      {
+        "name": "🌍 Amazon DE",
+        "command": "https://www.amazon.de/"
+      },
+      {
+        "name": "🌐 Amazon UK",
+        "command": "https://www.amazon.co.uk/"
+      },
+      {
+        "name": "🇺🇸 Amazon US",
+        "command": "https://www.amazon.com/"
+      },
+      {
+        "name": "🇺🇸 Newegg",
+        "command": "https://www.newegg.com/"
+      },
+      {
+        "name": "📷 B&H Photo",
+        "command": "https://www.bhphotovideo.com/"
+      },
+      {
+        "name": "♻️ BackMarket",
+        "command": "https://www.backmarket.fr/"
+      },
+      {
+        "name": "🔄 Refurbed",
+        "command": "https://www.refurbed.fr/"
+      },
+      {
+        "name": "📦 2ememain.be",
+        "command": "https://www.2ememain.be/"
+      },
+      {
+        "name": "🛒 AliExpress",
+        "command": "https://www.aliexpress.com/"
+      },
+      {
+        "name": "💰 Wish",
+        "command": "https://www.wish.com/"
+      },
+      {
+        "name": "📦 Banggood",
+        "command": "https://www.banggood.com/"
+      },
+      {
+        "name": "💾 Crucial FR",
+        "command": "https://www.crucial.fr/"
+      },
+      {
+        "name": "💼 Dell FR",
+        "command": "https://www.dell.com/fr-fr"
+      },
+      {
+        "name": "🖨️ HP FR",
+        "command": "https://www.hp.com/fr-fr/shop/"
+      },
+      {
+        "name": "💻 Lenovo FR",
+        "command": "https://www.lenovo.com/fr/fr/"
+      },
+      {
+        "name": "📱 Samsung FR",
+        "command": "https://www.samsung.com/fr/"
+      },
+      {
+        "name": "🚗 La Centrale",
+        "command": "https://www.lacentrale.fr/"
+      },
+      {
+        "name": "🔒 ProtonVPN",
+        "command": "https://protonvpn.com/"
+      },
+      {
+        "name": "🛡️ NordVPN",
+        "command": "https://nordvpn.com/"
+      },
+      {
+        "name": "⚡ ExpressVPN",
+        "command": "https://www.expressvpn.com/"
+      },
+      {
+        "name": "🔐 Surfshark",
+        "command": "https://surfshark.com/"
+      },
+      {
+        "name": "🔒 PIA VPN",
+        "command": "https://www.privateinternetaccess.com/"
+      },
+      {
+        "name": "🌐 Mullvad VPN",
+        "command": "https://mullvad.net/"
+      },
+      {
+        "name": "🔐 CyberGhost",
+        "command": "https://www.cyberghostvpn.com/"
+      },
+      {
+        "name": "⚡ Windscribe",
+        "command": "https://windscribe.com/"
+      },
+      {
+        "name": "🔐 Malwarebytes",
+        "command": "https://www.malwarebytes.com/"
+      },
+      {
+        "name": "🛡️ Kaspersky",
+        "command": "https://www.kaspersky.fr/"
+      },
+      {
+        "name": "🔒 Bitdefender",
+        "command": "https://www.bitdefender.com/"
+      },
+      {
+        "name": "⚡ Avast Free",
+        "command": "https://www.avast.com/free-antivirus-download"
+      },
+      {
+        "name": "🔐 AVG Free",
+        "command": "https://www.avg.com/free-antivirus-download"
+      },
+      {
+        "name": "🛡️ Windows Defender",
+        "command": "windowsdefender:"
+      },
+      {
+        "name": "🔒 ESET NOD32",
+        "command": "https://www.eset.com/"
+      },
+      {
+        "name": "⚡ Sophos Home",
+        "command": "https://home.sophos.com/"
+      },
+      {
+        "name": "🔐 Bitwarden",
+        "command": "https://bitwarden.com/download/"
+      },
+      {
+        "name": "🛡️ KeePass",
+        "command": "https://keepass.info/download.html"
+      },
+      {
+        "name": "🔒 1Password",
+        "command": "https://1password.com/"
+      },
+      {
+        "name": "⚡ LastPass",
+        "command": "https://www.lastpass.com/"
+      },
+      {
+        "name": "🔐 Dashlane",
+        "command": "https://www.dashlane.com/"
+      },
+      {
+        "name": "🛡️ RoboForm",
+        "command": "https://www.roboform.com/"
+      },
+      {
+        "name": "🔒 Keeper",
+        "command": "https://www.keepersecurity.com/"
+      },
+      {
+        "name": "⚡ NordPass",
+        "command": "https://nordpass.com/"
+      },
+      {
+        "name": "🔐 Authy",
+        "command": "https://authy.com/"
+      },
+      {
+        "name": "🛡️ Google Auth",
+        "command": "https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
+      },
+      {
+        "name": "🔒 MS Authenticator",
+        "command": "https://www.microsoft.com/security/mobile-authenticator-app"
+      },
+      {
+        "name": "🔐 Signal Desktop",
+        "command": "https://signal.org/download/"
+      },
+      {
+        "name": "🛡️ Threema",
+        "command": "https://threema.ch/"
+      },
+      {
+        "name": "🔒 Telegram",
+        "command": "https://telegram.org/"
+      },
+      {
+        "name": "⚡ ProtonMail",
+        "command": "https://proton.me/mail"
+      },
+      {
+        "name": "🌐 Have I Been Pwned",
+        "command": "https://haveibeenpwned.com/"
+      },
+      {
+        "name": "🔐 VirusTotal",
+        "command": "https://www.virustotal.com/"
+      },
+      {
+        "name": "🛡️ Hybrid Analysis",
+        "command": "https://www.hybrid-analysis.com/"
+      },
+      {
+        "name": "🔒 Any.Run",
+        "command": "https://any.run/"
+      },
+      {
+        "name": "⚡ URLScan.io",
+        "command": "https://urlscan.io/"
+      },
+      {
+        "name": "🔐 Shodan",
+        "command": "https://www.shodan.io/"
+      },
+      {
+        "name": "🛡️ Joe Sandbox",
+        "command": "https://www.joesandbox.com/"
+      },
+      {
+        "name": "🔒 Tails OS",
+        "command": "https://tails.boum.org/"
+      },
+      {
+        "name": "🛡️ Whonix",
+        "command": "https://www.whonix.org/"
+      },
+      {
+        "name": "⚡ Qubes OS",
+        "command": "https://www.qubes-os.org/"
+      },
+      {
+        "name": "🔐 Pi-hole",
+        "command": "https://pi-hole.net/"
+      },
+      {
+        "name": "🛡️ AdGuard DNS",
+        "command": "https://adguard-dns.io/"
+      },
+      {
+        "name": "🔒 uBlock Origin",
+        "command": "https://ublockorigin.com/"
+      },
+      {
+        "name": "⚡ Privacy Badger",
+        "command": "https://privacybadger.org/"
+      },
+      {
+        "name": "🔐 VeraCrypt",
+        "command": "https://www.veracrypt.fr/"
+      },
+      {
+        "name": "🛡️ Cryptomator",
+        "command": "https://cryptomator.org/"
+      },
+      {
+        "name": "🔒 AxCrypt",
+        "command": "https://www.axcrypt.net/"
+      }
+    ]
+  },
+  {
+    "title": "📊 Benchmark & Tests",
+    "tools": [
+      {
+        "name": "⚡ UserBenchmark",
+        "command": "https://www.userbenchmark.com/"
+      },
+      {
+        "name": "📊 3DMark",
+        "command": "https://benchmarks.ul.com/3dmark"
+      },
+      {
+        "name": "💻 PCMark",
+        "command": "https://benchmarks.ul.com/pcmark10"
+      },
+      {
+        "name": "🔍 Geekbench",
+        "command": "https://www.geekbench.com/"
+      },
+      {
+        "name": "⚡ Cinebench",
+        "command": "https://www.maxon.net/en/cinebench"
+      },
+      {
+        "name": "📈 PassMark",
+        "command": "https://www.passmark.com/"
+      },
+      {
+        "name": "💾 CrystalDiskMark",
+        "command": "https://crystalmark.info/en/software/crystaldiskmark/"
+      },
+      {
+        "name": "📊 AS SSD Bench",
+        "command": "https://www.alex-is.de/"
+      },
+      {
+        "name": "⚡ ATTO Disk Bench",
+        "command": "https://www.atto.com/disk-benchmark/"
+      },
+      {
+        "name": "🔍 HD Tune",
+        "command": "https://www.hdtune.com/"
+      },
+      {
+        "name": "📈 Unigine Heaven",
+        "command": "https://benchmark.unigine.com/heaven"
+      },
+      {
+        "name": "💻 Unigine Valley",
+        "command": "https://benchmark.unigine.com/valley"
+      },
+      {
+        "name": "📊 Unigine Superpos.",
+        "command": "https://benchmark.unigine.com/superposition"
+      },
+      {
+        "name": "⚡ FurMark",
+        "command": "https://geeks3d.com/furmark/"
+      },
+      {
+        "name": "🔍 Prime95",
+        "command": "https://www.mersenne.org/download/"
+      },
+      {
+        "name": "📈 AIDA64",
+        "command": "https://www.aida64.com/"
+      },
+      {
+        "name": "💾 MemTest86",
+        "command": "https://www.memtest86.com/"
+      },
+      {
+        "name": "📊 MemTest64",
+        "command": "https://www.techpowerup.com/memtest64/"
+      },
+      {
+        "name": "⚡ OCCT",
+        "command": "https://www.ocbase.com/"
+      },
+      {
+        "name": "🔍 Intel Burn Test",
+        "command": "https://www.techspot.com/downloads/4965-intel-burn-test.html"
+      },
+      {
+        "name": "📈 LinX",
+        "command": "https://www.techpowerup.com/download/linx/"
+      },
+      {
+        "name": "💻 Y-Cruncher",
+        "command": "http://www.numberworld.org/y-cruncher/"
+      },
+      {
+        "name": "📊 Blender Bench",
+        "command": "https://opendata.blender.org/"
+      },
+      {
+        "name": "⚡ V-Ray Bench",
+        "command": "https://www.chaos.com/vray/benchmark"
+      },
+      {
+        "name": "🔍 Basemark GPU",
+        "command": "https://www.basemark.com/products/basemark-gpu/"
+      },
+      {
+        "name": "📈 GFXBench",
+        "command": "https://gfxbench.com/"
+      },
+      {
+        "name": "💾 ADATA SSD Toolbox",
+        "command": "https://www.adata.com/us/ss/software-5/"
+      },
+      {
+        "name": "📦 Samsung Magician",
+        "command": "https://www.samsung.com/semiconductor/minisite/ssd/product/consumer/magician/"
+      },
+      {
+        "name": "⚡ WD Dashboard",
+        "command": "https://support.wdc.com/downloads.aspx"
+      },
+      {
+        "name": "🔍 Crucial SE",
+        "command": "https://www.crucial.com/support/storage-executive"
+      },
+      {
+        "name": "📈 NovaBench",
+        "command": "https://novabench.com/"
+      },
+      {
+        "name": "💻 CPU Monkey",
+        "command": "https://www.cpu-monkey.com/"
+      },
+      {
+        "name": "📊 GPU Check",
+        "command": "https://www.gpucheck.com/"
+      },
+      {
+        "name": "⚡ CPU-World",
+        "command": "http://www.cpu-world.com/"
+      },
+      {
+        "name": "🔍 TechPowerUp",
+        "command": "https://www.techpowerup.com/"
+      },
+      {
+        "name": "⚡ PowerToys",
+        "command": "https://github.com/microsoft/PowerToys/releases"
+      },
+      {
+        "name": "🔍 Everything",
+        "command": "https://www.voidtools.com/"
+      },
+      {
+        "name": "👁️ QuickLook",
+        "command": "https://github.com/QL-Win/QuickLook/releases"
+      },
+      {
+        "name": "📸 ShareX",
+        "command": "https://getsharex.com/"
+      },
+      {
+        "name": "🎯 Greenshot",
+        "command": "https://getgreenshot.org/"
+      },
+      {
+        "name": "📷 Lightshot",
+        "command": "https://app.prntscr.com/"
+      },
+      {
+        "name": "📦 7-Zip",
+        "command": "https://www.7-zip.org/"
+      },
+      {
+        "name": "🗜️ WinRAR",
+        "command": "https://www.win-rar.com/"
+      },
+      {
+        "name": "📦 PeaZip",
+        "command": "https://peazip.github.io/"
+      },
+      {
+        "name": "🗜️ Bandizip",
+        "command": "https://www.bandisoft.com/bandizip/"
+      },
+      {
+        "name": "📝 Notepad++",
+        "command": "https://notepad-plus-plus.org/"
+      },
+      {
+        "name": "⚡ Sublime Text",
+        "command": "https://www.sublimetext.com/"
+      },
+      {
+        "name": "💻 VS Code",
+        "command": "https://code.visualstudio.com/"
+      },
+      {
+        "name": "📝 Atom",
+        "command": "https://atom.io/"
+      },
+      {
+        "name": "✍️ Typora",
+        "command": "https://typora.io/"
+      },
+      {
+        "name": "⚡ AutoHotkey",
+        "command": "https://www.autohotkey.com/"
+      },
+      {
+        "name": "🎨 Rainmeter",
+        "command": "https://www.rainmeter.net/"
+      },
+      {
+        "name": "🔧 WinAutomation",
+        "command": "https://www.winautomation.com/"
+      },
+      {
+        "name": "📁 Total Commander",
+        "command": "https://www.ghisler.com/"
+      },
+      {
+        "name": "🗂️ FreeCommander",
+        "command": "https://freecommander.com/"
+      },
+      {
+        "name": "📂 XYplorer",
+        "command": "https://www.xyplorer.com/"
+      },
+      {
+        "name": "🗃️ Directory Opus",
+        "command": "https://www.gpsoft.com.au/"
+      },
+      {
+        "name": "🖱️ X-Mouse Button",
+        "command": "https://www.highrez.co.uk/downloads/XMouseButtonControl.htm"
+      },
+      {
+        "name": "⌨️ SharpKeys",
+        "command": "https://github.com/randyrants/sharpkeys/releases"
+      },
+      {
+        "name": "🎯 WinDirStat",
+        "command": "https://windirstat.net/"
+      },
+      {
+        "name": "📊 SpaceSniffer",
+        "command": "http://www.uderzo.it/main_products/space_sniffer/"
+      },
+      {
+        "name": "🔍 Agent Ransack",
+        "command": "https://www.mythicsoft.com/agentransack/"
+      },
+      {
+        "name": "🗂️ DropIt",
+        "command": "http://www.dropitproject.com/"
+      },
+      {
+        "name": "⏰ f.lux",
+        "command": "https://justgetflux.com/"
+      },
+      {
+        "name": "💡 Clover",
+        "command": "http://en.ejie.me/"
+      },
+      {
+        "name": "🚀 Launchy",
+        "command": "https://www.launchy.net/"
+      },
+      {
+        "name": "⚡ Wox",
+        "command": "http://www.wox.one/"
+      },
+      {
+        "name": "🎯 Keypirinha",
+        "command": "https://keypirinha.com/"
+      },
+      {
+        "name": "📋 Ditto",
+        "command": "https://ditto-cp.sourceforge.io/"
+      },
+      {
+        "name": "📝 ClipClip",
+        "command": "https://clipclip.com/"
+      },
+      {
+        "name": "⚡ CopyQ",
+        "command": "https://hluk.github.io/CopyQ/"
+      },
+      {
+        "name": "🪟 FancyZones",
+        "command": "https://learn.microsoft.com/windows/powertoys/fancyzones"
+      },
+      {
+        "name": "📐 AquaSnap",
+        "command": "https://www.nurgo-software.com/products/aquasnap"
+      },
+      {
+        "name": "🎯 DisplayFusion",
+        "command": "https://www.displayfusion.com/"
+      },
+      {
+        "name": "🎬 VLC Media Player",
+        "command": "https://www.videolan.org/vlc/"
+      },
+      {
+        "name": "▶️ MPC-HC",
+        "command": "https://mpc-hc.org/"
+      },
+      {
+        "name": "🎥 PotPlayer",
+        "command": "https://potplayer.daum.net/"
+      },
+      {
+        "name": "📺 Kodi",
+        "command": "https://kodi.tv/"
+      },
+      {
+        "name": "🎞️ MPV",
+        "command": "https://mpv.io/"
+      },
+      {
+        "name": "🎬 OBS Studio",
+        "command": "https://obsproject.com/"
+      },
+      {
+        "name": "📹 XSplit",
+        "command": "https://www.xsplit.com/"
+      },
+      {
+        "name": "🎥 vMix",
+        "command": "https://www.vmix.com/"
+      },
+      {
+        "name": "✂️ DaVinci Resolve",
+        "command": "https://www.blackmagicdesign.com/products/davinciresolve"
+      },
+      {
+        "name": "🎞️ Kdenlive",
+        "command": "https://kdenlive.org/"
+      },
+      {
+        "name": "📽️ OpenShot",
+        "command": "https://www.openshot.org/"
+      },
+      {
+        "name": "🎬 Shotcut",
+        "command": "https://www.shotcut.org/"
+      },
+      {
+        "name": "📹 HitFilm Express",
+        "command": "https://fxhome.com/hitfilm-express"
+      },
+      {
+        "name": "🎨 Blender",
+        "command": "https://www.blender.org/"
+      },
+      {
+        "name": "🏗️ SketchUp",
+        "command": "https://www.sketchup.com/"
+      },
+      {
+        "name": "📐 FreeCAD",
+        "command": "https://www.freecadweb.org/"
+      },
+      {
+        "name": "🎯 Meshmixer",
+        "command": "https://www.meshmixer.com/"
+      },
+      {
+        "name": "🎨 Inkscape",
+        "command": "https://inkscape.org/"
+      },
+      {
+        "name": "🖌️ Krita",
+        "command": "https://krita.org/"
+      },
+      {
+        "name": "🎨 GIMP",
+        "command": "https://www.gimp.org/"
+      },
+      {
+        "name": "🖼️ Paint.NET",
+        "command": "https://www.getpaint.net/"
+      },
+      {
+        "name": "📐 Figma",
+        "command": "https://www.figma.com/downloads/"
+      },
+      {
+        "name": "🎯 Canva",
+        "command": "https://www.canva.com/"
+      },
+      {
+        "name": "🎵 Audacity",
+        "command": "https://www.audacityteam.org/"
+      },
+      {
+        "name": "🎼 Reaper",
+        "command": "https://www.reaper.fm/"
+      },
+      {
+        "name": "🎹 FL Studio",
+        "command": "https://www.image-line.com/fl-studio/"
+      },
+      {
+        "name": "🎧 Ableton Live",
+        "command": "https://www.ableton.com/live/"
+      },
+      {
+        "name": "🎚️ Ardour",
+        "command": "https://ardour.org/"
+      },
+      {
+        "name": "🎵 Ocenaudio",
+        "command": "https://www.ocenaudio.com/"
+      },
+      {
+        "name": "🎧 VirtualDJ",
+        "command": "https://www.virtualdj.com/"
+      },
+      {
+        "name": "🎛️ Traktor",
+        "command": "https://www.native-instruments.com/traktor/"
+      },
+      {
+        "name": "🎵 Serato DJ",
+        "command": "https://serato.com/"
+      },
+      {
+        "name": "🎚️ Mixxx",
+        "command": "https://www.mixxx.org/"
+      },
+      {
+        "name": "🔄 HandBrake",
+        "command": "https://handbrake.fr/"
+      },
+      {
+        "name": "⚡ FFmpeg",
+        "command": "https://ffmpeg.org/"
+      },
+      {
+        "name": "🎬 Format Factory",
+        "command": "http://www.pcfreetime.com/formatfactory/"
+      },
+      {
+        "name": "📹 MediaCoder",
+        "command": "https://www.mediacoderhq.com/"
+      },
+      {
+        "name": "🎞️ MKVToolNix",
+        "command": "https://mkvtoolnix.download/"
+      },
+      {
+        "name": "📡 Streamlabs OBS",
+        "command": "https://streamlabs.com/"
+      },
+      {
+        "name": "🎥 Restream",
+        "command": "https://restream.io/"
+      },
+      {
+        "name": "📹 vMix",
+        "command": "https://www.vmix.com/"
+      },
+      {
+        "name": "📷 Darktable",
+        "command": "https://www.darktable.org/"
+      },
+      {
+        "name": "🖼️ RawTherapee",
+        "command": "https://www.rawtherapee.com/"
+      },
+      {
+        "name": "📸 digiKam",
+        "command": "https://www.digikam.org/"
+      },
+      {
+        "name": "🎨 Photopea",
+        "command": "https://www.photopea.com/"
+      },
+      {
+        "name": "🎵 MusicBee",
+        "command": "https://getmusicbee.com/"
+      },
+      {
+        "name": "📻 Spotify",
+        "command": "https://www.spotify.com/download/"
+      },
+      {
+        "name": "🎼 foobar2000",
+        "command": "https://www.foobar2000.org/"
+      },
+      {
+        "name": "📦 LibreOffice",
+        "command": "https://www.libreoffice.org/"
+      },
+      {
+        "name": "📄 OpenOffice",
+        "command": "https://www.openoffice.org/"
+      },
+      {
+        "name": "☁️ Google Workspace",
+        "command": "https://workspace.google.com/"
+      },
+      {
+        "name": "📊 OnlyOffice",
+        "command": "https://www.onlyoffice.com/"
+      },
+      {
+        "name": "📝 WPS Office",
+        "command": "https://www.wps.com/"
+      },
+      {
+        "name": "📓 Notion",
+        "command": "https://www.notion.so/"
+      },
+      {
+        "name": "🗒️ Obsidian",
+        "command": "https://obsidian.md/"
+      },
+      {
+        "name": "📔 OneNote",
+        "command": "https://www.onenote.com/"
+      },
+      {
+        "name": "📝 Evernote",
+        "command": "https://evernote.com/"
+      },
+      {
+        "name": "🗂️ Joplin",
+        "command": "https://joplinapp.org/"
+      },
+      {
+        "name": "✍️ Typora",
+        "command": "https://typora.io/"
+      },
+      {
+        "name": "📓 Logseq",
+        "command": "https://logseq.com/"
+      },
+      {
+        "name": "✅ Todoist",
+        "command": "https://todoist.com/"
+      },
+      {
+        "name": "📋 TickTick",
+        "command": "https://ticktick.com/"
+      },
+      {
+        "name": "✔️ Any.do",
+        "command": "https://www.any.do/"
+      },
+      {
+        "name": "📝 Microsoft To Do",
+        "command": "https://to-do.microsoft.com/"
+      },
+      {
+        "name": "🎯 Trello",
+        "command": "https://trello.com/"
+      },
+      {
+        "name": "📊 Asana",
+        "command": "https://asana.com/"
+      },
+      {
+        "name": "🗂️ Monday.com",
+        "command": "https://monday.com/"
+      },
+      {
+        "name": "⏱️ Toggl Track",
+        "command": "https://toggl.com/track/"
+      },
+      {
+        "name": "⏰ RescueTime",
+        "command": "https://www.rescuetime.com/"
+      },
+      {
+        "name": "🕐 Clockify",
+        "command": "https://clockify.me/"
+      },
+      {
+        "name": "⏲️ Harvest",
+        "command": "https://www.getharvest.com/"
+      },
+      {
+        "name": "💬 Slack",
+        "command": "https://slack.com/downloads/"
+      },
+      {
+        "name": "👥 Microsoft Teams",
+        "command": "https://www.microsoft.com/teams/"
+      },
+      {
+        "name": "📹 Zoom",
+        "command": "https://zoom.us/download"
+      },
+      {
+        "name": "🎥 Google Meet",
+        "command": "https://meet.google.com/"
+      },
+      {
+        "name": "📞 Webex",
+        "command": "https://www.webex.com/downloads.html"
+      },
+      {
+        "name": "💬 Discord",
+        "command": "https://discord.com/download"
+      },
+      {
+        "name": "🗨️ Mattermost",
+        "command": "https://mattermost.com/"
+      },
+      {
+        "name": "🚀 Rocket.Chat",
+        "command": "https://rocket.chat/"
+      },
+      {
+        "name": "📄 PDF24",
+        "command": "https://tools.pdf24.org/"
+      },
+      {
+        "name": "📋 PDFtk",
+        "command": "https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/"
+      },
+      {
+        "name": "📝 PDF-XChange",
+        "command": "https://www.tracker-software.com/product/pdf-xchange-editor"
+      },
+      {
+        "name": "📄 Foxit Reader",
+        "command": "https://www.foxit.com/pdf-reader/"
+      },
+      {
+        "name": "📋 Sumatra PDF",
+        "command": "https://www.sumatrapdfreader.org/"
+      },
+      {
+        "name": "📅 Google Calendar",
+        "command": "https://calendar.google.com/"
+      },
+      {
+        "name": "📆 Outlook",
+        "command": "https://outlook.com/"
+      },
+      {
+        "name": "🗓️ Thunderbird",
+        "command": "https://www.thunderbird.net/"
+      },
+      {
+        "name": "🧠 XMind",
+        "command": "https://www.xmind.net/"
+      },
+      {
+        "name": "🗺️ FreeMind",
+        "command": "http://freemind.sourceforge.net/"
+      },
+      {
+        "name": "💭 MindMeister",
+        "command": "https://www.mindmeister.com/"
+      },
+      {
+        "name": "💻 VS Code",
+        "command": "https://code.visualstudio.com/"
+      },
+      {
+        "name": "⚡ Sublime Text",
+        "command": "https://www.sublimetext.com/"
+      },
+      {
+        "name": "🎯 Atom",
+        "command": "https://atom.io/"
+      },
+      {
+        "name": "📝 Notepad++",
+        "command": "https://notepad-plus-plus.org/"
+      },
+      {
+        "name": "🔧 WebStorm",
+        "command": "https://www.jetbrains.com/webstorm/"
+      },
+      {
+        "name": "💼 PhpStorm",
+        "command": "https://www.jetbrains.com/phpstorm/"
+      },
+      {
+        "name": "🎨 PyCharm",
+        "command": "https://www.jetbrains.com/pycharm/"
+      },
+      {
+        "name": "☕ IntelliJ IDEA",
+        "command": "https://www.jetbrains.com/idea/"
+      },
+      {
+        "name": "🐙 GitHub Desktop",
+        "command": "https://desktop.github.com/"
+      },
+      {
+        "name": "🦊 GitKraken",
+        "command": "https://www.gitkraken.com/"
+      },
+      {
+        "name": "🌿 SourceTree",
+        "command": "https://www.sourcetreeapp.com/"
+      },
+      {
+        "name": "🔧 TortoiseGit",
+        "command": "https://tortoisegit.org/"
+      },
+      {
+        "name": "📦 XAMPP",
+        "command": "https://www.apachefriends.org/"
+      },
+      {
+        "name": "⚡ WAMP",
+        "command": "https://www.wampserver.com/"
+      },
+      {
+        "name": "🎯 Laragon",
+        "command": "https://laragon.org/"
+      },
+      {
+        "name": "💼 MAMP",
+        "command": "https://www.mamp.info/"
+      },
+      {
+        "name": "🐬 MySQL Workbench",
+        "command": "https://www.mysql.com/products/workbench/"
+      },
+      {
+        "name": "🐘 pgAdmin",
+        "command": "https://www.pgadmin.org/"
+      },
+      {
+        "name": "📊 DBeaver",
+        "command": "https://dbeaver.io/"
+      },
+      {
+        "name": "💾 HeidiSQL",
+        "command": "https://www.heidisql.com/"
+      },
+      {
+        "name": "📡 Postman",
+        "command": "https://www.postman.com/downloads/"
+      },
+      {
+        "name": "⚡ Insomnia",
+        "command": "https://insomnia.rest/"
+      },
+      {
+        "name": "🔧 Hoppscotch",
+        "command": "https://hoppscotch.io/"
+      },
+      {
+        "name": "📋 Thunder Client",
+        "command": "https://www.thunderclient.com/"
+      },
+      {
+        "name": "🐳 Docker Desktop",
+        "command": "https://www.docker.com/products/docker-desktop"
+      },
+      {
+        "name": "☸️ Kubernetes",
+        "command": "https://kubernetes.io/"
+      },
+      {
+        "name": "📦 Podman",
+        "command": "https://podman.io/"
+      },
+      {
+        "name": "💻 Windows Terminal",
+        "command": "https://apps.microsoft.com/detail/9N0DX20HK701"
+      },
+      {
+        "name": "⚡ Cmder",
+        "command": "https://cmder.app/"
+      },
+      {
+        "name": "🔧 ConEmu",
+        "command": "https://conemu.github.io/"
+      },
+      {
+        "name": "🎯 Hyper",
+        "command": "https://hyper.is/"
+      },
+      {
+        "name": "📁 FileZilla",
+        "command": "https://filezilla-project.org/"
+      },
+      {
+        "name": "🌐 WinSCP",
+        "command": "https://winscp.net/"
+      },
+      {
+        "name": "📦 Cyberduck",
+        "command": "https://cyberduck.io/"
+      },
+      {
+        "name": "🟢 Node.js",
+        "command": "https://nodejs.org/"
+      },
+      {
+        "name": "📦 npm",
+        "command": "https://www.npmjs.com/"
+      },
+      {
+        "name": "⚡ Yarn",
+        "command": "https://yarnpkg.com/"
+      },
+      {
+        "name": "🎯 pnpm",
+        "command": "https://pnpm.io/"
+      },
+      {
+        "name": "🐍 Python",
+        "command": "https://www.python.org/downloads/"
+      },
+      {
+        "name": "📦 Anaconda",
+        "command": "https://www.anaconda.com/products/distribution"
+      },
+      {
+        "name": "🎯 PyPI",
+        "command": "https://pypi.org/"
+      },
+      {
+        "name": "📚 DevDocs",
+        "command": "https://devdocs.io/"
+      },
+      {
+        "name": "💡 MDN Web Docs",
+        "command": "https://developer.mozilla.org/"
+      },
+      {
+        "name": "📖 W3Schools",
+        "command": "https://www.w3schools.com/"
+      },
+      {
+        "name": "🔍 Stack Overflow",
+        "command": "https://stackoverflow.com/"
+      },
+      {
+        "name": "💻 TeamViewer",
+        "command": "https://www.teamviewer.com/"
+      },
+      {
+        "name": "🖥️ AnyDesk",
+        "command": "https://anydesk.com/"
+      },
+      {
+        "name": "🌐 Chrome Remote",
+        "command": "https://remotedesktop.google.com/"
+      },
+      {
+        "name": "⚡ RustDesk",
+        "command": "https://rustdesk.com/"
+      },
+      {
+        "name": "🔧 TightVNC",
+        "command": "https://www.tightvnc.com/"
+      },
+      {
+        "name": "💼 UltraVNC",
+        "command": "https://uvnc.com/"
+      },
+      {
+        "name": "🎯 RealVNC",
+        "command": "https://www.realvnc.com/"
+      },
+      {
+        "name": "📡 Ammyy Admin",
+        "command": "https://www.ammyy.com/"
+      },
+      {
+        "name": "🌐 Splashtop",
+        "command": "https://www.splashtop.com/"
+      },
+      {
+        "name": "⚡ Parsec",
+        "command": "https://parsec.app/"
+      },
+      {
+        "name": "🔧 Moonlight",
+        "command": "https://moonlight-stream.org/"
+      },
+      {
+        "name": "💻 Remmina",
+        "command": "https://remmina.org/"
+      },
+      {
+        "name": "🖥️ NoMachine",
+        "command": "https://www.nomachine.com/"
+      },
+      {
+        "name": "📦 Supremo",
+        "command": "https://www.supremocontrol.com/"
+      }
+    ]
+  },
+  {
+    "title": "🔧 Drivers",
+    "tools": [
+      {
+        "name": "🔧 Snappy Driver",
+        "command": "https://www.snappy-driver-installer.org/"
+      },
+      {
+        "name": "⚡ Driver Booster",
+        "command": "https://www.iobit.com/driver-booster.php"
+      },
+      {
+        "name": "💻 Driver Easy",
+        "command": "https://www.drivereasy.com/"
+      },
+      {
+        "name": "🎯 DriverPack",
+        "command": "https://drp.su/"
+      },
+      {
+        "name": "🔍 Driver Genius",
+        "command": "https://www.driver-soft.com/"
+      },
+      {
+        "name": "📦 NVIDIA Drivers",
+        "command": "https://www.nvidia.com/download/index.aspx"
+      },
+      {
+        "name": "🔴 AMD Drivers",
+        "command": "https://www.amd.com/support"
+      },
+      {
+        "name": "🎯 Intel Drivers",
+        "command": "https://www.intel.com/content/www/us/en/download-center/home.html"
+      },
+      {
+        "name": "💻 Dell Drivers",
+        "command": "https://www.dell.com/support/home/"
+      },
+      {
+        "name": "🖥️ HP Drivers",
+        "command": "https://support.hp.com/drivers"
+      },
+      {
+        "name": "📱 Lenovo Drivers",
+        "command": "https://support.lenovo.com/solutions/ht003029"
+      },
+      {
+        "name": "🎮 ASUS Drivers",
+        "command": "https://www.asus.com/support/download-center/"
+      },
+      {
+        "name": "⚡ MSI Drivers",
+        "command": "https://www.msi.com/support/download"
+      },
+      {
+        "name": "🔧 Realtek Drivers",
+        "command": "https://www.realtek.com/downloads/"
+      }
+    ]
+  },
+  {
+    "title": "📚 Documentation",
+    "tools": [
+      {
+        "name": "📚 Microsoft Docs",
+        "command": "https://learn.microsoft.com/"
+      },
+      {
+        "name": "💻 Windows Tips",
+        "command": "https://support.microsoft.com/windows"
+      },
+      {
+        "name": "🔧 Sysinternals",
+        "command": "https://learn.microsoft.com/sysinternals/"
+      },
+      {
+        "name": "📖 SS64 CMD",
+        "command": "https://ss64.com/nt/"
+      },
+      {
+        "name": "⚡ PowerShell Docs",
+        "command": "https://learn.microsoft.com/powershell/"
+      },
+      {
+        "name": "🌐 TechNet",
+        "command": "https://technet.microsoft.com/"
+      },
+      {
+        "name": "📚 How-To Geek",
+        "command": "https://www.howtogeek.com/"
+      },
+      {
+        "name": "🔍 Stack Overflow",
+        "command": "https://stackoverflow.com/"
+      },
+      {
+        "name": "📖 Reddit r/techsupport",
+        "command": "https://www.reddit.com/r/techsupport/"
+      },
+      {
+        "name": "💻 Bleeping Computer",
+        "command": "https://www.bleepingcomputer.com/"
+      },
+      {
+        "name": "🔧 Ninite",
+        "command": "https://ninite.com/"
+      },
+      {
+        "name": "📚 AlternativeTo",
+        "command": "https://alternativeto.net/"
+      },
+      {
+        "name": "💡 CNET Download",
+        "command": "https://download.cnet.com/"
+      },
+      {
+        "name": "🌐 PortableApps",
+        "command": "https://portableapps.com/"
+      }
+    ]
+  }
+]
