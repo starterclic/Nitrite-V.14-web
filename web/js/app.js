@@ -183,6 +183,13 @@ class NiTriTeApp {
             case 'optimization':
                 this.renderOptimizationPage();
                 break;
+            case 'backup':
+                this.renderBackupPage();
+                break;
+            case 'updates':
+                // Updates page is already rendered in HTML with inline buttons
+                console.log('[App] Updates page loaded');
+                break;
             case 'settings':
                 this.renderSettingsPage();
                 break;

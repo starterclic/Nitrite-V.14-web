@@ -88,6 +88,14 @@
                     <span class="nav-icon">⚙️</span>
                     <span class="nav-text">Optimisations</span>
                 </button>
+                <button class="nav-item" data-page="backup">
+                    <span class="nav-icon">💾</span>
+                    <span class="nav-text">Sauvegarde</span>
+                </button>
+                <button class="nav-item" data-page="updates">
+                    <span class="nav-icon">📥</span>
+                    <span class="nav-text">Mises à jour</span>
+                </button>
                 <button class="nav-item" data-page="settings">
                     <span class="nav-icon">⚙️</span>
                     <span class="nav-text">Paramètres</span>
@@ -238,6 +246,38 @@
 
                 <div id="optimizationContent" class="optimization-content">
                     <!-- Optimization options will be shown here -->
+                </div>
+            </div>
+
+            <!-- Backup & Restore Page -->
+            <div id="backupPage" class="page">
+                <div id="backupContent" class="backup-content">
+                    <!-- Backup options will be shown here -->
+                </div>
+            </div>
+
+            <!-- Windows Updates Page -->
+            <div id="updatesPage" class="page">
+                <div class="page-header">
+                    <h1>📥 Mises à Jour Windows</h1>
+                    <p class="page-description">Gérez les mises à jour système</p>
+                </div>
+
+                <div id="updatesContent" class="updates-content">
+                    <div class="updates-intro">
+                        <button class="btn btn-primary" onclick="window.NiTriTeApp.checkUpdates()">
+                            🔍 Vérifier les mises à jour
+                        </button>
+                    </div>
+                    <div id="benchmarkContainer" style="margin-top: 30px;">
+                        <h3>🏁 Benchmark Système</h3>
+                        <button class="btn btn-secondary" onclick="window.NiTriTeApp.runBenchmark()">
+                            Lancer le Benchmark
+                        </button>
+                        <div id="benchmarkResults" style="margin-top: 20px;">
+                            <!-- Benchmark results will be shown here -->
+                        </div>
+                    </div>
                 </div>
             </div>
 

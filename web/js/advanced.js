@@ -116,6 +116,65 @@ if (typeof NiTriTeApp !== 'undefined') {
                     </div>
                 </div>
 
+                <!-- Performance Optimization Section -->
+                <div class="optimization-section">
+                    <div class="section-header">
+                        <h3>⚡ Optimisations de Performance</h3>
+                        <p class="section-description">Tweaks avancés pour améliorer les performances</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="optimization-card">
+                            <div class="card-icon">🚀</div>
+                            <div class="card-content">
+                                <h4>Optimisations Avancées</h4>
+                                <p>Désactive les fonctionnalités gourmandes en ressources</p>
+                                <ul class="feature-list">
+                                    <li>✓ Désactiver effets visuels</li>
+                                    <li>✓ Désactiver hibernation</li>
+                                    <li>✓ Optimiser système de fichiers</li>
+                                    <li>✓ Désactiver indexation (SSD)</li>
+                                    <li>✓ Désactiver Prefetch/Superfetch</li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-primary" onclick="window.NiTriTeApp.applyPerformanceTweaks()">
+                                Optimiser
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Repair Section -->
+                <div class="optimization-section">
+                    <div class="section-header">
+                        <h3>🔧 Réparation Système</h3>
+                        <p class="section-description">Outils de diagnostic et réparation Windows</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="tools-grid">
+                            <button class="tool-button" onclick="window.NiTriTeApp.runDISMScan('CheckHealth')">
+                                <span class="tool-icon">🔍</span>
+                                <span class="tool-name">DISM Check</span>
+                            </button>
+                            <button class="tool-button" onclick="window.NiTriTeApp.runDISMScan('ScanHealth')">
+                                <span class="tool-icon">🔎</span>
+                                <span class="tool-name">DISM Scan</span>
+                            </button>
+                            <button class="tool-button" onclick="window.NiTriTeApp.runDISMScan('RestoreHealth')">
+                                <span class="tool-icon">🔧</span>
+                                <span class="tool-name">DISM Repair</span>
+                            </button>
+                            <button class="tool-button" onclick="window.NiTriTeApp.runSFCScan()">
+                                <span class="tool-icon">🛡️</span>
+                                <span class="tool-name">SFC Scan</span>
+                            </button>
+                            <button class="tool-button" onclick="window.NiTriTeApp.resetNetwork()">
+                                <span class="tool-icon">🌐</span>
+                                <span class="tool-name">Reset Réseau</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- System Tools Quick Access -->
                 <div class="optimization-section">
                     <div class="section-header">
@@ -139,6 +198,14 @@ if (typeof NiTriTeApp !== 'undefined') {
                             <button class="tool-button" onclick="window.NiTriTeAPI.executeTool('disk_cleanup')">
                                 <span class="tool-icon">🗑️</span>
                                 <span class="tool-name">Nettoyage</span>
+                            </button>
+                            <button class="tool-button" onclick="window.NiTriTeAPI.executeTool('device_manager')">
+                                <span class="tool-icon">🔌</span>
+                                <span class="tool-name">Périphériques</span>
+                            </button>
+                            <button class="tool-button" onclick="window.NiTriTeAPI.executeTool('system_info')">
+                                <span class="tool-icon">💻</span>
+                                <span class="tool-name">Infos Système</span>
                             </button>
                         </div>
                     </div>
@@ -568,5 +635,503 @@ if (typeof NiTriTeAPI !== 'undefined') {
             console.error('Error fetching master apps:', error);
             return [];
         }
+    };
+}
+
+// ==================== BACKUP & RESTORE PAGE ====================
+if (typeof NiTriTeApp !== 'undefined') {
+    /**
+     * Render Backup & Restore Page
+     */
+    NiTriTeApp.prototype.renderBackupPage = function() {
+        const backupPage = document.getElementById('backupPage');
+        if (!backupPage) {
+            console.warn('[App] backupPage element not found - skipping render');
+            return;
+        }
+
+        backupPage.innerHTML = `
+            <div class="page-header">
+                <h1>💾 Sauvegarde & Restauration</h1>
+                <p class="page-description">Protégez votre système et vos données</p>
+            </div>
+
+            <div class="backup-sections">
+                <!-- Restore Point Section -->
+                <div class="backup-section">
+                    <div class="section-header">
+                        <h3>📌 Points de Restauration</h3>
+                        <p class="section-description">Créez un point de sauvegarde système</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="backup-card">
+                            <div class="card-icon">🔄</div>
+                            <div class="card-content">
+                                <h4>Créer un Point de Restauration</h4>
+                                <p>Permet de revenir en arrière en cas de problème après des modifications système</p>
+                                <input type="text" id="restorePointDesc" placeholder="Description (optionnel)" class="input-text">
+                            </div>
+                            <button class="btn btn-primary" onclick="window.NiTriTeApp.createRestorePoint()">
+                                Créer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Driver Backup Section -->
+                <div class="backup-section">
+                    <div class="section-header">
+                        <h3>🔌 Sauvegarde des Drivers</h3>
+                        <p class="section-description">Exportez tous les drivers installés</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="backup-card">
+                            <div class="card-icon">💿</div>
+                            <div class="card-content">
+                                <h4>Exporter les Drivers</h4>
+                                <p>Sauvegarde tous les drivers système pour réinstallation rapide</p>
+                                <input type="text" id="driverBackupPath" value="C:\\DriversBackup" class="input-text">
+                                <div id="driverBackupResults" style="display: none; margin-top: 10px;">
+                                    <div class="result-box">
+                                        <strong>✅ Sauvegarde terminée:</strong> <span id="driverCount">0</span> drivers exportés
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="window.NiTriTeApp.backupDrivers()">
+                                Exporter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apps List Export Section -->
+                <div class="backup-section">
+                    <div class="section-header">
+                        <h3>📋 Liste des Applications</h3>
+                        <p class="section-description">Exportez la liste des applications installées</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="backup-card">
+                            <div class="card-icon">📝</div>
+                            <div class="card-content">
+                                <h4>Exporter la Liste</h4>
+                                <p>Génère une liste de toutes les applications installées (utile pour réinstallation)</p>
+                                <div id="appsListResults" style="display: none; margin-top: 10px;">
+                                    <div class="result-box">
+                                        <strong>✅ Export terminé:</strong> <span id="appsCount">0</span> applications
+                                        <button class="btn btn-small" onclick="window.NiTriTeApp.downloadAppsList()" style="margin-top: 10px;">
+                                            💾 Télécharger la liste
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="window.NiTriTeApp.exportAppsList()">
+                                Exporter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    };
+
+    /**
+     * Create system restore point
+     */
+    NiTriTeApp.prototype.createRestorePoint = async function() {
+        const description = document.getElementById('restorePointDesc')?.value || 'NiTriTe Manual Restore Point';
+
+        if (!confirm(`💾 Créer un point de restauration système?\n\nDescription: ${description}\n\n⚠️ Requiert les droits administrateur`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/backup/restore-point', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({description})
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ ' + result.message);
+                document.getElementById('restorePointDesc').value = '';
+            } else {
+                alert('❌ ' + (result.message || result.error || 'Erreur inconnue'));
+            }
+        } catch (error) {
+            console.error('Error creating restore point:', error);
+            alert('❌ Erreur lors de la création du point de restauration');
+        }
+    };
+
+    /**
+     * Backup drivers
+     */
+    NiTriTeApp.prototype.backupDrivers = async function() {
+        const path = document.getElementById('driverBackupPath')?.value || 'C:\\DriversBackup';
+
+        if (!confirm(`🔌 Sauvegarder tous les drivers?\n\nDestination: ${path}\n\n⚠️ Requiert les droits administrateur\n⏱️ Peut prendre plusieurs minutes`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/backup/drivers', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({path})
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                document.getElementById('driverBackupResults').style.display = 'block';
+                document.getElementById('driverCount').textContent = result.count;
+                alert(`✅ ${result.message}\n\nEmplacement: ${result.path}`);
+            } else {
+                alert('❌ ' + (result.message || result.error || 'Erreur inconnue'));
+            }
+        } catch (error) {
+            console.error('Error backing up drivers:', error);
+            alert('❌ Erreur lors de la sauvegarde des drivers');
+        }
+    };
+
+    /**
+     * Export apps list
+     */
+    NiTriTeApp.prototype.exportAppsList = async function() {
+        try {
+            const response = await fetch('/api/backup/apps-list');
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                this.cachedAppsList = result.applications;
+                document.getElementById('appsListResults').style.display = 'block';
+                document.getElementById('appsCount').textContent = result.count;
+                alert(`✅ Liste exportée avec succès!\n\n${result.count} applications trouvées`);
+            } else {
+                alert('❌ ' + (result.error || 'Erreur inconnue'));
+            }
+        } catch (error) {
+            console.error('Error exporting apps list:', error);
+            alert('❌ Erreur lors de l\'export de la liste');
+        }
+    };
+
+    /**
+     * Download apps list as JSON
+     */
+    NiTriTeApp.prototype.downloadAppsList = function() {
+        if (!this.cachedAppsList) {
+            alert('⚠️ Veuillez d\'abord exporter la liste');
+            return;
+        }
+
+        const dataStr = JSON.stringify(this.cachedAppsList, null, 2);
+        const dataBlob = new Blob([dataStr], {type: 'application/json'});
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `applications_${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+    };
+
+    // ==================== ADVANCED OPTIMIZATION ====================
+
+    /**
+     * Add performance tweaks to optimization page
+     */
+    NiTriTeApp.prototype.applyPerformanceTweaks = async function() {
+        if (!confirm('⚡ Optimisations de Performance\n\n' +
+                     'Cette opération va:\n' +
+                     '• Désactiver les effets visuels inutiles\n' +
+                     '• Désactiver l\'hibernation\n' +
+                     '• Optimiser le système de fichiers\n' +
+                     '• Désactiver l\'indexation Windows Search\n' +
+                     '• Désactiver Prefetch/Superfetch (SSD)\n\n' +
+                     '⚠️ Requiert droits admin\n' +
+                     '⚠️ Redémarrage recommandé\n\n' +
+                     'Continuer?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/optimization/performance', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ ' + result.message);
+            } else {
+                alert('⚠️ ' + (result.message || 'Certaines optimisations ont échoué'));
+            }
+        } catch (error) {
+            console.error('Error applying performance tweaks:', error);
+            alert('❌ Erreur lors de l\'application des optimisations');
+        }
+    };
+
+    // ==================== SYSTEM REPAIR TOOLS ====================
+
+    /**
+     * Run DISM scan
+     */
+    NiTriTeApp.prototype.runDISMScan = async function(operation = 'ScanHealth') {
+        const operations = {
+            'ScanHealth': 'Analyse de santé',
+            'CheckHealth': 'Vérification rapide',
+            'RestoreHealth': 'Réparation complète'
+        };
+
+        if (!confirm(`🔧 DISM - ${operations[operation]}\n\n` +
+                     `⚠️ Requiert droits administrateur\n` +
+                     `⏱️ Peut prendre 10-30 minutes\n\n` +
+                     `Continuer?`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/system/dism-scan', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({operation})
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ DISM scan terminé avec succès\n\nVoir la console pour les détails');
+                console.log('DISM Output:', result.output);
+            } else {
+                alert('⚠️ ' + result.message + '\n\nVoir la console pour les détails');
+                console.log('DISM Output:', result.output);
+            }
+        } catch (error) {
+            console.error('Error running DISM:', error);
+            alert('❌ Erreur lors de l\'exécution de DISM');
+        }
+    };
+
+    /**
+     * Run SFC scan
+     */
+    NiTriTeApp.prototype.runSFCScan = async function() {
+        if (!confirm('🔍 System File Checker (SFC)\n\n' +
+                     '⚠️ Requiert droits administrateur\n' +
+                     '⏱️ Peut prendre 15-30 minutes\n\n' +
+                     'Continuer?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/system/sfc-scan', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ SFC scan terminé avec succès\n\nVoir la console pour les détails');
+                console.log('SFC Output:', result.output);
+            } else {
+                alert('⚠️ ' + result.message + '\n\nVoir la console pour les détails');
+                console.log('SFC Output:', result.output);
+            }
+        } catch (error) {
+            console.error('Error running SFC:', error);
+            alert('❌ Erreur lors de l\'exécution de SFC');
+        }
+    };
+
+    /**
+     * Reset network
+     */
+    NiTriTeApp.prototype.resetNetwork = async function() {
+        if (!confirm('🌐 Réinitialisation Réseau Complète\n\n' +
+                     'Cette opération va:\n' +
+                     '• Libérer et renouveler l\'IP\n' +
+                     '• Vider le cache DNS\n' +
+                     '• Réinitialiser Winsock\n' +
+                     '• Réinitialiser TCP/IP\n\n' +
+                     '⚠️ Requiert droits admin\n' +
+                     '⚠️ Redémarrage OBLIGATOIRE\n\n' +
+                     'Continuer?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/system/network-reset', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ ' + result.message);
+            } else {
+                alert('❌ ' + (result.message || 'Erreur lors de la réinitialisation'));
+            }
+        } catch (error) {
+            console.error('Error resetting network:', error);
+            alert('❌ Erreur lors de la réinitialisation réseau');
+        }
+    };
+
+    /**
+     * Check Windows Updates
+     */
+    NiTriTeApp.prototype.checkUpdates = async function() {
+        const updatesContent = document.getElementById('updatesContent');
+        if (!updatesContent) return;
+
+        updatesContent.innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Recherche des mises à jour...</p>
+            </div>
+        `;
+
+        try {
+            const response = await fetch('/api/updates/check');
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                if (result.count === 0) {
+                    updatesContent.innerHTML = `
+                        <div class="result-box" style="background: rgba(76, 175, 80, 0.1); border-color: #4CAF50;">
+                            <h3>✅ Système à jour</h3>
+                            <p>Aucune mise à jour disponible</p>
+                        </div>
+                    `;
+                } else {
+                    let updatesHTML = `
+                        <div class="result-box">
+                            <h3>📥 ${result.count} mise(s) à jour disponible(s)</h3>
+                        </div>
+                        <div class="updates-list">
+                    `;
+
+                    result.updates.forEach(update => {
+                        updatesHTML += `
+                            <div class="update-item">
+                                <h4>${update.Title}</h4>
+                                <p>${update.Description}</p>
+                                <span class="update-size">${update.Size} MB</span>
+                            </div>
+                        `;
+                    });
+
+                    updatesHTML += `
+                        </div>
+                        <button class="btn btn-primary" onclick="window.location.href='ms-settings:windowsupdate'">
+                            Ouvrir Windows Update
+                        </button>
+                    `;
+
+                    updatesContent.innerHTML = updatesHTML;
+                }
+            } else {
+                updatesContent.innerHTML = `
+                    <div class="result-box" style="background: rgba(244, 67, 54, 0.1); border-color: #F44336;">
+                        <h3>❌ Erreur</h3>
+                        <p>Impossible de vérifier les mises à jour</p>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('Error checking updates:', error);
+            updatesContent.innerHTML = `
+                <div class="result-box" style="background: rgba(244, 67, 54, 0.1); border-color: #F44336;">
+                    <h3>❌ Erreur</h3>
+                    <p>Erreur lors de la vérification des mises à jour</p>
+                </div>
+            `;
+        }
+    };
+
+    /**
+     * Run benchmark
+     */
+    NiTriTeApp.prototype.runBenchmark = async function() {
+        const benchmarkResults = document.getElementById('benchmarkResults');
+        if (!benchmarkResults) return;
+
+        benchmarkResults.innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Benchmark en cours...</p>
+            </div>
+        `;
+
+        try {
+            const response = await fetch('/api/benchmark/run', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                benchmarkResults.innerHTML = `
+                    <div class="benchmark-results">
+                        <div class="overall-score">
+                            <div class="score-circle-large">
+                                <span class="score-value">${result.overall_score}</span>
+                                <span class="score-label">/ 100</span>
+                            </div>
+                            <p class="score-status">${this.getScoreStatus(result.overall_score)}</p>
+                        </div>
+                        <div class="score-breakdown">
+                            <div class="score-item">
+                                <span class="score-name">💻 CPU</span>
+                                <span class="score-value">${result.cpu_score}</span>
+                            </div>
+                            <div class="score-item">
+                                <span class="score-name">🧠 Mémoire</span>
+                                <span class="score-value">${result.memory_score}</span>
+                            </div>
+                            <div class="score-item">
+                                <span class="score-name">💿 Disque</span>
+                                <span class="score-value">${result.disk_score}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                benchmarkResults.innerHTML = `
+                    <div class="result-box" style="background: rgba(244, 67, 54, 0.1); border-color: #F44336;">
+                        <h3>❌ Erreur</h3>
+                        <p>Impossible d'exécuter le benchmark</p>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('Error running benchmark:', error);
+            benchmarkResults.innerHTML = `
+                <div class="result-box" style="background: rgba(244, 67, 54, 0.1); border-color: #F44336;">
+                    <h3>❌ Erreur</h3>
+                    <p>Erreur lors du benchmark</p>
+                </div>
+            `;
+        }
+    };
+
+    /**
+     * Get score status text
+     */
+    NiTriTeApp.prototype.getScoreStatus = function(score) {
+        if (score >= 90) return 'Excellent';
+        if (score >= 75) return 'Très Bon';
+        if (score >= 60) return 'Bon';
+        if (score >= 45) return 'Moyen';
+        return 'Faible';
     };
 }
