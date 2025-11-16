@@ -2,6 +2,7 @@
 """
 NiTriTe V.13 - Lanceur Web Portable
 Lance le serveur Flask et ouvre automatiquement le navigateur
+Compatible PyInstaller
 """
 
 import os
@@ -10,33 +11,32 @@ import time
 import webbrowser
 import threading
 import logging
-from pathlib import Path
-
-# Ajouter src au path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 # Configuration du logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
-def get_resource_path(relative_path):
-    """Obtenir le chemin absolu vers une ressource (compatible PyInstaller)"""
-    try:
-        # PyInstaller crée un dossier temp et stocke le chemin dans _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
+def get_base_path():
+    """Obtenir le chemin de base (compatible PyInstaller)"""
+    if getattr(sys, 'frozen', False):
+        # Mode PyInstaller
+        return sys._MEIPASS
+    else:
+        # Mode développement
+        return os.path.abspath(".")
 
 def open_browser():
     """Ouvre le navigateur après un délai"""
-    time.sleep(2)  # Attendre que le serveur démarre
+    time.sleep(3)  # Attendre que le serveur démarre
     logger.info("🌐 Ouverture du navigateur...")
-    webbrowser.open('http://localhost:5000')
+    try:
+        webbrowser.open('http://127.0.0.1:5000')
+    except Exception as e:
+        logger.warning(f"Impossible d'ouvrir le navigateur automatiquement: {e}")
+        print("\n⚠️  Ouvrez manuellement: http://127.0.0.1:5000")
 
 def main():
     """Point d'entrée principal"""
@@ -44,103 +44,75 @@ def main():
     print("   🚀 NiTriTe V.13 - Version Web Portable")
     print("=" * 70)
     print()
-    print("📦 Initialisation...")
 
-    # Vérifier que les dossiers nécessaires existent
-    web_dir = get_resource_path('web')
-    if not os.path.exists(web_dir):
-        print(f"❌ Erreur: Le dossier 'web' n'existe pas: {web_dir}")
+    # Changer le répertoire de travail
+    base_path = get_base_path()
+    os.chdir(base_path)
+
+    logger.info(f"📁 Répertoire de base: {base_path}")
+
+    # Ajouter src au path
+    src_path = os.path.join(base_path, 'src')
+    if src_path not in sys.path:
+        sys.path.insert(0, src_path)
+
+    # Vérifier que web_backend.py existe
+    backend_file = os.path.join(base_path, 'web_backend.py')
+    if not os.path.exists(backend_file):
+        logger.error(f"❌ Fichier manquant: {backend_file}")
         input("\nAppuyez sur Entrée pour quitter...")
         sys.exit(1)
 
-    print(f"✅ Dossier web trouvé: {web_dir}")
+    logger.info("✅ Fichier web_backend.py trouvé")
 
-    # Importer Flask et démarrer le serveur
+    # Vérifier le dossier web
+    web_dir = os.path.join(base_path, 'web')
+    if not os.path.exists(web_dir):
+        logger.error(f"❌ Dossier web manquant: {web_dir}")
+        input("\nAppuyez sur Entrée pour quitter...")
+        sys.exit(1)
+
+    logger.info(f"✅ Dossier web trouvé: {web_dir}")
+
+    print()
+    print("📡 Démarrage du serveur...")
+    print()
+
     try:
-        from flask import Flask, send_from_directory
-        from flask_cors import CORS
-        import platform
+        # Importer et lancer le backend
+        import web_backend
 
-        logger.info("✅ Flask importé avec succès")
-
-        # Initialiser l'application Flask
-        app = Flask(__name__, static_folder=web_dir, static_url_path='')
-        CORS(app)
-
-        @app.route('/')
-        def index():
-            """Servir la page principale"""
-            return send_from_directory(web_dir, 'index.html')
-
-        # Importer les routes du backend
-        print("📡 Chargement du backend API...")
-
-        # Changer de répertoire vers le dossier de base pour les imports
-        original_dir = os.getcwd()
-        if hasattr(sys, '_MEIPASS'):
-            os.chdir(sys._MEIPASS)
-
-        try:
-            # Importer et enregistrer toutes les routes
-            import web_backend
-
-            # Copier toutes les routes du web_backend vers notre app
-            for rule in web_backend.app.url_map.iter_rules():
-                if rule.endpoint != 'static':
-                    try:
-                        view_func = web_backend.app.view_functions[rule.endpoint]
-                        app.add_url_rule(
-                            rule.rule,
-                            endpoint=rule.endpoint,
-                            view_func=view_func,
-                            methods=rule.methods
-                        )
-                    except Exception as e:
-                        logger.debug(f"Impossible d'ajouter la route {rule.endpoint}: {e}")
-
-            logger.info("✅ Routes API chargées")
-
-        except Exception as e:
-            logger.warning(f"⚠️  Backend API non disponible: {e}")
-            logger.info("ℹ️  L'application fonctionnera en mode frontend uniquement")
-
-        finally:
-            os.chdir(original_dir)
-
-        print()
         print("=" * 70)
         print("   ✅ Serveur prêt !")
         print("=" * 70)
         print()
-        print("🌐 URL: http://localhost:5000")
+        print("🌐 URL: http://127.0.0.1:5000")
         print()
         print("📝 Le navigateur va s'ouvrir automatiquement...")
-        print("⚠️  Pour arrêter le serveur: Fermez cette fenêtre")
+        print("⚠️  Pour arrêter: Fermez cette fenêtre ou Ctrl+C")
         print()
         print("=" * 70)
+        print()
 
         # Ouvrir le navigateur dans un thread séparé
-        browser_thread = threading.Thread(target=open_browser)
-        browser_thread.daemon = True
+        browser_thread = threading.Thread(target=open_browser, daemon=True)
         browser_thread.start()
 
-        # Démarrer le serveur Flask
-        app.run(
-            host='127.0.0.1',
-            port=5000,
-            debug=False,
-            use_reloader=False
-        )
+        # Démarrer le serveur (bloquant)
+        web_backend.main()
 
     except ImportError as e:
-        print(f"❌ Erreur d'import: {e}")
-        print("\nDépendances manquantes. Installez-les avec:")
-        print("pip install -r requirements.txt")
+        logger.error(f"❌ Erreur d'import: {e}")
+        logger.error("\nDépendances manquantes. Assurez-vous que:")
+        logger.error("- Flask est installé")
+        logger.error("- flask-cors est installé")
+        logger.error("- Tous les modules src/ sont présents")
         input("\nAppuyez sur Entrée pour quitter...")
         sys.exit(1)
     except Exception as e:
-        print(f"❌ Erreur: {e}")
-        logger.exception("Erreur détaillée:")
+        logger.error(f"❌ Erreur: {e}")
+        import traceback
+        traceback.print_exc()
         input("\nAppuyez sur Entrée pour quitter...")
         sys.exit(1)
 

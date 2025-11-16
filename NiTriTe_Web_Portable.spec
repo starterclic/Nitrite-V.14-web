@@ -1,48 +1,71 @@
 # -*- mode: python ; coding: utf-8 -*-
 """
 Configuration PyInstaller pour NiTriTe V.13 Web Portable
-Crée un exécutable standalone qui lance le serveur web et ouvre le navigateur
+Crée un exécutable standalone avec serveur Flask intégré
 """
 
 import os
-from PyInstaller.utils.hooks import collect_data_files, collect_submodules
+import sys
 
 block_cipher = None
 
-# Collecter tous les fichiers web
-web_files = []
+# Collecter tous les fichiers du dossier web
+web_datas = []
 for root, dirs, files in os.walk('web'):
     for file in files:
-        file_path = os.path.join(root, file)
-        dest_dir = os.path.dirname(file_path)
-        web_files.append((file_path, dest_dir))
+        src = os.path.join(root, file)
+        dst = os.path.dirname(src)
+        web_datas.append((src, dst))
 
-# Collecter les données
-data_files = []
+# Collecter les fichiers data
+data_datas = []
 for root, dirs, files in os.walk('data'):
     for file in files:
-        file_path = os.path.join(root, file)
-        dest_dir = os.path.dirname(file_path)
-        data_files.append((file_path, dest_dir))
+        src = os.path.join(root, file)
+        dst = os.path.dirname(src)
+        data_datas.append((src, dst))
 
 # Collecter les assets
-asset_files = []
-for root, dirs, files in os.walk('assets'):
-    for file in files:
-        file_path = os.path.join(root, file)
-        dest_dir = os.path.dirname(file_path)
-        asset_files.append((file_path, dest_dir))
+asset_datas = []
+if os.path.exists('assets'):
+    for root, dirs, files in os.walk('assets'):
+        for file in files:
+            src = os.path.join(root, file)
+            dst = os.path.dirname(src)
+            asset_datas.append((src, dst))
 
-# Modules cachés à inclure
-hidden_imports = [
+# Collecter tous les fichiers Python du dossier src
+src_datas = []
+if os.path.exists('src'):
+    for root, dirs, files in os.walk('src'):
+        for file in files:
+            if file.endswith('.py'):
+                src = os.path.join(root, file)
+                dst = os.path.dirname(src)
+                src_datas.append((src, dst))
+
+# web_backend.py à la racine
+web_backend_data = []
+if os.path.exists('web_backend.py'):
+    web_backend_data = [('web_backend.py', '.')]
+
+# Modules cachés nécessaires
+hiddenimports = [
+    # Flask et dépendances
     'flask',
+    'flask.json',
+    'flask.json.provider',
     'flask_cors',
     'werkzeug',
+    'werkzeug.security',
+    'werkzeug.datastructures',
     'jinja2',
+    'jinja2.ext',
     'click',
     'itsdangerous',
     'markupsafe',
-    'psutil',
+
+    # Modules standards
     'json',
     'subprocess',
     'platform',
@@ -50,40 +73,65 @@ hidden_imports = [
     'tempfile',
     'pathlib',
     'logging',
-    # Modules du projet
+    'threading',
+    'webbrowser',
+    'time',
+
+    # Modules optionnels
+    'psutil',
+    'winreg',
+
+    # Modules du projet src/
     'installer_manager',
     'winget_manager',
     'elevation_helper',
     'config_manager',
     'portable_database',
     'tools_data_complete',
+    'gui_modern_v13',
+    'advanced_pages',
+    'profiles_manager',
+    'cleanup_manager',
+    'dependency_manager',
+    'modern_colors',
+    'splash_screen',
+    'layout_manager',
+    'portable_paths',
+    'translations',
+    'url_updater',
+    'winget_installer',
 ]
 
-# Données supplémentaires de Flask
-flask_datas = collect_data_files('flask')
+# Modules à exclure pour réduire la taille
+excludes = [
+    'matplotlib',
+    'numpy',
+    'pandas',
+    'scipy',
+    'PIL',
+    'tkinter',
+    '_tkinter',
+    'cv2',
+    'PyQt5',
+    'PyQt6',
+    'PySide2',
+    'PySide6',
+    'wx',
+]
+
+# Combiner toutes les données
+all_datas = web_datas + data_datas + asset_datas + src_datas + web_backend_data
 
 a = Analysis(
     ['nitrite_web_portable.py'],
     pathex=[],
     binaries=[],
-    datas=web_files + data_files + asset_files + flask_datas + [
-        ('web_backend.py', '.'),
-        ('src', 'src'),
-    ],
-    hiddenimports=hidden_imports,
+    datas=all_datas,
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=[
-        'matplotlib',
-        'numpy',
-        'pandas',
-        'scipy',
-        'PIL',
-        'tkinter',
-        '_tkinter',
-        'cv2',
-    ],
+    excludes=excludes,
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     cipher=block_cipher,
@@ -106,7 +154,7 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=True,  # Afficher la console pour voir les logs
+    console=True,  # Console visible pour voir les logs
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
