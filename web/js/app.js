@@ -520,24 +520,111 @@ class NiTriTeApp {
         if (!content) return;
 
         content.innerHTML = `
-            <div style="background: var(--bg-secondary); padding: 20px; border-radius: 12px;">
-                <h3 style="margin-bottom: 15px;">Paramètres de l'Application</h3>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px;">Thème:</label>
-                    <select id="themeSelect" style="padding: 10px; border-radius: 8px; background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color);">
-                        <option value="dark" ${this.currentTheme === 'dark' ? 'selected' : ''}>Sombre</option>
-                        <option value="light" ${this.currentTheme === 'light' ? 'selected' : ''}>Clair</option>
-                    </select>
+            <div class="settings-sections">
+                <!-- Language Section -->
+                <div class="settings-section">
+                    <h3>🌐 Langue / Language</h3>
+                    <p class="section-description">Choisissez la langue de l'interface</p>
+                    <div class="language-buttons">
+                        <button class="btn btn-secondary lang-btn active" onclick="window.NiTriTeApp.setLanguage('fr')">
+                            🇫🇷 Français
+                        </button>
+                        <button class="btn btn-secondary lang-btn" onclick="window.NiTriTeApp.setLanguage('en')">
+                            🇬🇧 English
+                        </button>
+                    </div>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: var(--text-secondary);">
+                        ℹ️ L'application sera rechargée pour appliquer les changements
+                    </p>
                 </div>
-                <div>
-                    <button class="btn btn-primary" onclick="window.NiTriTeApp.clearCache()">🗑️ Effacer le cache</button>
+
+                <!-- Theme Section -->
+                <div class="settings-section">
+                    <h3>🎨 Thèmes</h3>
+                    <p class="section-description">Personnalisez l'apparence de l'application</p>
+                    <div class="themes-grid">
+                        <div class="theme-card" onclick="window.NiTriTeApp.setTheme('dark')">
+                            <div class="theme-preview dark-theme-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content"></div>
+                            </div>
+                            <h4>Sombre</h4>
+                            <p>Thème par défaut</p>
+                        </div>
+                        <div class="theme-card" onclick="window.NiTriTeApp.setTheme('light')">
+                            <div class="theme-preview light-theme-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content"></div>
+                            </div>
+                            <h4>Clair</h4>
+                            <p>Pour plus de luminosité</p>
+                        </div>
+                        <div class="theme-card" onclick="window.NiTriTeApp.setTheme('dark-blue')">
+                            <div class="theme-preview dark-blue-theme-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content"></div>
+                            </div>
+                            <h4>Sombre Bleu</h4>
+                            <p>Accent bleu</p>
+                        </div>
+                        <div class="theme-card" onclick="window.NiTriTeApp.setTheme('light-blue')">
+                            <div class="theme-preview light-blue-theme-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content"></div>
+                            </div>
+                            <h4>Clair Bleu</h4>
+                            <p>Tons bleus clairs</p>
+                        </div>
+                        <div class="theme-card" onclick="window.NiTriTeApp.setTheme('dark-purple')">
+                            <div class="theme-preview dark-purple-theme-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content"></div>
+                            </div>
+                            <h4>Sombre Violet</h4>
+                            <p>Accent violet</p>
+                        </div>
+                        <div class="theme-card" onclick="window.NiTriTeApp.setTheme('dark-orange')">
+                            <div class="theme-preview dark-orange-theme-preview">
+                                <div class="preview-bar"></div>
+                                <div class="preview-content"></div>
+                            </div>
+                            <h4>Sombre Orange</h4>
+                            <p>Thème original</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App Settings Section -->
+                <div class="settings-section">
+                    <h3>⚙️ Paramètres de l'Application</h3>
+                    <p class="section-description">Gérez les données et les préférences</p>
+                    <div class="settings-actions">
+                        <button class="btn btn-secondary" onclick="window.NiTriTeApp.clearCache()">
+                            🗑️ Effacer le cache
+                        </button>
+                        <button class="btn btn-secondary" onclick="window.NiTriTeApp.exportSettings()">
+                            💾 Exporter les paramètres
+                        </button>
+                        <button class="btn btn-secondary" onclick="window.NiTriTeApp.importSettings()">
+                            📥 Importer les paramètres
+                        </button>
+                    </div>
+                </div>
+
+                <!-- About Section -->
+                <div class="settings-section">
+                    <h3>ℹ️ À propos</h3>
+                    <p class="section-description">Informations sur l'application</p>
+                    <div class="about-info">
+                        <p><strong>NiTriTe V.13 Beta</strong></p>
+                        <p>Gestionnaire d'Applications et Outils Système</p>
+                        <p style="margin-top: 10px; color: var(--text-secondary);">
+                            Version Web - Portée depuis la version Bureau
+                        </p>
+                    </div>
                 </div>
             </div>
         `;
-
-        document.getElementById('themeSelect')?.addEventListener('change', (e) => {
-            this.setTheme(e.target.value);
-        });
     }
 
     /**
@@ -600,6 +687,7 @@ class NiTriTeApp {
         const selectAll = document.getElementById('selectAll');
         const deselectAll = document.getElementById('deselectAll');
         const exportSelection = document.getElementById('exportSelection');
+        const importSelection = document.getElementById('importSelection');
 
         if (installSelected) {
             installSelected.addEventListener('click', () => {
@@ -622,6 +710,12 @@ class NiTriTeApp {
         if (exportSelection) {
             exportSelection.addEventListener('click', () => {
                 this.exportSelection();
+            });
+        }
+
+        if (importSelection) {
+            importSelection.addEventListener('click', () => {
+                this.importAndInstallSelection();
             });
         }
     }
@@ -681,6 +775,56 @@ class NiTriTeApp {
         a.download = 'nitrite_selection.json';
         a.click();
         URL.revokeObjectURL(url);
+    }
+
+    /**
+     * Import and install selection
+     */
+    importAndInstallSelection() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+
+        input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                try {
+                    const appIds = JSON.parse(event.target.result);
+
+                    if (!Array.isArray(appIds) || appIds.length === 0) {
+                        alert('❌ Fichier invalide ou vide');
+                        return;
+                    }
+
+                    if (!confirm(`📂 Importer et installer ${appIds.length} application(s)?\n\nContinuer?`)) {
+                        return;
+                    }
+
+                    // Add apps to selection
+                    appIds.forEach(id => this.selectedApps.add(id));
+                    this.renderApplicationsPage();
+
+                    // Install imported apps
+                    try {
+                        const result = await window.NiTriTeAPI.installMultiple(appIds);
+                        console.log('[App] Import installation result:', result);
+                        alert(`✅ Installation lancée pour ${appIds.length} applications`);
+                    } catch (error) {
+                        console.error('[App] Import installation failed:', error);
+                        alert(`❌ Erreur lors de l'installation: ${error.message}`);
+                    }
+                } catch (error) {
+                    console.error('Error importing selection:', error);
+                    alert('❌ Erreur lors de l\'import\n\nFichier invalide.');
+                }
+            };
+            reader.readAsText(file);
+        };
+
+        input.click();
     }
 
     /**
@@ -761,6 +905,84 @@ class NiTriTeApp {
         localStorage.clear();
         alert('Cache effacé ! Rechargez la page.');
         location.reload();
+    }
+
+    /**
+     * Set language
+     */
+    setLanguage(lang) {
+        if (!confirm(`Changer la langue en ${lang === 'fr' ? 'Français' : 'English'}?\n\nL'application sera rechargée.`)) {
+            return;
+        }
+        localStorage.setItem('nitrite_language', lang);
+        alert(`Langue changée en ${lang === 'fr' ? 'Français' : 'English'}!\n\nNote: La traduction complète sera implémentée prochainement.`);
+        location.reload();
+    }
+
+    /**
+     * Export settings
+     */
+    exportSettings() {
+        const settings = {
+            theme: this.currentTheme,
+            language: localStorage.getItem('nitrite_language') || 'fr',
+            favorites: this.favorites,
+            selectedApps: Array.from(this.selectedApps),
+            exportDate: new Date().toISOString()
+        };
+
+        const json = JSON.stringify(settings, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `nitrite_settings_${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        alert('✅ Paramètres exportés avec succès!');
+    }
+
+    /**
+     * Import settings
+     */
+    importSettings() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const settings = JSON.parse(event.target.result);
+
+                    // Apply settings
+                    if (settings.theme) {
+                        this.setTheme(settings.theme);
+                    }
+                    if (settings.language) {
+                        localStorage.setItem('nitrite_language', settings.language);
+                    }
+                    if (settings.favorites) {
+                        this.favorites = settings.favorites;
+                        window.NiTriTeAPI.saveFavorites(this.favorites);
+                    }
+
+                    alert('✅ Paramètres importés avec succès!\n\nL\'application va se recharger.');
+                    location.reload();
+                } catch (error) {
+                    console.error('Error importing settings:', error);
+                    alert('❌ Erreur lors de l\'import des paramètres\n\nFichier invalide.');
+                }
+            };
+            reader.readAsText(file);
+        };
+
+        input.click();
     }
 }
 

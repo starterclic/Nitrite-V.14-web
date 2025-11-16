@@ -262,6 +262,88 @@ if (typeof NiTriTeApp !== 'undefined') {
                     </div>
                     <p id="masterProgressText" class="progress-text"></p>
                 </div>
+
+                <!-- Actions Rapides Section -->
+                <div class="master-quick-actions" style="margin-top: 40px;">
+                    <h3 style="color: var(--accent-color); margin-bottom: 20px;">⚡ Actions Rapides</h3>
+                    <div class="quick-actions-grid">
+                        <button class="action-button" onclick="window.open('https://massgrave.dev/', '_blank')">
+                            <span class="action-icon">🔑</span>
+                            <span class="action-title">MassGrave Scripts</span>
+                            <span class="action-desc">Activation Windows & Office</span>
+                        </button>
+                        <button class="action-button" onclick="window.NiTriTeApp.runActivationScript()">
+                            <span class="action-icon">⚡</span>
+                            <span class="action-title">Activation Auto</span>
+                            <span class="action-desc">Script automatique</span>
+                        </button>
+                        <button class="action-button" onclick="window.NiTriTeApp.createPortableFolder()">
+                            <span class="action-icon">📁</span>
+                            <span class="action-title">Outils Portables</span>
+                            <span class="action-desc">Créer dossier Bureau</span>
+                        </button>
+                        <button class="action-button" onclick="window.open('https://gravesoft.dev/office_c2r_links#french-fr-fr', '_blank')">
+                            <span class="action-icon">📋</span>
+                            <span class="action-title">Office FR</span>
+                            <span class="action-desc">Télécharger Office français</span>
+                        </button>
+                        <button class="action-button" onclick="window.NiTriTeAPI.executeTool('msconfig')">
+                            <span class="action-icon">⚙️</span>
+                            <span class="action-title">MSConfig</span>
+                            <span class="action-desc">Configuration système</span>
+                        </button>
+                        <button class="action-button" onclick="window.NiTriTeAPI.executeTool('windows_update')">
+                            <span class="action-icon">🔄</span>
+                            <span class="action-title">Windows Update</span>
+                            <span class="action-desc">Mises à jour Windows</span>
+                        </button>
+                        <button class="action-button" onclick="window.NiTriTeAPI.executeTool('disk_c')">
+                            <span class="action-icon">💾</span>
+                            <span class="action-title">Disque C:</span>
+                            <span class="action-desc">Ouvrir le disque C:</span>
+                        </button>
+                        <button class="action-button" onclick="window.NiTriTeAPI.executeTool('startup_apps')">
+                            <span class="action-icon">🚀</span>
+                            <span class="action-title">Apps Démarrage</span>
+                            <span class="action-desc">Applications de démarrage</span>
+                        </button>
+                        <button class="action-button" onclick="window.NiTriTeApp.openAdminTerminal()">
+                            <span class="action-icon">⚡</span>
+                            <span class="action-title">Terminal Admin</span>
+                            <span class="action-desc">PowerShell administrateur</span>
+                        </button>
+                        <button class="action-button" onclick="window.NiTriTeApp.generateSystemReport()">
+                            <span class="action-icon">📋</span>
+                            <span class="action-title">Rapport Système</span>
+                            <span class="action-desc">Générer rapport détaillé</span>
+                        </button>
+                        <button class="action-button" onclick="window.NiTriTeAPI.executeTool('winver')">
+                            <span class="action-icon">🪟</span>
+                            <span class="action-title">Version Windows</span>
+                            <span class="action-desc">Afficher infos Windows</span>
+                        </button>
+                        <button class="action-button" onclick="window.NiTriTeAPI.executeTool('msinfo32')">
+                            <span class="action-icon">ℹ️</span>
+                            <span class="action-title">Infos Système</span>
+                            <span class="action-desc">Informations système</span>
+                        </button>
+                    </div>
+
+                    <!-- WinGet Manager Section -->
+                    <h4 style="color: var(--accent-color); margin-top: 30px; margin-bottom: 15px;">📦 WinGet Manager</h4>
+                    <div class="winget-actions">
+                        <button class="action-button wide" onclick="window.NiTriTeApp.wingetUpgradeAll()">
+                            <span class="action-icon">⬆️</span>
+                            <span class="action-title">Tout Mettre à Jour</span>
+                            <span class="action-desc">winget upgrade --all</span>
+                        </button>
+                        <button class="action-button wide" onclick="window.NiTriTeApp.wingetListUpgrades()">
+                            <span class="action-icon">📋</span>
+                            <span class="action-title">Lister Mises à Jour</span>
+                            <span class="action-desc">winget upgrade</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         `;
 
@@ -1133,5 +1215,176 @@ if (typeof NiTriTeApp !== 'undefined') {
         if (score >= 60) return 'Bon';
         if (score >= 45) return 'Moyen';
         return 'Faible';
+    };
+
+    // ==================== MASTER PAGE ACTIONS ====================
+
+    /**
+     * Run Windows activation script
+     */
+    NiTriTeApp.prototype.runActivationScript = async function() {
+        if (!confirm('⚠️ Cette action va exécuter le script d\'activation Windows/Office.\n\n' +
+                     'Le script va être téléchargé depuis massgrave.dev et exécuté.\n\n' +
+                     'Continuer?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/system/activate-windows', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ Script d\'activation lancé!\n\nSuivez les instructions dans la fenêtre PowerShell.');
+            } else {
+                alert('❌ ' + (result.message || 'Erreur inconnue'));
+            }
+        } catch (error) {
+            console.error('Error running activation:', error);
+            alert('❌ Erreur lors du lancement du script d\'activation');
+        }
+    };
+
+    /**
+     * Create portable tools folder on desktop
+     */
+    NiTriTeApp.prototype.createPortableFolder = async function() {
+        if (!confirm('📁 Créer un dossier "Outils de Nettoyage" sur le Bureau?\n\n' +
+                     'Ce dossier contiendra des raccourcis vers les outils portables.\n\n' +
+                     'Continuer?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/system/create-portable-folder', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ ' + result.message);
+            } else {
+                alert('❌ ' + (result.message || 'Erreur inconnue'));
+            }
+        } catch (error) {
+            console.error('Error creating folder:', error);
+            alert('❌ Erreur lors de la création du dossier');
+        }
+    };
+
+    /**
+     * Open admin terminal (PowerShell)
+     */
+    NiTriTeApp.prototype.openAdminTerminal = async function() {
+        if (!confirm('⚡ Ouvrir PowerShell en tant qu\'administrateur?\n\n' +
+                     '⚠️ Requiert les droits administrateur\n\n' +
+                     'Continuer?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/system/open-admin-terminal', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ PowerShell administrateur lancé!');
+            } else {
+                alert('❌ ' + (result.message || 'Erreur inconnue'));
+            }
+        } catch (error) {
+            console.error('Error opening terminal:', error);
+            alert('❌ Erreur lors de l\'ouverture du terminal');
+        }
+    };
+
+    /**
+     * Generate system report
+     */
+    NiTriTeApp.prototype.generateSystemReport = async function() {
+        if (!confirm('📋 Générer un rapport système détaillé?\n\n' +
+                     '⏱️ Cette opération peut prendre quelques minutes\n\n' +
+                     'Continuer?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/system/generate-report', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ Rapport généré!\n\nEmplacement: ' + result.path);
+            } else {
+                alert('❌ ' + (result.message || 'Erreur inconnue'));
+            }
+        } catch (error) {
+            console.error('Error generating report:', error);
+            alert('❌ Erreur lors de la génération du rapport');
+        }
+    };
+
+    /**
+     * WinGet upgrade all
+     */
+    NiTriTeApp.prototype.wingetUpgradeAll = async function() {
+        if (!confirm('📦 Mettre à jour toutes les applications via WinGet?\n\n' +
+                     'Commande: winget upgrade --all\n\n' +
+                     '⏱️ Cette opération peut prendre du temps\n\n' +
+                     'Continuer?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/winget/upgrade-all', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ Mises à jour WinGet lancées!\n\nConsultez la fenêtre de terminal.');
+            } else {
+                alert('❌ ' + (result.message || 'Erreur inconnue'));
+            }
+        } catch (error) {
+            console.error('Error running winget upgrade:', error);
+            alert('❌ Erreur lors de la mise à jour WinGet');
+        }
+    };
+
+    /**
+     * WinGet list upgrades
+     */
+    NiTriTeApp.prototype.wingetListUpgrades = async function() {
+        try {
+            const response = await fetch('/api/winget/list-upgrades', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('✅ Liste des mises à jour WinGet affichée!\n\nConsultez la fenêtre de terminal.');
+            } else {
+                alert('❌ ' + (result.message || 'Erreur inconnue'));
+            }
+        } catch (error) {
+            console.error('Error listing winget upgrades:', error);
+            alert('❌ Erreur lors de la récupération de la liste');
+        }
     };
 }
