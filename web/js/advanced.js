@@ -244,16 +244,26 @@ if (typeof NiTriTeApp !== 'undefined') {
                     `).join('')}
                 </div>
 
-                <div class="master-actions">
-                    <button class="btn btn-secondary" onclick="window.NiTriTeApp.selectAllMasterApps()">
-                        ☑️ Tout sélectionner
-                    </button>
-                    <button class="btn btn-secondary" onclick="window.NiTriTeApp.deselectAllMasterApps()">
-                        ⬜ Tout désélectionner
-                    </button>
-                    <button class="btn btn-primary btn-large" onclick="window.NiTriTeApp.installMasterApps()">
-                        📥 Installer la sélection (<span id="masterSelectedCount">${masterApps.length}</span>)
-                    </button>
+                <div class="master-actions" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" onclick="window.NiTriTeApp.selectAllMasterApps()">
+                            ☑️ Tout sélectionner
+                        </button>
+                        <button class="btn btn-secondary" onclick="window.NiTriTeApp.deselectAllMasterApps()">
+                            ⬜ Tout désélectionner
+                        </button>
+                        <button class="btn btn-primary btn-large" onclick="window.NiTriTeApp.installMasterApps()">
+                            📥 Installer la sélection (<span id="masterSelectedCount">${masterApps.length}</span>)
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-success btn-large" onclick="window.NiTriTeApp.exportInstallScript()" style="background: #00c853; flex: 1;">
+                            🚀 Télécharger Script PowerShell (.ps1)
+                        </button>
+                        <button class="btn btn-success btn-large" onclick="window.NiTriTeApp.generateOneLiner()" style="background: #2196f3; flex: 1;">
+                            📋 Copier Commande One-Liner
+                        </button>
+                    </div>
                 </div>
 
                 <div id="masterInstallProgress" style="display: none;">
@@ -1386,5 +1396,417 @@ if (typeof NiTriTeApp !== 'undefined') {
             console.error('Error listing winget upgrades:', error);
             alert('❌ Erreur lors de la récupération de la liste');
         }
+    };
+
+    /**
+     * Export installation script for selected master apps
+     */
+    NiTriTeApp.prototype.exportInstallScript = async function() {
+        // Get selected apps from master page
+        const checkboxes = document.querySelectorAll('#masterContent input[type="checkbox"]:checked');
+
+        if (checkboxes.length === 0) {
+            alert('⚠️ Veuillez sélectionner au moins une application');
+            return;
+        }
+
+        const selectedAppIds = Array.from(checkboxes).map(cb => cb.value);
+
+        // Fetch full app data
+        try {
+            const masterApps = await window.NiTriTeAPI.getMasterApps();
+            const selectedApps = masterApps.filter(app => selectedAppIds.includes(app.id));
+
+            // Generate PowerShell script
+            const scriptContent = this.generatePowerShellInstallScript(selectedApps);
+
+            // Create downloadable file
+            const blob = new Blob([scriptContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `NiTriTe_AutoInstall_${new Date().toISOString().split('T')[0]}.ps1`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // Show instructions
+            const instructions = `✅ Script d'installation généré avec succès!
+
+📥 Fichier téléchargé: NiTriTe_AutoInstall_${new Date().toISOString().split('T')[0]}.ps1
+📋 ${selectedApps.length} application(s) sélectionnée(s)
+
+🚀 UTILISATION:
+1. Copiez le fichier .ps1 sur le PC cible
+2. Clic droit → "Exécuter avec PowerShell"
+   OU
+   PowerShell en Admin: .\\NiTriTe_AutoInstall_*.ps1
+
+⚡ Le script va:
+• Vérifier WinGet
+• Installer toutes les apps en mode silencieux
+• Créer un log d'installation
+• Afficher un résumé final
+
+⚠️ IMPORTANT:
+• Exécuter en tant qu'administrateur
+• Connexion internet requise`;
+
+            alert(instructions);
+
+        } catch (error) {
+            console.error('Error generating install script:', error);
+            alert('❌ Erreur lors de la génération du script');
+        }
+    };
+
+    /**
+     * Generate PowerShell installation script
+     */
+    NiTriTeApp.prototype.generatePowerShellInstallScript = function(apps) {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const appsList = apps.map(app => `    "${app.name}"`).join(',\n');
+
+        const script = `# ========================================
+# NiTriTe V.13 - Script d'Installation Automatique
+# Généré le: ${new Date().toLocaleString('fr-FR')}
+# Nombre d'applications: ${apps.length}
+# ========================================
+
+# Élévation des privilèges si nécessaire
+if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Warning "⚠️ Ce script nécessite les droits administrateur!"
+    Write-Host "Relancement en tant qu'administrateur..." -ForegroundColor Yellow
+    Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File \`"$PSCommandPath\`"" -Verb RunAs
+    exit
+}
+
+Write-Host "╔════════════════════════════════════════╗" -ForegroundColor Cyan
+Write-Host "║  NiTriTe V.13 - Installation Auto     ║" -ForegroundColor Cyan
+Write-Host "║  ${apps.length} applications sélectionnées          ║" -ForegroundColor Cyan
+Write-Host "╚════════════════════════════════════════╝" -ForegroundColor Cyan
+Write-Host ""
+
+# Configuration
+$logFile = "$env:TEMP\\NiTriTe_Install_Log_${timestamp}.txt"
+$successCount = 0
+$failedCount = 0
+$failedApps = @()
+
+# Fonction de logging
+function Write-Log {
+    param($Message, $Color = "White")
+    Write-Host $Message -ForegroundColor $Color
+    Add-Content -Path $logFile -Value "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $Message"
+}
+
+# Vérification de WinGet
+Write-Log "🔍 Vérification de WinGet..." "Yellow"
+try {
+    $wingetVersion = winget --version
+    Write-Log "✅ WinGet installé: $wingetVersion" "Green"
+} catch {
+    Write-Log "❌ WinGet n'est pas installé!" "Red"
+    Write-Log "📥 Installation de WinGet..." "Yellow"
+
+    # Installation automatique de WinGet
+    $progressPreference = 'silentlyContinue'
+    Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile "$env:TEMP\\Microsoft.DesktopAppInstaller.msixbundle"
+    Add-AppxPackage "$env:TEMP\\Microsoft.DesktopAppInstaller.msixbundle"
+    Write-Log "✅ WinGet installé avec succès!" "Green"
+}
+
+Write-Host ""
+Write-Log "════════════════════════════════════════" "Cyan"
+Write-Log "🚀 DÉBUT DE L'INSTALLATION" "Cyan"
+Write-Log "════════════════════════════════════════" "Cyan"
+Write-Host ""
+
+# Liste des applications à installer
+$applications = @(
+${apps.map(app => {
+    // Générer la commande WinGet appropriée
+    let wingetId = app.wingetId || app.name;
+    return `    @{
+        Name = "${app.name}"
+        WinGetId = "${wingetId}"
+        Category = "${app.category || 'Général'}"
+    }`;
+}).join(',\n')}
+)
+
+# Compteur
+$current = 0
+$total = $applications.Count
+
+# Installation de chaque application
+foreach ($app in $applications) {
+    $current++
+    $percentage = [math]::Round(($current / $total) * 100)
+
+    Write-Host ""
+    Write-Log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" "Gray"
+    Write-Log "[$current/$total] ($percentage%) 📦 $($app.Name)" "Cyan"
+    Write-Log "Catégorie: $($app.Category)" "Gray"
+
+    try {
+        # Installation silencieuse via WinGet
+        Write-Log "   ⏳ Installation en cours..." "Yellow"
+
+        $process = Start-Process -FilePath "winget" \`
+            -ArgumentList "install", "--id", $app.WinGetId, "--silent", "--accept-package-agreements", "--accept-source-agreements" \`
+            -NoNewWindow -Wait -PassThru
+
+        if ($process.ExitCode -eq 0) {
+            Write-Log "   ✅ Installation réussie!" "Green"
+            $successCount++
+        } else {
+            Write-Log "   ⚠️ Installation terminée avec code: $($process.ExitCode)" "Yellow"
+            $successCount++
+        }
+    } catch {
+        Write-Log "   ❌ Erreur: $($_.Exception.Message)" "Red"
+        $failedCount++
+        $failedApps += $app.Name
+    }
+}
+
+# Résumé final
+Write-Host ""
+Write-Host ""
+Write-Log "════════════════════════════════════════" "Cyan"
+Write-Log "📊 RÉSUMÉ DE L'INSTALLATION" "Cyan"
+Write-Log "════════════════════════════════════════" "Cyan"
+Write-Host ""
+Write-Log "✅ Réussies:  $successCount / $total" "Green"
+Write-Log "❌ Échouées:  $failedCount / $total" $(if ($failedCount -eq 0) { "Green" } else { "Red" })
+Write-Host ""
+
+if ($failedCount -gt 0) {
+    Write-Log "Applications échouées:" "Red"
+    foreach ($app in $failedApps) {
+        Write-Log "  • $app" "Red"
+    }
+    Write-Host ""
+}
+
+Write-Log "📝 Log complet: $logFile" "Yellow"
+Write-Host ""
+Write-Log "════════════════════════════════════════" "Cyan"
+Write-Log "✨ INSTALLATION TERMINÉE!" "Cyan"
+Write-Log "════════════════════════════════════════" "Cyan"
+Write-Host ""
+
+# Ouvrir le log
+$openLog = Read-Host "Voulez-vous ouvrir le fichier log? (O/N)"
+if ($openLog -eq "O" -or $openLog -eq "o") {
+    Start-Process notepad.exe $logFile
+}
+
+Write-Host "Appuyez sur une touche pour fermer..." -ForegroundColor Gray
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+`;
+
+        return script;
+    };
+
+    /**
+     * Generate one-liner PowerShell command
+     */
+    NiTriTeApp.prototype.generateOneLiner = async function() {
+        // Get selected apps from master page
+        const checkboxes = document.querySelectorAll('#masterContent input[type="checkbox"]:checked');
+
+        if (checkboxes.length === 0) {
+            alert('⚠️ Veuillez sélectionner au moins une application');
+            return;
+        }
+
+        const selectedAppIds = Array.from(checkboxes).map(cb => cb.value);
+
+        // Fetch full app data
+        try {
+            const masterApps = await window.NiTriTeAPI.getMasterApps();
+            const selectedApps = masterApps.filter(app => selectedAppIds.includes(app.id));
+
+            // Generate WinGet commands
+            const wingetCommands = selectedApps.map(app => {
+                const wingetId = app.wingetId || app.name;
+                return `winget install --id "${wingetId}" --silent --accept-package-agreements --accept-source-agreements`;
+            });
+
+            // Create one-liner with all commands
+            const oneLiner = wingetCommands.join(' ; ');
+
+            // Full PowerShell command with admin elevation
+            const fullCommand = `powershell -Command "Start-Process powershell -Verb RunAs -ArgumentList '-NoProfile -ExecutionPolicy Bypass -Command \\"${oneLiner}\\"'"`;
+
+            // Copy to clipboard
+            try {
+                await navigator.clipboard.writeText(oneLiner);
+
+                // Show modal with command
+                this.showOneLinerModal(oneLiner, fullCommand, selectedApps.length);
+
+            } catch (clipboardError) {
+                // Fallback: show in text area for manual copy
+                this.showOneLinerModal(oneLiner, fullCommand, selectedApps.length, true);
+            }
+
+        } catch (error) {
+            console.error('Error generating one-liner:', error);
+            alert('❌ Erreur lors de la génération de la commande');
+        }
+    };
+
+    /**
+     * Show one-liner modal
+     */
+    NiTriTeApp.prototype.showOneLinerModal = function(oneLiner, fullCommand, appCount, manualCopy = false) {
+        const modalHTML = `
+            <div class="one-liner-modal" style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                padding: 20px;
+            ">
+                <div style="
+                    background: var(--bg-secondary, #1e1e2e);
+                    border-radius: 16px;
+                    padding: 30px;
+                    max-width: 900px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="margin: 0; color: var(--text-primary, #ffffff);">
+                            📋 Commande d'Installation One-Liner
+                        </h2>
+                        <button onclick="this.closest('.one-liner-modal').remove()" style="
+                            background: transparent;
+                            border: none;
+                            color: var(--text-primary, #ffffff);
+                            font-size: 24px;
+                            cursor: pointer;
+                            padding: 5px 10px;
+                        ">×</button>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <p style="color: var(--text-secondary, #a8a8b3); margin: 0;">
+                            ${manualCopy ? '⚠️ Sélectionnez et copiez manuellement la commande ci-dessous' : '✅ Commande copiée dans le presse-papier!'}
+                        </p>
+                        <p style="color: var(--accent-color, #FF6B35); margin: 10px 0 0 0; font-weight: bold;">
+                            ${appCount} application(s) sélectionnée(s)
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: var(--text-primary, #ffffff); font-size: 1rem; margin-bottom: 10px;">
+                            🚀 Commande Simple (PowerShell Admin):
+                        </h3>
+                        <textarea readonly style="
+                            width: 100%;
+                            min-height: 120px;
+                            padding: 15px;
+                            background: var(--bg-tertiary, #282838);
+                            color: var(--text-primary, #ffffff);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 8px;
+                            font-family: 'Consolas', 'Monaco', monospace;
+                            font-size: 13px;
+                            resize: vertical;
+                        " onclick="this.select()">${oneLiner}</textarea>
+                        <button onclick="navigator.clipboard.writeText(\`${oneLiner.replace(/`/g, '\\`')}\`).then(() => alert('✅ Copié!'))" style="
+                            background: #00c853;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 8px;
+                            margin-top: 10px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        ">
+                            📋 Copier la commande
+                        </button>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: var(--text-primary, #ffffff); font-size: 1rem; margin-bottom: 10px;">
+                            ⚡ Commande avec Auto-Élévation (CMD/PowerShell):
+                        </h3>
+                        <textarea readonly style="
+                            width: 100%;
+                            min-height: 80px;
+                            padding: 15px;
+                            background: var(--bg-tertiary, #282838);
+                            color: var(--text-primary, #ffffff);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 8px;
+                            font-family: 'Consolas', 'Monaco', monospace;
+                            font-size: 13px;
+                            resize: vertical;
+                        " onclick="this.select()">${fullCommand}</textarea>
+                        <button onclick="navigator.clipboard.writeText(\`${fullCommand.replace(/`/g, '\\`')}\`).then(() => alert('✅ Copié!'))" style="
+                            background: #2196f3;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 8px;
+                            margin-top: 10px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        ">
+                            📋 Copier avec auto-élévation
+                        </button>
+                    </div>
+
+                    <div style="
+                        background: rgba(255, 107, 53, 0.1);
+                        border-left: 4px solid var(--accent-color, #FF6B35);
+                        padding: 15px;
+                        border-radius: 8px;
+                        margin-top: 20px;
+                    ">
+                        <h4 style="margin: 0 0 10px 0; color: var(--accent-color, #FF6B35);">
+                            📖 Instructions d'utilisation:
+                        </h4>
+                        <ol style="margin: 0; padding-left: 20px; color: var(--text-secondary, #a8a8b3); line-height: 1.8;">
+                            <li><strong>Option 1 (Simple):</strong> Ouvrez PowerShell en tant qu'administrateur → Collez la commande simple</li>
+                            <li><strong>Option 2 (Auto-élévation):</strong> Ouvrez CMD ou PowerShell normal → Collez la commande avec auto-élévation</li>
+                            <li>Les applications seront installées automatiquement en mode silencieux</li>
+                            <li>Connexion internet requise</li>
+                        </ol>
+                    </div>
+
+                    <div style="margin-top: 20px; text-align: right;">
+                        <button onclick="this.closest('.one-liner-modal').remove()" style="
+                            background: var(--bg-tertiary, #282838);
+                            color: var(--text-primary, #ffffff);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            padding: 10px 25px;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        ">
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Add modal to page
+        const modalElement = document.createElement('div');
+        modalElement.innerHTML = modalHTML;
+        document.body.appendChild(modalElement.firstElementChild);
     };
 }
