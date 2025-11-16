@@ -315,18 +315,53 @@ def install_application():
         data = request.json
         app_id = data.get('app_id')
         method = data.get('method', 'auto')
+        winget_id = data.get('winget_id')
 
         logger.info(f"Installing application: {app_id} (method: {method})")
 
-        # TODO: Implement actual installation logic
-        # For now, just return success
+        if not installer_manager:
+            return jsonify({
+                'status': 'error',
+                'message': 'Gestionnaire d\'installation non disponible'
+            }), 500
 
-        return jsonify({
-            'status': 'success',
-            'message': f'Installation de {app_id} lancée',
-            'app_id': app_id,
-            'method': method
-        })
+        # Try WinGet first if available
+        if method == 'winget' or (method == 'auto' and winget_id):
+            if winget_manager:
+                try:
+                    result = winget_manager.install_program(
+                        winget_id or app_id,
+                        silent=True,
+                        accept_source_agreements=True,
+                        accept_package_agreements=True
+                    )
+
+                    if result.get('success'):
+                        return jsonify({
+                            'status': 'success',
+                            'message': f'Installation de {app_id} réussie via WinGet',
+                            'app_id': app_id,
+                            'method': 'winget'
+                        })
+                except Exception as e:
+                    logger.warning(f"WinGet installation failed, trying fallback: {e}")
+
+        # Fallback to direct installation
+        try:
+            installer_manager.install_single_program(app_id)
+            return jsonify({
+                'status': 'success',
+                'message': f'Installation de {app_id} lancée',
+                'app_id': app_id,
+                'method': 'direct'
+            })
+        except Exception as e:
+            logger.error(f"Installation failed: {e}")
+            return jsonify({
+                'status': 'error',
+                'message': f'Échec de l\'installation: {str(e)}',
+                'app_id': app_id
+            }), 500
 
     except Exception as e:
         logger.error(f"Error installing application: {e}")
@@ -339,15 +374,46 @@ def install_bulk():
     try:
         data = request.json
         app_ids = data.get('app_ids', [])
+        method = data.get('method', 'auto')
 
         logger.info(f"Bulk installing {len(app_ids)} applications")
 
-        # TODO: Implement bulk installation logic
+        if not installer_manager:
+            return jsonify({
+                'status': 'error',
+                'message': 'Gestionnaire d\'installation non disponible'
+            }), 500
+
+        if not app_ids:
+            return jsonify({
+                'status': 'error',
+                'message': 'Aucune application spécifiée'
+            }), 400
+
+        # Use threading for bulk installation
+        def progress_callback(msg, level="info"):
+            logger.log(getattr(logging, level.upper(), logging.INFO), msg)
+
+        def completion_callback(success_list, failed_list):
+            logger.info(f"Bulk installation completed: {len(success_list)} succeeded, {len(failed_list)} failed")
+
+        # Start installation in a thread (non-blocking)
+        import threading
+        success_list = []
+        failed_list = []
+
+        thread = threading.Thread(
+            target=installer_manager.install_programs,
+            args=(app_ids, progress_callback, completion_callback, success_list, failed_list),
+            daemon=True
+        )
+        thread.start()
 
         return jsonify({
             'status': 'success',
-            'message': f'Installation de {len(app_ids)} applications lancée',
-            'app_ids': app_ids
+            'message': f'Installation de {len(app_ids)} applications lancée en arrière-plan',
+            'app_ids': app_ids,
+            'count': len(app_ids)
         })
 
     except Exception as e:

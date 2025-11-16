@@ -157,6 +157,6 @@ echo.
 echo Fichier final: dist\NiTriTe_V13_Modern.exe
 echo Taille: ~35-50 MB (tout en un seul fichier)
 echo.
-echo Consultez MODE_PORTABLE.md pour plus d'infos.
+echo Consultez README.md pour plus d'infos.
 echo.
 pause
