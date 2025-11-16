@@ -52,8 +52,15 @@ class NiTriTeApp {
         const appsData = await window.NiTriTeAPI.getApplications();
         this.parseApplications(appsData);
 
-        // Load tools
-        this.tools = await window.NiTriTeAPI.getTools();
+        // Load tools from JSON file
+        try {
+            const toolsResponse = await fetch('data/tools.json');
+            this.tools = await toolsResponse.json();
+            console.log(`[App] Loaded ${this.tools.length} tool sections with ${this.tools.reduce((sum, s) => sum + s.tools.length, 0)} tools`);
+        } catch (error) {
+            console.error('[App] Failed to load tools:', error);
+            this.tools = [];
+        }
 
         // Load profiles
         this.profiles = await window.NiTriTeAPI.getProfiles();
@@ -369,16 +376,22 @@ class NiTriTeApp {
         const container = document.getElementById('toolsContainer');
         if (!container) return;
 
-        container.innerHTML = '';
-
-        const toolsData = this.tools.sections || this.tools;
-
-        if (Array.isArray(toolsData)) {
-            toolsData.forEach(section => {
-                const sectionEl = this.createToolSection(section);
-                container.appendChild(sectionEl);
-            });
+        if (!this.tools || this.tools.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-secondary); padding: 20px; text-align: center;">Chargement des outils...</p>';
+            return;
         }
+
+        container.innerHTML = `
+            <div class="tools-header">
+                <h2>🛠️ Outils Système</h2>
+                <p class="tools-subtitle">${this.tools.reduce((sum, s) => sum + s.tools.length, 0)} outils répartis en ${this.tools.length} catégories</p>
+            </div>
+        `;
+
+        this.tools.forEach(section => {
+            const sectionEl = this.createToolSection(section);
+            container.appendChild(sectionEl);
+        });
     }
 
     /**
@@ -388,17 +401,23 @@ class NiTriTeApp {
         const div = document.createElement('div');
         div.className = 'tool-section';
 
-        const toolsHTML = section.tools.map(tool => `
-            <button class="tool-btn" onclick="window.NiTriTeApp.executeTool('${tool.id}')">
-                <span class="tool-btn-icon">${tool.icon || '🔧'}</span>
-                <span>${tool.name}</span>
-            </button>
-        `).join('');
+        const toolsHTML = section.tools.map((tool, index) => {
+            const isUrl = tool.command.startsWith('http://') || tool.command.startsWith('https://');
+            const isCommand = !isUrl;
+
+            return `
+                <button class="tool-btn ${isUrl ? 'tool-btn-url' : 'tool-btn-command'}"
+                        onclick="window.NiTriTeApp.executeTool(${JSON.stringify(tool).replace(/"/g, '&quot;')})">
+                    <span class="tool-btn-text">${tool.name}</span>
+                    ${isUrl ? '<span class="tool-btn-indicator">🌐</span>' : '<span class="tool-btn-indicator">⚡</span>'}
+                </button>
+            `;
+        }).join('');
 
         div.innerHTML = `
             <div class="tool-section-header">
-                <span class="tool-section-icon">${section.icon}</span>
                 <h3 class="tool-section-title">${section.title}</h3>
+                <span class="tool-section-count">${section.tools.length} outils</span>
             </div>
             <div class="tool-grid">
                 ${toolsHTML}
@@ -411,16 +430,29 @@ class NiTriTeApp {
     /**
      * Execute tool
      */
-    async executeTool(toolId) {
-        console.log(`[App] Executing tool ${toolId}...`);
+    async executeTool(tool) {
+        console.log(`[App] Executing tool:`, tool);
 
-        try {
-            const result = await window.NiTriTeAPI.executeTool(toolId);
-            console.log('[App] Tool execution result:', result);
-            alert(`Outil ${toolId} exécuté`);
-        } catch (error) {
-            console.error('[App] Tool execution failed:', error);
-            alert(`Erreur lors de l'exécution: ${error.message}`);
+        const isUrl = tool.command.startsWith('http://') || tool.command.startsWith('https://');
+
+        if (isUrl) {
+            // Open URL in new tab
+            window.open(tool.command, '_blank');
+        } else {
+            // Execute command via API
+            try {
+                const result = await window.NiTriTeAPI.executeCommand(tool.command);
+                console.log('[App] Command execution result:', result);
+
+                if (result.status === 'success') {
+                    alert(`✅ ${tool.name}\n\nCommande exécutée avec succès`);
+                } else {
+                    alert(`⚠️ ${tool.name}\n\n${result.message || 'Commande exécutée'}`);
+                }
+            } catch (error) {
+                console.error('[App] Command execution failed:', error);
+                alert(`❌ Erreur lors de l'exécution de ${tool.name}\n\n${error.message}`);
+            }
         }
     }
 
